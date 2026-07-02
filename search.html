@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search — EQ Sentry Nepal</title>
+  <meta name="description" content="Search EQ Sentry: live map, preparedness guides, district risk, hospitals, glossary and more." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%230A0C10'/%3E%3Cpath d='M5 21h6l3-9 5 16 4-12 2.5 5H35' stroke='%23FF4D2E' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="canonical" href="https://eqsentry.com/search.html" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script type="application/json" id="page-i18n">
+    {
+      "en": {
+        "se.eyebrow": "Search",
+        "se.h1": "Find it on EQ Sentry",
+        "se.sub": "Guides, tools, data and directories — start typing.",
+        "se.ph": "Try: drill, hospitals, Gorkha, aftershock, kit…",
+        "se.none": "Nothing found — try a different word, or browse from the menu.",
+        "se.all": "Everything on the site"
+      },
+      "ne": {
+        "se.eyebrow": "खोज",
+        "se.h1": "EQ Sentry मा खोज्नुहोस्",
+        "se.sub": "निर्देशिका, उपकरण, तथ्याङ्क र सूचीहरू — टाइप गर्न थाल्नुहोस्।",
+        "se.ph": "प्रयास गर्नुहोस्: ड्रिल, अस्पताल, गोरखा, पराकम्प, झोला…",
+        "se.none": "केही भेटिएन — अर्को शब्द प्रयास गर्नुहोस्, वा मेनुबाट हेर्नुहोस्।",
+        "se.all": "साइटमा भएका सबै"
+      }
+    }
+  </script>
+</head>
+<body data-page="search">
+  <header class="site-header" id="site-header"></header>
+  <div id="alertBar"></div>
+
+  <section class="page-hero section tight">
+    <div class="container">
+      <span class="eyebrow" data-i18n="se.eyebrow"></span>
+      <h1 data-i18n="se.h1"></h1>
+      <p class="lead" data-i18n="se.sub"></p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="container" style="max-width:760px">
+      <input type="search" id="seBox" class="dir-search" style="width:100%;margin-bottom:8px" data-i18n-placeholder="se.ph" autofocus />
+      <p class="muted" id="seLabel" style="font-size:.82rem" data-i18n="se.all"></p>
+      <div id="seResults" class="grid" style="gap:10px"></div>
+      <p id="seNone" class="muted" style="display:none" data-i18n="se.none"></p>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/pages/search.js"></script>
+</body>
+</html>

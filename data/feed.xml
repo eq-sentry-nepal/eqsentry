@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel>
+  <title>EQ Sentry — earthquakes (M4.5+) near Nepal</title>
+  <link>https://eqsentry.com/map.html</link>
+  <description>Recent significant earthquakes in the Nepal region, from the USGS catalogue. Not a prediction or warning service.</description>
+  <language>en</language>
+  <lastBuildDate>Thu, 02 Jul 2026 21:54:03 GMT</lastBuildDate>
+    <item>
+      <title>M6.5 — 88 km ENE of Josh?math, India</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem16958167</link>
+      <guid isPermaLink="false">iscgem16958167</guid>
+      <pubDate>Sat, 14 Oct 1911 23:24:00 GMT</pubDate>
+      <description>Magnitude 6.5, depth 20 km, at 30.99N 80.34E.</description>
+    </item>
+    <item>
+      <title>M6.5 — 73 km E of Burang, China</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem914042</link>
+      <guid isPermaLink="false">iscgem914042</guid>
+      <pubDate>Thu, 06 Mar 1913 11:04:00 GMT</pubDate>
+      <description>Magnitude 6.5, depth 15 km, at 30.20N 81.93E.</description>
+    </item>
+    <item>
+      <title>M7.0 — 21 km SE of Dārchulā, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem913843</link>
+      <guid isPermaLink="false">iscgem913843</guid>
+      <pubDate>Mon, 28 Aug 1916 06:39:41 GMT</pubDate>
+      <description>Magnitude 7.0, depth 20 km, at 29.67N 80.68E.</description>
+    </item>
+    <item>
+      <title>M5.8 — 17 km NNE of Dadeldhurā, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem913854</link>
+      <guid isPermaLink="false">iscgem913854</guid>
+      <pubDate>Sat, 14 Oct 1916 19:47:21 GMT</pubDate>
+      <description>Magnitude 5.8, depth 15 km, at 29.45N 80.62E.</description>
+    </item>
+    <item>
+      <title>M5.9 — 26 km NNE of Dadeldhurā, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem913876</link>
+      <guid isPermaLink="false">iscgem913876</guid>
+      <pubDate>Sun, 24 Dec 1916 07:53:22 GMT</pubDate>
+      <description>Magnitude 5.9, depth 15 km, at 29.53N 80.67E.</description>
+    </item>
+    <item>
+      <title>M6.2 — 26 km E of Birendranagar, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgemsup913355</link>
+      <guid isPermaLink="false">iscgemsup913355</guid>
+      <pubDate>Fri, 29 Nov 1918 10:41:47 GMT</pubDate>
+      <description>Magnitude 6.2, depth 15 km, at 28.56N 81.88E.</description>
+    </item>
+    <item>
+      <title>M5.7 — 37 km SE of D?rchul?, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem909958</link>
+      <guid isPermaLink="false">iscgem909958</guid>
+      <pubDate>Tue, 27 Jul 1926 07:23:48 GMT</pubDate>
+      <description>Magnitude 5.7, depth 15 km, at 29.60N 80.83E.</description>
+    </item>
+    <item>
+      <title>M5.8 — 22 km SE of D?rchul?, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem909548</link>
+      <guid isPermaLink="false">iscgem909548</guid>
+      <pubDate>Sat, 08 Oct 1927 10:34:36 GMT</pubDate>
+      <description>Magnitude 5.8, depth 15 km, at 29.66N 80.69E.</description>
+    </item>
+    <item>
+      <title>M6.0 — 155 km NW of Saga, China</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem906827</link>
+      <guid isPermaLink="false">iscgem906827</guid>
+      <pubDate>Thu, 18 Jun 1931 12:58:33 GMT</pubDate>
+      <description>Magnitude 6.0, depth 15 km, at 30.17N 83.94E.</description>
+    </item>
+    <item>
+      <title>M8.0 — 1934 Bihar-Nepal Earthquake</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem904745</link>
+      <guid isPermaLink="false">iscgem904745</guid>
+      <pubDate>Mon, 15 Jan 1934 08:43:25 GMT</pubDate>
+      <description>Magnitude 8.0, depth 15 km, at 27.27N 86.94E.</description>
+    </item>
+    <item>
+      <title>M5.7 — 168 km N of Rikaze, China</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem905306</link>
+      <guid isPermaLink="false">iscgem905306</guid>
+      <pubDate>Fri, 14 Dec 1934 20:42:33 GMT</pubDate>
+      <description>Magnitude 5.7, depth 15 km, at 30.76N 88.71E.</description>
+    </item>
+    <item>
+      <title>M6.5 — 176 km NNW of Rikaze, China</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem904016</link>
+      <guid isPermaLink="false">iscgem904016</guid>
+      <pubDate>Thu, 03 Jan 1935 01:50:11 GMT</pubDate>
+      <description>Magnitude 6.5, depth 15 km, at 30.77N 88.34E.</description>
+    </item>
+    <item>
+      <title>M6.0 — 14 km W of Dh?rchula, India</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem904141</link>
+      <guid isPermaLink="false">iscgem904141</guid>
+      <pubDate>Tue, 05 Mar 1935 22:15:56 GMT</pubDate>
+      <description>Magnitude 6.0, depth 15 km, at 29.82N 80.37E.</description>
+    </item>
+    <item>
+      <title>M5.5 — 2 km NNE of Almora, India</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem904159</link>
+      <guid isPermaLink="false">iscgem904159</guid>
+      <pubDate>Fri, 15 Mar 1935 10:33:55 GMT</pubDate>
+      <description>Magnitude 5.5, depth 15 km, at 29.62N 79.67E.</description>
+    </item>
+    <item>
+      <title>M5.9 — 35 km NNW of Lobujya, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem903473</link>
+      <guid isPermaLink="false">iscgem903473</guid>
+      <pubDate>Tue, 11 Feb 1936 04:47:40 GMT</pubDate>
+      <description>Magnitude 5.9, depth 15 km, at 28.26N 86.73E.</description>
+    </item>
+    <item>
+      <title>M5.7 — 183 km N of Rikaze, China</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem903481</link>
+      <guid isPermaLink="false">iscgem903481</guid>
+      <pubDate>Tue, 18 Feb 1936 14:30:37 GMT</pubDate>
+      <description>Magnitude 5.7, depth 15 km, at 30.90N 88.98E.</description>
+    </item>
+    <item>
+      <title>M6.9 — 28 km WNW of B?glung, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem903650</link>
+      <guid isPermaLink="false">iscgem903650</guid>
+      <pubDate>Wed, 27 May 1936 06:19:14 GMT</pubDate>
+      <description>Magnitude 6.9, depth 15 km, at 28.38N 83.32E.</description>
+    </item>
+    <item>
+      <title>M5.7 — 30 km ESE of Kod?ri??, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem903830</link>
+      <guid isPermaLink="false">iscgem903830</guid>
+      <pubDate>Mon, 07 Sep 1936 02:30:53 GMT</pubDate>
+      <description>Magnitude 5.7, depth 15 km, at 27.90N 86.26E.</description>
+    </item>
+    <item>
+      <title>M6.0 — 62 km SSE of Burang, China</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem903055</link>
+      <guid isPermaLink="false">iscgem903055</guid>
+      <pubDate>Fri, 30 Apr 1937 19:32:59 GMT</pubDate>
+      <description>Magnitude 6.0, depth 15 km, at 29.78N 81.44E.</description>
+    </item>
+    <item>
+      <title>M5.7 — 52 km NNE of Dipayal, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem903056</link>
+      <guid isPermaLink="false">iscgem903056</guid>
+      <pubDate>Fri, 30 Apr 1937 20:03:30 GMT</pubDate>
+      <description>Magnitude 5.7, depth 15 km, at 29.65N 81.24E.</description>
+    </item>
+    <item>
+      <title>M5.4 — 17 km ENE of Dadeldhur?, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem9342031</link>
+      <guid isPermaLink="false">iscgem9342031</guid>
+      <pubDate>Mon, 20 Dec 1937 04:59:41 GMT</pubDate>
+      <description>Magnitude 5.4, depth 15 km, at 29.38N 80.74E.</description>
+    </item>
+    <item>
+      <title>M5.8 — 27 km NNW of Kh??db?ri??, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem902347</link>
+      <guid isPermaLink="false">iscgem902347</guid>
+      <pubDate>Sat, 29 Jan 1938 04:13:10 GMT</pubDate>
+      <description>Magnitude 5.8, depth 15 km, at 27.60N 87.10E.</description>
+    </item>
+    <item>
+      <title>M6.4 — 58 km NE of B?geshwar, India</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem898946</link>
+      <guid isPermaLink="false">iscgem898946</guid>
+      <pubDate>Mon, 04 Jun 1945 12:08:59 GMT</pubDate>
+      <description>Magnitude 6.4, depth 15 km, at 30.27N 80.12E.</description>
+    </item>
+    <item>
+      <title>M5.8 — 94 km E of Jumla, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem899103</link>
+      <guid isPermaLink="false">iscgem899103</guid>
+      <pubDate>Wed, 19 Sep 1945 10:41:02 GMT</pubDate>
+      <description>Magnitude 5.8, depth 25 km, at 29.17N 83.14E.</description>
+    </item>
+    <item>
+      <title>M6.0 — 108 km N of Lobujya, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem894375</link>
+      <guid isPermaLink="false">iscgem894375</guid>
+      <pubDate>Mon, 28 May 1951 15:59:23 GMT</pubDate>
+      <description>Magnitude 6.0, depth 15 km, at 28.93N 86.69E.</description>
+    </item>
+    <item>
+      <title>M5.8 — 130 km ENE of Saga, China</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem893776</link>
+      <guid isPermaLink="false">iscgem893776</guid>
+      <pubDate>Wed, 19 Nov 1952 10:23:32 GMT</pubDate>
+      <description>Magnitude 5.8, depth 15 km, at 29.68N 86.51E.</description>
+    </item>
+    <item>
+      <title>M5.8 — 52 km NE of Dipayal, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem891513</link>
+      <guid isPermaLink="false">iscgem891513</guid>
+      <pubDate>Mon, 23 Feb 1953 00:46:10 GMT</pubDate>
+      <description>Magnitude 5.8, depth 10 km, at 29.53N 81.38E.</description>
+    </item>
+    <item>
+      <title>M5.8 — 5 km NE of Tuls?pur, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem891953</link>
+      <guid isPermaLink="false">iscgem891953</guid>
+      <pubDate>Sat, 29 Aug 1953 01:58:29 GMT</pubDate>
+      <description>Magnitude 5.8, depth 15 km, at 28.17N 82.33E.</description>
+    </item>
+    <item>
+      <title>M5.9 — 17 km SW of Pokhara, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem891025</link>
+      <guid isPermaLink="false">iscgem891025</guid>
+      <pubDate>Sat, 04 Sep 1954 06:43:49 GMT</pubDate>
+      <description>Magnitude 5.9, depth 15 km, at 28.17N 83.83E.</description>
+    </item>
+    <item>
+      <title>M5.7 — western Xizang</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/iscgem889804</link>
+      <guid isPermaLink="false">iscgem889804</guid>
+      <pubDate>Thu, 04 Aug 1955 06:40:49 GMT</pubDate>
+      <description>Magnitude 5.7, depth 15 km, at 30.68N 86.43E.</description>
+    </item>
+</channel></rss>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Family Earthquake Plan — EQ Sentry Nepal</title>
+  <meta name="description" content="Build your family's earthquake plan — meeting points, out-of-area contact, emergency contacts, who-does-what roles, and a kit tracker. Saved privately on your device; printable." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%230A0C10'/%3E%3Cpath d='M5 21h6l3-9 5 16 4-12 2.5 5H35' stroke='%23FF4D2E' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="canonical" href="https://eqsentry.com/plan.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="EQ Sentry" />
+  <meta property="og:title" content="Family Earthquake Plan — EQ Sentry Nepal" />
+  <meta property="og:description" content="Build, save and print your family's earthquake plan: meeting points, contacts, roles and a kit tracker." />
+  <meta property="og:image" content="https://eqsentry.com/assets/icons/og-image.png" />
+  <meta property="og:url" content="https://eqsentry.com/plan.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://eqsentry.com/assets/icons/og-image.png" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    .plan-row { display:grid; grid-template-columns:1fr 1fr auto; gap:10px; margin-bottom:10px; align-items:end; }
+    .plan-row .field { margin:0; }
+    .plan-rm { flex:0 0 auto; width:40px; height:40px; border:1px solid var(--line-2); background:var(--surface-2); color:var(--ink-soft); border-radius:10px; cursor:pointer; font-size:1.2rem; line-height:1; }
+    .plan-rm:hover { border-color:var(--accent); color:var(--accent); }
+    .kit-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:8px; }
+    .kit-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:var(--surface); cursor:pointer; }
+    .kit-item input { width:auto; margin:0; flex:0 0 auto; }
+    .kit-item.on { border-color:rgba(52,211,153,.5); }
+    .plan-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
+    .refresh-due { color:var(--m3); font-size:.82rem; margin-top:8px; display:none; }
+    .refresh-due.show { display:block; }
+    @media (max-width:560px){ .plan-row { grid-template-columns:1fr 1fr; } .plan-row .plan-rm { grid-column:1/-1; width:100%; } }
+    @media print {
+      .site-header, .site-footer, #alertBar, .emergency-strip, .to-top, .a11y-fab, .plan-actions, .plan-rm, .plan-add, #planNote { display:none !important; }
+      body { background:#fff; color:#000; }
+      .form-card { border:1px solid #ccc !important; box-shadow:none !important; break-inside:avoid; }
+      .kit-item, .field input, .field { border-color:#ccc !important; }
+      a[href]:after { content:""; }
+    }
+  </style>
+  <script type="application/json" id="page-i18n">
+    {
+      "en": {
+        "pp.eyebrow": "Make a plan",
+        "pp.h1": "Your family earthquake plan",
+        "pp.sub": "Decide these things now, while it's calm. Fill it in, and it saves to this device — print a copy for the fridge and your go-bag.",
+        "pp.privacy": "Private to this device. Nothing is uploaded — your plan is saved only in this browser. Use Print to keep a paper copy.",
+        "pp.meet.t": "Meeting points",
+        "pp.meet.d": "Where your family will gather after shaking stops.",
+        "pp.meet1": "Right outside your home", "pp.meet1.ph": "e.g. the front gate / courtyard",
+        "pp.meet2": "Outside your neighbourhood", "pp.meet2.ph": "e.g. a school, temple or open ground",
+        "pp.oac.t": "Out-of-area contact",
+        "pp.oac.d": "One person (ideally in another town) everyone calls or texts to relay that they're safe — local lines are often jammed.",
+        "pp.oac.name": "Name", "pp.oac.phone": "Phone",
+        "pp.ice.t": "Emergency contacts (ICE)",
+        "pp.ice.d": "Family, neighbours, doctor. Save these in your phone too, starting with “ICE”.",
+        "pp.role.who.ph": "Who", "pp.phone.ph": "Phone", "pp.rel.ph": "Relation",
+        "pp.roles.t": "Who does what",
+        "pp.roles.d": "Assign jobs for the first minutes — grab the go-bag, get the children, shut off gas/electricity, help elderly neighbours.",
+        "pp.role.task.ph": "Task",
+        "pp.add": "+ Add",
+        "pp.kit.t": "Emergency kit",
+        "pp.kit.d": "Tick what you already have. Refresh water, food and batteries every 6 months.",
+        "pp.refresh": "Perishables last refreshed",
+        "pp.refresh.due": "⚠ It's been over 6 months — check your water, food, batteries and medicines.",
+        "pp.save": "Save plan", "pp.print": "Print / save as PDF", "pp.clear": "Clear",
+        "pp.blood": "Blood group (optional)", "pp.blood.ph": "e.g. O+",
+        "pp.card": "🪪 Print wallet card",
+        "pp.card.t": "EMERGENCY CARD",
+        "pp.card.ice": "ICE", "pp.card.oac": "Out-of-area", "pp.card.meet": "Meet",
+        "pp.card.blood": "Blood", "pp.card.num": "Police 100 · Ambulance 102 · Disaster 1149",
+        "pp.card.hint": "Cut along the border — it folds to bank-card size for a wallet or school bag.",
+        "pp.saved": "✓ Saved on this device.",
+        "pp.cleared": "Plan cleared.",
+        "pp.clear.confirm": "Clear your whole saved plan? This can't be undone.",
+        "pp.k.water": "Water (3 days)", "pp.k.food": "Food (3 days)", "pp.k.light": "Torch", "pp.k.batt": "Spare batteries",
+        "pp.k.radio": "Battery/dynamo radio", "pp.k.firstaid": "First-aid kit", "pp.k.meds": "Medicines", "pp.k.docs": "Copies of documents",
+        "pp.k.cash": "Cash", "pp.k.whistle": "Whistle", "pp.k.shoes": "Sturdy shoes & gloves", "pp.k.warm": "Warm clothes / blanket"
+      },
+      "ne": {
+        "pp.eyebrow": "योजना बनाउनुहोस्",
+        "pp.h1": "तपाईंको पारिवारिक भूकम्प योजना",
+        "pp.sub": "शान्त छँदै यी कुरा अहिले नै निर्णय गर्नुहोस्। भर्नुहोस्, यो यन्त्रमा सेभ हुन्छ — फ्रिज र झोलाका लागि एक प्रति प्रिन्ट गर्नुहोस्।",
+        "pp.privacy": "यस यन्त्रमा मात्र निजी। केही अपलोड हुँदैन — तपाईंको योजना यही ब्राउजरमा मात्र सेभ हुन्छ। कागजी प्रति राख्न प्रिन्ट प्रयोग गर्नुहोस्।",
+        "pp.meet.t": "भेटघाट स्थान",
+        "pp.meet.d": "हल्लाइ रोकिएपछि तपाईंको परिवार कहाँ भेला हुने।",
+        "pp.meet1": "घर अगाडि नै", "pp.meet1.ph": "जस्तै मूल गेट / आँगन",
+        "pp.meet2": "टोलबाहिर", "pp.meet2.ph": "जस्तै विद्यालय, मन्दिर वा खुला ठाउँ",
+        "pp.oac.t": "क्षेत्रबाहिरको सम्पर्क",
+        "pp.oac.d": "एक जना (अर्कै सहरको भए राम्रो) जसलाई सबैले सुरक्षित छु भनी फोन/म्यासेज गर्ने — स्थानीय लाइन प्रायः व्यस्त हुन्छ।",
+        "pp.oac.name": "नाम", "pp.oac.phone": "फोन",
+        "pp.ice.t": "आपत्कालीन सम्पर्क (ICE)",
+        "pp.ice.d": "परिवार, छिमेकी, डाक्टर। आफ्नो फोनमा पनि “ICE” बाट सुरु गरी सेभ गर्नुहोस्।",
+        "pp.role.who.ph": "को", "pp.phone.ph": "फोन", "pp.rel.ph": "नाता",
+        "pp.roles.t": "कसले के गर्ने",
+        "pp.roles.d": "पहिलो मिनेटका लागि काम बाँड्नुहोस् — झोला लिने, बालबालिका लिने, ग्यास/बिजुली बन्द गर्ने, वृद्ध छिमेकीलाई सघाउने।",
+        "pp.role.task.ph": "काम",
+        "pp.add": "+ थप्नुहोस्",
+        "pp.kit.t": "आपत्कालीन झोला",
+        "pp.kit.d": "तपाईंसँग भएका कुरामा चिन्ह लगाउनुहोस्। पानी, खाना र ब्याट्री हरेक ६ महिनामा नवीकरण गर्नुहोस्।",
+        "pp.refresh": "नष्ट हुने सामान अन्तिम नवीकरण",
+        "pp.refresh.due": "⚠ ६ महिनाभन्दा बढी भयो — पानी, खाना, ब्याट्री र औषधि जाँच्नुहोस्।",
+        "pp.save": "योजना सेभ गर्नुहोस्", "pp.print": "प्रिन्ट / PDF सेभ", "pp.clear": "खाली गर्नुहोस्",
+        "pp.blood": "रक्त समूह (वैकल्पिक)", "pp.blood.ph": "जस्तै O+",
+        "pp.card": "🪪 वालेट कार्ड प्रिन्ट",
+        "pp.card.t": "आपत्कालीन कार्ड",
+        "pp.card.ice": "ICE", "pp.card.oac": "क्षेत्रबाहिर", "pp.card.meet": "भेट्ने",
+        "pp.card.blood": "रक्त", "pp.card.num": "प्रहरी १०० · एम्बुलेन्स १०२ · विपद् ११४९",
+        "pp.card.hint": "किनारामा काट्नुहोस् — पट्याएपछि बैंक कार्ड आकारको हुन्छ, वालेट वा झोलामा राख्नुहोस्।",
+        "pp.saved": "✓ यस यन्त्रमा सेभ भयो।",
+        "pp.cleared": "योजना खाली गरियो।",
+        "pp.clear.confirm": "सम्पूर्ण सेभ योजना खाली गर्ने? यो फिर्ता हुँदैन।",
+        "pp.k.water": "पानी (३ दिन)", "pp.k.food": "खाना (३ दिन)", "pp.k.light": "टर्च", "pp.k.batt": "अतिरिक्त ब्याट्री",
+        "pp.k.radio": "ब्याट्री/डायनामो रेडियो", "pp.k.firstaid": "प्राथमिक उपचार झोला", "pp.k.meds": "औषधि", "pp.k.docs": "कागजातका प्रतिलिपि",
+        "pp.k.cash": "नगद", "pp.k.whistle": "सिट्ठी", "pp.k.shoes": "बलियो जुत्ता र पन्जा", "pp.k.warm": "न्यानो कपडा / कम्बल"
+      }
+    }
+  </script>
+</head>
+<body data-page="plan">
+  <header class="site-header" id="site-header"></header>
+  <div id="alertBar"></div>
+
+  <section class="page-hero section tight">
+    <div class="container">
+      <span class="eyebrow" data-i18n="pp.eyebrow"></span>
+      <h1 data-i18n="pp.h1"></h1>
+      <p class="lead" data-i18n="pp.sub"></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width:880px">
+      <div class="callout info" id="planNote" style="margin-bottom:24px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <p data-i18n="pp.privacy"></p>
+      </div>
+
+      <form id="planForm" autocomplete="off">
+        <div class="form-card" style="margin-bottom:18px">
+          <h2 style="margin-top:0" data-i18n="pp.meet.t"></h2>
+          <p class="muted" data-i18n="pp.meet.d"></p>
+          <div class="field"><label data-i18n="pp.meet1"></label><input id="meet1" data-i18n-placeholder="pp.meet1.ph" /></div>
+          <div class="field"><label data-i18n="pp.meet2"></label><input id="meet2" data-i18n-placeholder="pp.meet2.ph" /></div>
+        </div>
+
+        <div class="form-card" style="margin-bottom:18px">
+          <h2 style="margin-top:0" data-i18n="pp.oac.t"></h2>
+          <p class="muted" data-i18n="pp.oac.d"></p>
+          <div class="form-grid">
+            <div class="field"><label data-i18n="pp.oac.name"></label><input id="oacName" /></div>
+            <div class="field"><label data-i18n="pp.oac.phone"></label><input id="oacPhone" type="tel" /></div>
+            <div class="field"><label data-i18n="pp.blood"></label><input id="bloodGrp" data-i18n-placeholder="pp.blood.ph" maxlength="6" /></div>
+          </div>
+        </div>
+
+        <div class="form-card" style="margin-bottom:18px">
+          <h2 style="margin-top:0" data-i18n="pp.ice.t"></h2>
+          <p class="muted" data-i18n="pp.ice.d"></p>
+          <div id="iceList"></div>
+          <button type="button" class="btn btn-ghost plan-add" id="iceAdd" data-i18n="pp.add"></button>
+        </div>
+
+        <div class="form-card" style="margin-bottom:18px">
+          <h2 style="margin-top:0" data-i18n="pp.roles.t"></h2>
+          <p class="muted" data-i18n="pp.roles.d"></p>
+          <div id="roleList"></div>
+          <button type="button" class="btn btn-ghost plan-add" id="roleAdd" data-i18n="pp.add"></button>
+        </div>
+
+        <div class="form-card" style="margin-bottom:18px">
+          <h2 style="margin-top:0" data-i18n="pp.kit.t"></h2>
+          <p class="muted" data-i18n="pp.kit.d"></p>
+          <div class="kit-list" id="kitList"></div>
+          <div class="field" style="margin-top:16px;max-width:280px"><label data-i18n="pp.refresh"></label><input id="kitDate" type="date" /></div>
+          <p class="refresh-due" id="refreshDue" data-i18n="pp.refresh.due"></p>
+        </div>
+
+        <div class="plan-actions">
+          <button type="button" class="btn btn-primary" id="planSave" data-i18n="pp.save"></button>
+          <button type="button" class="btn btn-ghost" id="planPrint" data-i18n="pp.print"></button>
+          <button type="button" class="btn btn-ghost" id="cardPrint" data-i18n="pp.card"></button>
+          <button type="button" class="btn btn-outline" id="planClear" data-i18n="pp.clear"></button>
+        </div>
+        <div id="walletCard" aria-hidden="true"></div>
+        <p id="planStatus" class="muted" style="font-size:.86rem;margin-top:12px"></p>
+      </form>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/plan.js"></script>
+  <script src="assets/js/pages/wallet-card.js"></script>
+</body>
+</html>

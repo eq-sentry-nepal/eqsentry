@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Earthquake Alerts — EQ Sentry Nepal</title>
+  <meta name="description" content="Register to receive earthquake alerts for your district in Nepal. आफ्नो जिल्लाका लागि भूकम्प सूचना प्राप्त गर्न दर्ता गर्नुहोस्।" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%230A0C10'/%3E%3Cpath d='M5 21h6l3-9 5 16 4-12 2.5 5H35' stroke='%23FF4D2E' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="canonical" href="https://eqsentry.com/alerts.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="EQ Sentry" />
+  <meta property="og:title" content="Get Earthquake Alerts — EQ Sentry Nepal" />
+  <meta property="og:description" content="Register to receive earthquake alerts for your district in Nepal." />
+  <meta property="og:image" content="https://eqsentry.com/assets/icons/og-image.png" />
+  <meta property="og:url" content="https://eqsentry.com/alerts.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://eqsentry.com/assets/icons/og-image.png" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script type="application/json" id="page-i18n">
+    {
+      "en": {
+        "al.eyebrow": "Get Alerts",
+        "al.h1": "Be notified when the ground moves near you",
+        "al.sub": "Register your district and we'll keep your details ready so you can be alerted about significant earthquakes in your area.",
+        "al.form.t": "Alert registration",
+        "al.name": "Full name", "al.name.ph": "Your name",
+        "al.mobile": "Mobile number", "al.mobile.ph": "98XXXXXXXX",
+        "al.email": "Email (optional)", "al.email.ph": "you@example.com",
+        "al.district": "District / location", "al.district.ph": "e.g. Kathmandu, Gorkha",
+        "al.lang": "Preferred language", "al.lang.en": "English", "al.lang.ne": "Nepali / नेपाली",
+        "al.thresh": "Alert me for magnitude", "al.thresh.help": "and above, near your area",
+        "al.consent": "I agree to be contacted about earthquake safety alerts.",
+        "al.submit": "Register for alerts",
+        "al.success": "✓ Registered. Your alert preferences have been saved on this device.",
+        "al.pending": "✓ Almost done! Check your phone/email and tap the link to confirm your alerts.",
+        "al.localonly": "Saved on this device only — live SMS/email alerts aren't switched on yet. For instant notifications on this device, enable the browser alerts above.",
+        "al.err.name": "Please enter your name.",
+        "al.err.contact": "Please enter a mobile number or email.",
+        "al.err.district": "Please enter your district.",
+        "al.err.consent": "Please tick the consent box to continue.",
+        "al.note": "How this works: this form saves your preferences in your browser as a demonstration. To send live SMS or email alerts to subscribers, connect EQ Sentry to a messaging/email service (see the project README). Earthquakes cannot be predicted — alerts notify you about events that have just occurred.",
+        "al.why.t": "What you'll get",
+        "al.why1.t": "District-focused", "al.why1.d": "Alerts tuned to earthquakes near the district you register.",
+        "al.why2.t": "Magnitude filtered", "al.why2.d": "Only events at or above the threshold you choose.",
+        "al.why3.t": "In your language", "al.why3.d": "Receive messages in Nepali or English.",
+        "push.title": "Instant browser alerts",
+        "push.desc": "Get a notification the moment a significant quake hits near you — no phone number needed. Works on this device even when the site is closed.",
+        "push.enable": "Enable browser alerts",
+        "push.disable": "Turn off browser alerts",
+        "push.working": "Working…",
+        "push.on": "✓ Browser alerts are on for this device.",
+        "push.off": "Browser alerts are off.",
+        "push.denied": "Notifications are blocked — allow them in your browser settings, then try again.",
+        "push.unsupported": "This browser doesn't support push notifications.",
+        "push.nobackend": "Browser alerts need the EQ Sentry server running (set EQ_API in config.js).",
+        "push.err": "Couldn't enable browser alerts — please try again."
+      },
+      "ne": {
+        "al.eyebrow": "सूचना प्राप्त गर्नुहोस्",
+        "al.h1": "तपाईं नजिक जमिन हल्लिँदा सूचना पाउनुहोस्",
+        "al.sub": "आफ्नो जिल्ला दर्ता गर्नुहोस्; तपाईंको विवरण तयार राखी क्षेत्रका ठूला भूकम्पबारे सूचित गर्न सकियोस्।",
+        "al.form.t": "सूचना दर्ता",
+        "al.name": "पूरा नाम", "al.name.ph": "तपाईंको नाम",
+        "al.mobile": "मोबाइल नम्बर", "al.mobile.ph": "९८XXXXXXXX",
+        "al.email": "इमेल (वैकल्पिक)", "al.email.ph": "you@example.com",
+        "al.district": "जिल्ला / स्थान", "al.district.ph": "जस्तै काठमाडौं, गोरखा",
+        "al.lang": "रुचाइएको भाषा", "al.lang.en": "English", "al.lang.ne": "नेपाली",
+        "al.thresh": "यति म्याग्निच्युडमा सूचना", "al.thresh.help": "र माथि, तपाईंको क्षेत्र नजिक",
+        "al.consent": "भूकम्प सुरक्षा सूचनाका लागि सम्पर्क गर्न म सहमत छु।",
+        "al.submit": "सूचनाका लागि दर्ता गर्नुहोस्",
+        "al.success": "✓ दर्ता भयो। तपाईंको सूचना प्राथमिकता यस यन्त्रमा सेभ गरिएको छ।",
+        "al.pending": "✓ झन्डै सकियो! आफ्नो फोन/इमेल जाँची सूचना पुष्टि गर्न लिङ्कमा ट्याप गर्नुहोस्।",
+        "al.localonly": "यस यन्त्रमा मात्र सेभ भयो — प्रत्यक्ष SMS/इमेल सूचना अहिले सक्रिय छैन। तत्काल सूचनाका लागि माथिको ब्राउजर सूचना सक्रिय गर्नुहोस्।",
+        "al.err.name": "कृपया आफ्नो नाम लेख्नुहोस्।",
+        "al.err.contact": "कृपया मोबाइल नम्बर वा इमेल लेख्नुहोस्।",
+        "al.err.district": "कृपया आफ्नो जिल्ला लेख्नुहोस्।",
+        "al.err.consent": "अगाडि बढ्न कृपया सहमति बाकसमा चिन्ह लगाउनुहोस्।",
+        "al.note": "यो कसरी काम गर्छ: यो फारमले प्रदर्शनका रूपमा तपाईंको प्राथमिकता ब्राउजरमा सेभ गर्छ। ग्राहकहरूलाई प्रत्यक्ष SMS वा इमेल सूचना पठाउन EQ Sentry लाई म्यासेजिङ/इमेल सेवासँग जोड्नुहोस् (प्रोजेक्ट README हेर्नुहोस्)। भूकम्पको पूर्वानुमान गर्न सकिँदैन — सूचनाले भर्खरै भएका घटनाबारे जानकारी दिन्छ।",
+        "al.why.t": "तपाईंले के पाउनुहुन्छ",
+        "al.why1.t": "जिल्ला-केन्द्रित", "al.why1.d": "तपाईंले दर्ता गरेको जिल्ला नजिकका भूकम्पका सूचना।",
+        "al.why2.t": "म्याग्निच्युड फिल्टर", "al.why2.d": "तपाईंले रोजेको सीमा वा सोभन्दा माथिका घटना मात्र।",
+        "al.why3.t": "तपाईंकै भाषामा", "al.why3.d": "नेपाली वा अङ्ग्रेजीमा सन्देश प्राप्त गर्नुहोस्।",
+        "push.title": "तत्काल ब्राउजर सूचना",
+        "push.desc": "तपाईं नजिक ठूलो भूकम्प जाँदा तुरुन्तै सूचना पाउनुहोस् — फोन नम्बर नचाहिने। साइट बन्द भए पनि यस यन्त्रमा काम गर्छ।",
+        "push.enable": "ब्राउजर सूचना सक्रिय गर्नुहोस्",
+        "push.disable": "ब्राउजर सूचना बन्द गर्नुहोस्",
+        "push.working": "काम हुँदैछ…",
+        "push.on": "✓ यस यन्त्रमा ब्राउजर सूचना सक्रिय छ।",
+        "push.off": "ब्राउजर सूचना बन्द छ।",
+        "push.denied": "सूचना अवरुद्ध छ — ब्राउजर सेटिङमा अनुमति दिई पुनः प्रयास गर्नुहोस्।",
+        "push.unsupported": "यो ब्राउजरले पुश सूचना समर्थन गर्दैन।",
+        "push.nobackend": "ब्राउजर सूचनाका लागि EQ Sentry सर्भर चाहिन्छ (config.js मा EQ_API सेट गर्नुहोस्)।",
+        "push.err": "ब्राउजर सूचना सक्रिय गर्न सकिएन — पुनः प्रयास गर्नुहोस्।"
+      }
+    }
+  </script>
+</head>
+<body data-page="alerts">
+  <header class="site-header" id="site-header"></header>
+  <div id="alertBar"></div>
+
+  <section class="page-hero section tight">
+    <div class="container">
+      <span class="eyebrow" data-i18n="al.eyebrow"></span>
+      <h1 data-i18n="al.h1"></h1>
+      <p class="lead" data-i18n="al.sub"></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="form-card reveal" style="margin-bottom:28px">
+        <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
+          <div class="icon" style="margin:0;flex:0 0 50px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+          <div style="flex:1 1 280px">
+            <h2 style="margin:0 0 6px" data-i18n="push.title"></h2>
+            <p style="margin:0 0 14px;color:var(--ink-soft)" data-i18n="push.desc"></p>
+            <button type="button" id="pushToggle" class="btn btn-primary" aria-pressed="false" data-i18n="push.enable"></button>
+            <p id="pushStatus" class="muted" style="font-size:.85rem;margin:10px 0 0"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid cols-2" style="gap:36px;align-items:start">
+        <div class="form-card">
+          <h2 style="margin-top:0" data-i18n="al.form.t"></h2>
+          <div class="form-success" id="formSuccess" data-i18n="al.success"></div>
+          <form id="alertForm" novalidate>
+            <div class="field">
+              <label for="f-name" data-i18n="al.name"></label>
+              <input id="f-name" name="name" type="text" data-i18n-placeholder="al.name.ph" />
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="f-mobile" data-i18n="al.mobile"></label>
+                <input id="f-mobile" name="mobile" type="tel" data-i18n-placeholder="al.mobile.ph" />
+              </div>
+              <div class="field">
+                <label for="f-email" data-i18n="al.email"></label>
+                <input id="f-email" name="email" type="email" data-i18n-placeholder="al.email.ph" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-district" data-i18n="al.district"></label>
+              <input id="f-district" name="district" type="text" data-i18n-placeholder="al.district.ph" />
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="f-lang" data-i18n="al.lang"></label>
+                <select id="f-lang" name="lang">
+                  <option value="ne" data-i18n="al.lang.ne"></option>
+                  <option value="en" data-i18n="al.lang.en"></option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="f-thresh" data-i18n="al.thresh"></label>
+                <select id="f-thresh" name="threshold">
+                  <option value="4.0">M 4.0+</option>
+                  <option value="4.5" selected>M 4.5+</option>
+                  <option value="5.0">M 5.0+</option>
+                  <option value="6.0">M 6.0+</option>
+                </select>
+                <div class="hint" data-i18n="al.thresh.help"></div>
+              </div>
+            </div>
+            <div class="field" style="display:flex;gap:10px;align-items:flex-start">
+              <input id="f-consent" name="consent" type="checkbox" style="width:auto;margin-top:5px" />
+              <label for="f-consent" style="font-weight:500;color:var(--ink-soft)" data-i18n="al.consent"></label>
+            </div>
+            <div id="formError" class="callout danger" style="display:none;margin-bottom:14px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.7 3.86a2 2 0 0 0-3.4 0z"/></svg>
+              <p id="formErrorMsg"></p>
+            </div>
+            <button type="submit" class="btn btn-danger" style="width:100%;justify-content:center" data-i18n="al.submit"></button>
+          </form>
+        </div>
+
+        <div>
+          <h2 data-i18n="al.why.t"></h2>
+          <div class="grid" style="gap:14px">
+            <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+              <div class="icon" style="margin:0;flex:0 0 50px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+              <div><h3 data-i18n="al.why1.t"></h3><p class="mb-0" data-i18n="al.why1.d"></p></div>
+            </div>
+            <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+              <div class="icon" style="margin:0;flex:0 0 50px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M7 12h10M11 18h2"/></svg></div>
+              <div><h3 data-i18n="al.why2.t"></h3><p class="mb-0" data-i18n="al.why2.d"></p></div>
+            </div>
+            <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+              <div class="icon" style="margin:0;flex:0 0 50px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg></div>
+              <div><h3 data-i18n="al.why3.t"></h3><p class="mb-0" data-i18n="al.why3.d"></p></div>
+            </div>
+          </div>
+          <div class="callout" style="margin-top:16px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <p data-i18n="al.note"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/push.js"></script>
+  <script src="assets/js/pages/alerts-form.js"></script>
+  <script src="assets/js/mydistrict.js"></script>
+</body>
+</html>

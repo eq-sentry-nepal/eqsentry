@@ -1,0 +1,22 @@
+# Security headers for EQ Sentry.
+# Format: Netlify / Cloudflare Pages "_headers" file. Place at the site root.
+#   - Apache: translate to .htaccess "Header set <Name> <Value>"
+#   - Nginx:  translate to "add_header <Name> <Value> always;"
+#   - GitHub Pages can't set headers — front it with Cloudflare to apply these.
+#
+# NOTE on the CSP:
+#   * script-src has NO 'unsafe-inline': all page logic lives in external files and
+#     per-page translations sit in non-executable <script type="application/json"> blocks.
+#     Keep it that way — don't add inline <script> tags or on*= attributes to pages.
+#   * style-src keeps 'unsafe-inline' because components set style="" attributes when
+#     rendering (accepted trade-off; style injection is far lower risk than script).
+#   * If you enable the backend (window.EQ_API), add that origin to connect-src and
+#     form-action, e.g. https://api.eqsentry.com
+
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(self), camera=(), microphone=(), payment=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' https://unpkg.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https://flagcdn.com https://*.basemaps.cartocdn.com https://unpkg.com; connect-src 'self' https://earthquake.usgs.gov https://www.seismicportal.eu https://*.basemaps.cartocdn.com https://unpkg.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src 'self'; manifest-src 'self'

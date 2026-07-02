@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>District Risk — EQ Sentry Nepal</title>
+  <meta name="description" content="See the earthquake risk in your district of Nepal: recorded seismicity nearby and terrain hazards like liquefaction and landslides." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%230A0C10'/%3E%3Cpath d='M5 21h6l3-9 5 16 4-12 2.5 5H35' stroke='%23FF4D2E' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://unpkg.com" crossorigin />
+  <link rel="preconnect" href="https://a.basemaps.cartocdn.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="canonical" href="https://eqsentry.com/district.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="EQ Sentry" />
+  <meta property="og:title" content="District Risk — EQ Sentry Nepal" />
+  <meta property="og:description" content="See the earthquake risk in your district: recorded seismicity nearby and terrain hazards." />
+  <meta property="og:image" content="https://eqsentry.com/assets/icons/og-image.png" />
+  <meta property="og:url" content="https://eqsentry.com/district.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://eqsentry.com/assets/icons/og-image.png" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script type="application/json" id="page-i18n">
+    {
+      "en": {
+        "dr.eyebrow": "Know your risk",
+        "dr.h1": "What's the earthquake risk in your district?",
+        "dr.sub": "Pick your district to see the earthquakes recorded near you and the terrain hazards that shape your risk.",
+        "dr.select": "Your district",
+        "dr.choose": "Choose your district…",
+        "md.set": "☆ Make this my district",
+        "md.saved": "★ My district — remembered on this device",
+        "dr.universal": "All of Nepal sits in a high seismic-hazard zone along the Himalayan collision front.",
+        "dr.s.count": "M4.5+ within 100 km (since 1911)",
+        "dr.s.max": "strongest nearby",
+        "dr.s.nearest": "nearest recorded",
+        "dr.nearestline": "Nearest recorded earthquake: M{m}, about {d} km away — {place} ({year}).",
+        "dr.s.recent": "most recent nearby",
+        "dr.insights.t": "What the record shows",
+        "dr.strongline": "Strongest on record nearby: M{m} — {place}, {year} (~{d} km).",
+        "dr.recentline": "Most recent nearby: M{m} — {place}, {when} (~{d} km).",
+        "dr.bandline": "Within 100 km: {a}× M6.0+, {b}× M5.0–5.9, {c}× M4.5–4.9 — {n} within 50 km.",
+        "dr.depthline": "Most were shallow (median ~{d} km deep) — shallow quakes shake the surface harder.",
+        "dr.faultline": "Nearest mapped fault: {name}, about {d} km away.",
+        "dr.great.t": "Nearest great earthquake on record",
+        "dr.greatline": "{name} — M{m}, {year}, about {d} km away.",
+        "dr.felt.strong": "At that distance, your district was likely in the zone of strong to severe shaking.",
+        "dr.felt.mod": "At that distance, your district likely felt moderate shaking.",
+        "dr.felt.light": "At that distance the shaking was likely lighter — but closer faults can still rupture.",
+        "dr.map.t": "Recorded earthquakes near {name}",
+        "dr.map.hint": "Dots are recorded M4.5+ earthquakes (USGS, since 1911), sized and coloured by magnitude. The dashed ring is 100 km, the inner ring 50 km. Orange lines are mapped Himalayan faults.",
+        "dr.leg.m45": "M4.5–4.9", "dr.leg.m5": "M5–5.9", "dr.leg.m6": "M6+", "dr.leg.you": "Your district",
+        "dr.none.near": "No M4.5+ quake is recorded within 100 km since 1911 — but great Himalayan earthquakes are rare and far-reaching, so this is no guarantee of safety.",
+        "dr.zone.terai": "Terai (plains)", "dr.zone.hill": "Hill", "dr.zone.mountain": "Mountain", "dr.zone.valley": "Kathmandu Valley",
+        "dr.haz.t": "Terrain hazards where you live",
+        "dr.note.terai": "You're on flat plains of soft river sediment. Strong shaking can be amplified, and saturated ground can liquefy and lose strength. Build on firm ground away from riverbanks, and secure heavy furniture.",
+        "dr.note.hill": "Steep slopes mean strong quakes often trigger landslides and rockfall that block roads and cut off villages. Avoid building directly below unstable slopes, and know your route to open ground.",
+        "dr.note.mountain": "High, remote terrain: quakes can set off landslides and rockfall and even dam rivers, and outside help may take days. Stock several days of water, food and supplies — self-sufficiency matters most here.",
+        "dr.note.valley": "Your area sits on an old lake bed. Soft sediments strongly amplify shaking and can liquefy — as seen across the Kathmandu Valley in 2015. Dense, often older buildings add risk: retrofitting and Drop, Cover, Hold On are vital.",
+        "dr.disclaimer": "Based on recorded earthquakes (USGS, M4.5+ since 1911) and terrain type — this is context, not an official hazard map. For official seismic zoning, see Nepal's disaster authority (NDRRMA) and the National Building Code.",
+        "dr.cta.t": "Turn awareness into action",
+        "dr.cta.p": "Now build a plan tailored to your home and district.",
+        "dr.cta.b": "Build my plan", "dr.cta.b2": "Live map"
+      },
+      "ne": {
+        "dr.eyebrow": "आफ्नो जोखिम चिन्नुहोस्",
+        "dr.h1": "तपाईंको जिल्लामा भूकम्प जोखिम कति छ?",
+        "dr.sub": "आफ्नो जिल्ला छान्नुहोस् र नजिक दर्ता भएका भूकम्प तथा तपाईंको जोखिम निर्धारण गर्ने भू-बनोटका खतराहरू हेर्नुहोस्।",
+        "dr.select": "तपाईंको जिल्ला",
+        "dr.choose": "आफ्नो जिल्ला छान्नुहोस्…",
+        "md.set": "☆ यसलाई मेरो जिल्ला बनाउनुहोस्",
+        "md.saved": "★ मेरो जिल्ला — यस यन्त्रमा सम्झिइयो",
+        "dr.universal": "सम्पूर्ण नेपाल हिमालयन टकराव मोर्चाको उच्च भूकम्पीय जोखिम क्षेत्रमा छ।",
+        "dr.s.count": "१०० कि.मी. भित्र M४.५+ (१९११ यता)",
+        "dr.s.max": "नजिकको सबैभन्दा ठूलो",
+        "dr.s.nearest": "नजिकको दर्ता",
+        "dr.nearestline": "नजिकको दर्ता भूकम्प: M{m}, करिब {d} कि.मी. टाढा — {place} ({year})।",
+        "dr.s.recent": "नजिकको पछिल्लो",
+        "dr.insights.t": "अभिलेखले के देखाउँछ",
+        "dr.strongline": "नजिकको अभिलेखमा सबैभन्दा ठूलो: M{m} — {place}, {year} (~{d} कि.मी.)।",
+        "dr.recentline": "नजिकको पछिल्लो: M{m} — {place}, {when} (~{d} कि.मी.)।",
+        "dr.bandline": "१०० कि.मी. भित्र: {a}× M६.०+, {b}× M५.०–५.९, {c}× M४.५–४.९ — {n} वटा ५० कि.मी. भित्र।",
+        "dr.depthline": "धेरैजसो छिछला थिए (मध्यक ~{d} कि.मी. गहिरो) — छिछला भूकम्पले सतह बढी हल्लाउँछन्।",
+        "dr.faultline": "नजिकको मानचित्रित भ्रंश: {name}, करिब {d} कि.मी. टाढा।",
+        "dr.great.t": "अभिलेखमा नजिकको ठूलो भूकम्प",
+        "dr.greatline": "{name} — M{m}, {year}, करिब {d} कि.मी. टाढा।",
+        "dr.felt.strong": "त्यो दूरीमा तपाईंको जिल्ला बलियोदेखि गम्भीर हल्लाइको क्षेत्रमा परेको सम्भावना छ।",
+        "dr.felt.mod": "त्यो दूरीमा तपाईंको जिल्लाले मध्यम हल्लाइ महसुस गरेको सम्भावना छ।",
+        "dr.felt.light": "त्यो दूरीमा हल्लाइ हल्का थियो होला — तर नजिकका भ्रंश पनि फुट्न सक्छन्।",
+        "dr.map.t": "{name} नजिक दर्ता भूकम्प",
+        "dr.map.hint": "थोप्लाहरू दर्ता M४.५+ भूकम्प (USGS, १९११ यता) हुन्, म्याग्निच्युडअनुसार आकार र रङ। धर्के घेरा १०० कि.मी., भित्री घेरा ५० कि.मी.। सुन्तला रेखा हिमालयन भ्रंश हुन्।",
+        "dr.leg.m45": "M४.५–४.९", "dr.leg.m5": "M५–५.९", "dr.leg.m6": "M६+", "dr.leg.you": "तपाईंको जिल्ला",
+        "dr.none.near": "१९११ यता १०० कि.मी. भित्र M४.५+ भूकम्प दर्ता छैन — तर ठूला हिमालयन भूकम्प विरलै र टाढासम्म असर गर्ने हुन्छन्, त्यसैले यो सुरक्षाको ग्यारेन्टी होइन।",
+        "dr.zone.terai": "तराई (मैदान)", "dr.zone.hill": "पहाड", "dr.zone.mountain": "हिमाल", "dr.zone.valley": "काठमाडौं उपत्यका",
+        "dr.haz.t": "तपाईं बस्ने ठाउँका भू-बनोट खतरा",
+        "dr.note.terai": "तपाईं नदीको नरम पुलिनको समतल मैदानमा हुनुहुन्छ। हल्लाइ बढ्न सक्छ, र भिजेको जमिन तरल भई बल गुमाउन सक्छ। बलियो जमिनमा, नदी किनारबाट टाढा बनाउनुहोस्, र गह्रौं फर्निचर कस्नुहोस्।",
+        "dr.note.hill": "भिरालो पाखाका कारण ठूला भूकम्पले प्रायः पहिरो र चट्टान खस्ने गराउँछन्, जसले बाटो बन्द गरी गाउँ अलग्याउँछन्। अस्थिर पाखामुनि नबनाउनुहोस्, र खुला ठाउँको बाटो जान्नुहोस्।",
+        "dr.note.mountain": "अग्लो, दुर्गम भूभाग: भूकम्पले पहिरो, चट्टान खस्ने र नदी थुन्ने गर्न सक्छ, र बाहिरी सहयोग दिनौंमा आउन सक्छ। धेरै दिनको पानी, खाना र सामग्री राख्नुहोस् — यहाँ आत्मनिर्भरता सबैभन्दा महत्त्वपूर्ण छ।",
+        "dr.note.valley": "तपाईंको क्षेत्र पुरानो तालको पिँधमा छ। नरम पुलिनले हल्लाइ धेरै बढाउँछ र तरल हुन सक्छ — २०१५ मा काठमाडौं उपत्यकाभरि देखिएझैं। घना, प्रायः पुराना भवनले जोखिम बढाउँछन्: रेट्रोफिट र घोप्टिने-ओत लिने-समाउने अत्यावश्यक छ।",
+        "dr.disclaimer": "दर्ता भूकम्प (USGS, १९११ यता M४.५+) र भू-बनोटमा आधारित — यो सन्दर्भ हो, आधिकारिक जोखिम नक्सा होइन। आधिकारिक भूकम्पीय क्षेत्रीकरणका लागि विपद् प्राधिकरण (NDRRMA) र राष्ट्रिय भवन संहिता हेर्नुहोस्।",
+        "dr.cta.t": "सचेतनालाई कार्यमा बदल्नुहोस्",
+        "dr.cta.p": "अब आफ्नो घर र जिल्लाअनुसार योजना बनाउनुहोस्।",
+        "dr.cta.b": "मेरो योजना बनाउनुहोस्", "dr.cta.b2": "प्रत्यक्ष नक्सा"
+      }
+    }
+  </script>
+</head>
+<body data-page="district" data-eqdata>
+  <header class="site-header" id="site-header"></header>
+  <div id="alertBar"></div>
+
+  <section class="page-hero section tight">
+    <div class="container">
+      <span class="eyebrow" data-i18n="dr.eyebrow"></span>
+      <h1 style="max-width:20ch" data-i18n="dr.h1"></h1>
+      <p class="lead" data-i18n="dr.sub"></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width:1000px">
+      <div class="form-card reveal" style="margin-bottom:24px">
+        <div class="field" style="margin:0">
+          <label for="distSelect" data-i18n="dr.select"></label>
+          <select id="distSelect"><option value="" data-i18n="dr.choose"></option></select>
+          <button type="button" class="btn btn-ghost" id="mdBtn" style="display:none;margin-top:10px;font-size:.84rem"></button>
+        </div>
+      </div>
+      <div id="distResult" style="display:none"></div>
+      <div id="distMapSection" style="display:none">
+        <h3 id="distMapTitle" style="margin:6px 0 12px"></h3>
+        <div class="dist-map-wrap">
+          <div id="distMap"></div>
+          <div class="legend" id="distLegend"></div>
+        </div>
+        <p class="muted" id="distMapHint" style="font-size:.8rem;margin:10px 2px 0"></p>
+      </div>
+      <div id="distResultB" style="display:none;margin-top:18px"></div>
+    </div>
+  </section>
+
+  <section class="section tight">
+    <div class="container">
+      <div class="cta-band reveal">
+        <h2 data-i18n="dr.cta.t"></h2>
+        <p class="lead" style="margin:0 auto" data-i18n="dr.cta.p"></p>
+        <div class="cta-row">
+          <a href="preparedness.html" class="btn btn-primary" data-i18n="dr.cta.b"></a>
+          <a href="map.html" class="btn btn-ghost" data-i18n="dr.cta.b2"></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="assets/js/districts-data.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/mydistrict.js"></script>
+  <script src="assets/js/district.js"></script>
+</body>
+</html>

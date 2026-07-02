@@ -1,0 +1,25 @@
+# Static deploy config (Netlify / Cloudflare Pages read similar settings).
+[build]
+  publish = "."
+  command = ""
+
+# Long-cache fingerprint-free assets, but always revalidate HTML and the SW.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/service-worker.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"

@@ -1,0 +1,208 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "title": "Notable / major earthquakes affecting Nepal (1934-2025)",
+    "description": "Curated list of historically significant earthquakes in and around Nepal, with human impact. Magnitudes and casualty figures are widely reported estimates; sources vary.",
+    "sources": [
+      "USGS",
+      "National Earthquake Monitoring & Research Center (Nepal)",
+      "published reports"
+    ],
+    "count": 8,
+    "coordinate_source": "Epicentres from USGS ComCat (exact event coordinates); casualty figures are widely reported estimates."
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          86.941,
+          27.275
+        ]
+      },
+      "properties": {
+        "name_en": "1934 Nepal–Bihar earthquake",
+        "name_ne": "१९३४ नेपाल–बिहार भूकम्प",
+        "date": "1934-01-15",
+        "year": 1934,
+        "mag": 8.0,
+        "deaths": 10700,
+        "notable": true,
+        "summary_en": "One of the deadliest quakes in South Asian history; devastated eastern Nepal and Bihar, with severe damage in Kathmandu.",
+        "summary_ne": "दक्षिण एसियाको इतिहासकै सबैभन्दा घातक भूकम्पमध्ये एक; पूर्वी नेपाल र बिहारमा भीषण क्षति, काठमाडौंमा ठूलो विनाश।",
+        "depth_km": 15.0,
+        "usgs_id": "iscgem904745",
+        "usgs_url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem904745"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          81.092,
+          29.598
+        ]
+      },
+      "properties": {
+        "name_en": "1980 Bajhang earthquake",
+        "name_ne": "१९८० बझाङ भूकम्प",
+        "date": "1980-07-29",
+        "year": 1980,
+        "mag": 6.5,
+        "deaths": 125,
+        "notable": true,
+        "summary_en": "Struck far-western Nepal, killing around 125 people and damaging thousands of homes in remote hill districts.",
+        "summary_ne": "सुदूरपश्चिम नेपालमा गई करिब १२५ जनाको ज्यान लियो र दुर्गम पहाडी जिल्लाका हजारौं घरमा क्षति पुर्‍यायो।",
+        "depth_km": 18.0,
+        "usgs_id": "usp0001959",
+        "usgs_url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp0001959"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          86.616,
+          26.755
+        ]
+      },
+      "properties": {
+        "name_en": "1988 Udayapur earthquake",
+        "name_ne": "१९८८ उदयपुर भूकम्प",
+        "date": "1988-08-20",
+        "year": 1988,
+        "mag": 6.8,
+        "deaths": 721,
+        "notable": true,
+        "summary_en": "An eastern-Nepal quake that killed over 700 people and damaged tens of thousands of buildings across the region.",
+        "summary_ne": "पूर्वी नेपालको भूकम्प जसले ७०० भन्दा बढीको ज्यान लियो र क्षेत्रभरि हजारौं संरचनामा क्षति पुर्‍यायो।",
+        "depth_km": 57.4,
+        "usgs_id": "usp0003k6t",
+        "usgs_url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp0003k6t"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          88.155,
+          27.73
+        ]
+      },
+      "properties": {
+        "name_en": "2011 Sikkim earthquake",
+        "name_ne": "२०११ सिक्किम भूकम्प",
+        "date": "2011-09-18",
+        "year": 2011,
+        "mag": 6.9,
+        "deaths": 111,
+        "notable": true,
+        "summary_en": "Centered near the Nepal–India (Sikkim) border; felt strongly across eastern Nepal, causing deaths and damage.",
+        "summary_ne": "नेपाल–भारत (सिक्किम) सीमा नजिक केन्द्रित; पूर्वी नेपालभरि प्रबल रूपमा महसुस, ज्यान र क्षति।",
+        "depth_km": 50.0,
+        "usgs_id": "usp000j88b",
+        "usgs_url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000j88b"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          84.7314,
+          28.2305
+        ]
+      },
+      "properties": {
+        "name_en": "2015 Gorkha earthquake",
+        "name_ne": "२०१५ गोरखा भूकम्प",
+        "date": "2015-04-25",
+        "year": 2015,
+        "mag": 7.8,
+        "deaths": 8964,
+        "notable": true,
+        "summary_en": "Nepal's worst disaster in over 80 years: nearly 9,000 killed, ~22,000 injured and over half a million homes destroyed.",
+        "summary_ne": "८० वर्षयताको नेपालको सबैभन्दा ठूलो विपद्: करिब ९,००० मृत्यु, ~२२,००० घाइते र पाँच लाखभन्दा बढी घर ध्वस्त।",
+        "depth_km": 8.2,
+        "usgs_id": "us20002926",
+        "usgs_url": "https://earthquake.usgs.gov/earthquakes/eventpage/us20002926"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          86.0655,
+          27.8087
+        ]
+      },
+      "properties": {
+        "name_en": "2015 Dolakha (Kodari) aftershock",
+        "name_ne": "२०१५ दोलखा (कोदारी) पराकम्प",
+        "date": "2015-05-12",
+        "year": 2015,
+        "mag": 7.3,
+        "deaths": 218,
+        "notable": true,
+        "summary_en": "A major aftershock 17 days after the Gorkha quake, killing over 200 more and toppling already-weakened buildings.",
+        "summary_ne": "गोरखा भूकम्पको १७ दिनपछिको ठूलो पराकम्प, २०० भन्दा बढीको थप ज्यान लियो र कमजोर भइसकेका भवन ढाल्यो।",
+        "depth_km": 15.0,
+        "usgs_id": "us20002ejl",
+        "usgs_url": "https://earthquake.usgs.gov/earthquakes/eventpage/us20002ejl"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          82.1531,
+          28.858
+        ]
+      },
+      "properties": {
+        "name_en": "2023 Jajarkot earthquake",
+        "name_ne": "२०२३ जाजरकोट भूकम्प",
+        "date": "2023-11-03",
+        "year": 2023,
+        "mag": 6.4,
+        "deaths": 154,
+        "notable": true,
+        "summary_en": "A shallow night-time quake in Karnali (M6.4 per Nepal NSC; M5.7 USGS) that killed about 154 people in western Nepal.",
+        "summary_ne": "कर्णालीमा रातको उथ्लो भूकम्प (नेपाल NSC अनुसार M६.४; USGS M५.७) जसले पश्चिम नेपालमा करिब १५४ जनाको ज्यान लियो।",
+        "depth_km": 12.0,
+        "usgs_id": "us7000l8p5",
+        "usgs_url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000l8p5"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          87.3781,
+          28.6036
+        ]
+      },
+      "properties": {
+        "name_en": "2025 Dingri (Tibet) earthquake",
+        "name_ne": "२०२५ डिङ्ग्री (तिब्बत) भूकम्प",
+        "date": "2025-01-07",
+        "year": 2025,
+        "mag": 7.1,
+        "deaths": 126,
+        "notable": true,
+        "summary_en": "A powerful quake just north of the Nepal border in Tibet; felt strongly across northern and eastern Nepal.",
+        "summary_ne": "नेपाल सीमाको ठीक उत्तर तिब्बतमा शक्तिशाली भूकम्प; उत्तरी र पूर्वी नेपालभरि प्रबल रूपमा महसुस।",
+        "depth_km": 10.0,
+        "usgs_id": "us6000pi9w",
+        "usgs_url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pi9w"
+      }
+    }
+  ]
+}

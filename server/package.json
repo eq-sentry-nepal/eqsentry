@@ -1,0 +1,20 @@
+{
+  "name": "eqsentry-server",
+  "version": "1.0.0",
+  "description": "EQ Sentry backend — USGS proxy/cache, alert subscriptions (double opt-in), and an automated earthquake alert engine for Nepal.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "alerts:once": "node lib/alertEngine.js --once",
+    "dev": "node --watch server.js"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "nodemailer": "^6.9.13",
+    "web-push": "^3.6.7"
+  }
+}

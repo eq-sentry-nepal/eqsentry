@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://eqsentry.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://eqsentry.com/map.html</loc><changefreq>hourly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://eqsentry.com/insights.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://eqsentry.com/preparedness.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://eqsentry.com/building.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://eqsentry.com/faq.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://eqsentry.com/glossary.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://eqsentry.com/history.html</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://eqsentry.com/school-plan.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://eqsentry.com/district.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://eqsentry.com/plan.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://eqsentry.com/felt.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://eqsentry.com/aftermath.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://eqsentry.com/facts.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://eqsentry.com/resources.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://eqsentry.com/directory.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://eqsentry.com/alerts.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://eqsentry.com/about.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://eqsentry.com/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+</urlset>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Did You Feel It? — Report shaking · EQ Sentry Nepal</title>
+  <meta name="description" content="Felt an earthquake in Nepal? Report how strong the shaking was. Community reports build a live intensity map — useful where instrument coverage is thin." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%230A0C10'/%3E%3Cpath d='M5 21h6l3-9 5 16 4-12 2.5 5H35' stroke='%23FF4D2E' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://unpkg.com" crossorigin />
+  <link rel="preconnect" href="https://a.basemaps.cartocdn.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="canonical" href="https://eqsentry.com/felt.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="EQ Sentry" />
+  <meta property="og:title" content="Did You Feel It? — Report shaking · EQ Sentry Nepal" />
+  <meta property="og:description" content="Report how strong an earthquake felt. Community reports build a live intensity map for Nepal." />
+  <meta property="og:image" content="https://eqsentry.com/assets/icons/og-image.png" />
+  <meta property="og:url" content="https://eqsentry.com/felt.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://eqsentry.com/assets/icons/og-image.png" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    .felt-scale { display:grid; gap:8px; margin:4px 0 6px; }
+    .felt-opt { display:flex; align-items:center; gap:12px; padding:11px 14px; border:1px solid var(--line); border-radius:11px; background:var(--surface); cursor:pointer; transition:border-color .15s, background .15s; }
+    .felt-opt:hover { border-color:var(--line-2); }
+    .felt-opt.sel { border-color:var(--accent); background:var(--surface-2); }
+    .felt-opt input { position:absolute; opacity:0; pointer-events:none; }
+    .felt-sw { flex:0 0 auto; width:18px; height:18px; border-radius:5px; box-shadow:inset 0 0 0 1px rgba(0,0,0,.25); }
+    .felt-opt .lv { font-family:var(--mono,monospace); font-weight:700; flex:0 0 24px; color:var(--ink-soft); font-size:.9rem; }
+    .felt-opt .tx { font-size:.95rem; }
+    .felt-legend { display:flex; flex-wrap:wrap; gap:6px 14px; margin:0 0 14px; font-size:.8rem; color:var(--ink-soft); }
+    .felt-legend span { display:inline-flex; align-items:center; gap:6px; }
+    .felt-legend i { width:13px; height:13px; border-radius:4px; display:inline-block; box-shadow:inset 0 0 0 1px rgba(0,0,0,.25); }
+    #feltMap { height:460px; border-radius:16px; border:1px solid var(--line); overflow:hidden; background:var(--surface); }
+    .felt-recent { margin-top:18px; display:grid; gap:8px; }
+    .felt-rec { display:flex; gap:12px; align-items:flex-start; padding:11px 14px; border:1px solid var(--line); border-radius:11px; background:var(--surface); }
+    .felt-rec .dot { flex:0 0 auto; width:12px; height:12px; border-radius:50%; margin-top:5px; box-shadow:inset 0 0 0 1px rgba(0,0,0,.25); }
+    .felt-rec .rmeta { font-size:.78rem; color:var(--ink-faint); }
+    .felt-rec .rmsg { font-size:.9rem; margin:2px 0 0; }
+    .btn-geo { font-size:.85rem; }
+    .btn-geo.on { border-color:var(--ok,#34D399); color:var(--ok,#34D399); }
+    @media (max-width:860px){ #feltMap { height:380px; } }
+  </style>
+  <script type="application/json" id="page-i18n">
+    {
+      "en": {
+        "dyfi.eyebrow": "Community science",
+        "dyfi.h1": "Did you feel it?",
+        "dyfi.sub": "If the ground shook where you are, tell us how strong it felt. Your reports build a live map — especially valuable in Nepal, where seismic instruments are sparse.",
+        "dyfi.intro": "Community reports, not official measurements. In an emergency call 100 (Police), 102 (Ambulance) or 1149 (NEOC). Don't report while in danger — get to safety first.",
+        "dyfi.form.t": "Report shaking",
+        "dyfi.where": "Where are you?",
+        "dyfi.district.ph": "Choose your district…",
+        "dyfi.geo": "📍 Use my exact location",
+        "dyfi.geo.on": "✓ Using your location",
+        "dyfi.geo.fail": "Couldn't get your location — pick a district instead.",
+        "dyfi.how": "How strong was it?",
+        "dyfi.i2": "Barely felt — only if still/upstairs",
+        "dyfi.i3": "Felt indoors — slight swaying",
+        "dyfi.i4": "Windows, doors and dishes rattled",
+        "dyfi.i5": "Everyone felt it — small objects fell",
+        "dyfi.i6": "Hard to walk — furniture moved",
+        "dyfi.i7": "Hard to stand — cracks in walls",
+        "dyfi.i8": "Severe — buildings damaged",
+        "dyfi.name": "Name (optional)", "dyfi.name.ph": "Shown with your report",
+        "dyfi.notes": "What did you notice? (optional)", "dyfi.notes.ph": "e.g. shaking lasted ~10s, a cupboard fell",
+        "dyfi.submit": "Submit report", "dyfi.sending": "Sending…",
+        "dyfi.ok": "✓ Thank you — your report is on the map.",
+        "dyfi.err.where": "Please choose your district (or use your location).",
+        "dyfi.err.how": "Please choose how strong the shaking was.",
+        "dyfi.err.send": "Couldn't send your report — please try again.",
+        "dyfi.nobackend": "Reporting needs the EQ Sentry server running (set EQ_API in config.js). Your report wasn't sent.",
+        "dyfi.map.t": "Live intensity map",
+        "dyfi.map.sub": "Reports from the last 7 days, grouped by district. Bigger, redder circles mean stronger shaking reported by more people.",
+        "dyfi.legend.t": "Reported intensity:",
+        "dyfi.l.weak": "Weak", "dyfi.l.light": "Light", "dyfi.l.mod": "Moderate", "dyfi.l.strong": "Strong", "dyfi.l.severe": "Severe",
+        "dyfi.recent.t": "Recent reports",
+        "dyfi.none": "No reports yet. If you felt shaking, be the first to report it.",
+        "dyfi.offline": "Live reports load when the EQ Sentry server is connected.",
+        "dyfi.reports": "reports", "dyfi.report1": "report",
+        "dyfi.now": "just now", "dyfi.min": "m ago", "dyfi.hr": "h ago", "dyfi.day": "d ago"
+      },
+      "ne": {
+        "dyfi.eyebrow": "सामुदायिक विज्ञान",
+        "dyfi.h1": "के तपाईंले महसुस गर्नुभयो?",
+        "dyfi.sub": "तपाईं भएको ठाउँमा जमिन हल्लियो भने, कति बलियो थियो भन्नुहोस्। तपाईंका रिपोर्टले प्रत्यक्ष नक्सा बनाउँछ — नेपालमा भूकम्प मापन यन्त्र कम भएकाले यो विशेष उपयोगी छ।",
+        "dyfi.intro": "यी सामुदायिक रिपोर्ट हुन्, आधिकारिक मापन होइन। आपत्कालमा १०० (प्रहरी), १०२ (एम्बुलेन्स) वा ११४९ (NEOC) मा फोन गर्नुहोस्। जोखिममा हुँदा रिपोर्ट नगर्नुहोस् — पहिले सुरक्षित हुनुहोस्।",
+        "dyfi.form.t": "हल्लाइ रिपोर्ट गर्नुहोस्",
+        "dyfi.where": "तपाईं कहाँ हुनुहुन्छ?",
+        "dyfi.district.ph": "आफ्नो जिल्ला छान्नुहोस्…",
+        "dyfi.geo": "📍 मेरो सटीक स्थान प्रयोग गर्नुहोस्",
+        "dyfi.geo.on": "✓ तपाईंको स्थान प्रयोग गर्दै",
+        "dyfi.geo.fail": "स्थान लिन सकिएन — जिल्ला छान्नुहोस्।",
+        "dyfi.how": "कति बलियो थियो?",
+        "dyfi.i2": "बल्लबल्ल महसुस — स्थिर/माथिल्लो तलामा मात्र",
+        "dyfi.i3": "भित्र महसुस — हल्का हल्लाइ",
+        "dyfi.i4": "झ्याल, ढोका र भाँडा हल्लिए",
+        "dyfi.i5": "सबैले महसुस गरे — साना सामान खसे",
+        "dyfi.i6": "हिँड्न गाह्रो — फर्निचर सर्‍यो",
+        "dyfi.i7": "उभिन गाह्रो — भित्तामा चर्किए",
+        "dyfi.i8": "गम्भीर — भवनहरू क्षतिग्रस्त",
+        "dyfi.name": "नाम (वैकल्पिक)", "dyfi.name.ph": "तपाईंको रिपोर्टसँग देखिने",
+        "dyfi.notes": "के देख्नुभयो? (वैकल्पिक)", "dyfi.notes.ph": "जस्तै हल्लाइ ~१० सेकेन्ड, दराज खस्यो",
+        "dyfi.submit": "रिपोर्ट पठाउनुहोस्", "dyfi.sending": "पठाउँदै…",
+        "dyfi.ok": "✓ धन्यवाद — तपाईंको रिपोर्ट नक्सामा छ।",
+        "dyfi.err.where": "कृपया आफ्नो जिल्ला छान्नुहोस् (वा स्थान प्रयोग गर्नुहोस्)।",
+        "dyfi.err.how": "कृपया हल्लाइ कति बलियो थियो छान्नुहोस्।",
+        "dyfi.err.send": "रिपोर्ट पठाउन सकिएन — पुनः प्रयास गर्नुहोस्।",
+        "dyfi.nobackend": "रिपोर्टका लागि EQ Sentry सर्भर चाहिन्छ (config.js मा EQ_API सेट गर्नुहोस्)। रिपोर्ट पठाइएन।",
+        "dyfi.map.t": "प्रत्यक्ष तीव्रता नक्सा",
+        "dyfi.map.sub": "विगत ७ दिनका रिपोर्ट, जिल्ला अनुसार। ठूलो र रातो वृत्तले धेरै मानिसले बलियो हल्लाइ रिपोर्ट गरेको देखाउँछ।",
+        "dyfi.legend.t": "रिपोर्ट गरिएको तीव्रता:",
+        "dyfi.l.weak": "कमजोर", "dyfi.l.light": "हल्का", "dyfi.l.mod": "मध्यम", "dyfi.l.strong": "बलियो", "dyfi.l.severe": "गम्भीर",
+        "dyfi.recent.t": "हालका रिपोर्ट",
+        "dyfi.none": "अहिलेसम्म कुनै रिपोर्ट छैन। हल्लाइ महसुस गर्नुभयो भने पहिलो हुनुहोस्।",
+        "dyfi.offline": "EQ Sentry सर्भर जोडिएपछि प्रत्यक्ष रिपोर्ट देखिन्छ।",
+        "dyfi.reports": "रिपोर्ट", "dyfi.report1": "रिपोर्ट",
+        "dyfi.now": "भर्खरै", "dyfi.min": " मिनेट अघि", "dyfi.hr": " घण्टा अघि", "dyfi.day": " दिन अघि"
+      }
+    }
+  </script>
+</head>
+<body data-page="felt">
+  <header class="site-header" id="site-header"></header>
+  <div id="alertBar"></div>
+
+  <section class="page-hero section tight">
+    <div class="container">
+      <span class="eyebrow" data-i18n="dyfi.eyebrow"></span>
+      <h1 data-i18n="dyfi.h1"></h1>
+      <p class="lead" data-i18n="dyfi.sub"></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="callout danger" style="margin-bottom:24px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p data-i18n="dyfi.intro"></p>
+      </div>
+
+      <div class="grid cols-2" style="gap:36px;align-items:start">
+        <!-- Report form -->
+        <div class="form-card">
+          <h2 style="margin-top:0" data-i18n="dyfi.form.t"></h2>
+          <form id="feltForm" autocomplete="off">
+            <div class="field">
+              <label for="feltDistrict" data-i18n="dyfi.where"></label>
+              <select id="feltDistrict"></select>
+              <button type="button" id="feltGeo" class="btn btn-ghost btn-geo" style="margin-top:10px" data-i18n="dyfi.geo"></button>
+            </div>
+
+            <div class="field">
+              <label data-i18n="dyfi.how"></label>
+              <div class="felt-scale" id="feltScale" role="radiogroup"></div>
+            </div>
+
+            <div class="field">
+              <label for="feltName" data-i18n="dyfi.name"></label>
+              <input id="feltName" maxlength="80" data-i18n-placeholder="dyfi.name.ph" />
+            </div>
+            <div class="field">
+              <label for="feltMsg" data-i18n="dyfi.notes"></label>
+              <textarea id="feltMsg" rows="3" maxlength="1000" data-i18n-placeholder="dyfi.notes.ph"></textarea>
+            </div>
+
+            <button type="submit" id="feltSubmit" class="btn btn-primary" data-i18n="dyfi.submit"></button>
+            <p id="feltStatus" class="muted" style="font-size:.88rem;margin:12px 0 0" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <!-- Map + recent -->
+        <div>
+          <h2 style="margin-top:0" data-i18n="dyfi.map.t"></h2>
+          <p class="muted" data-i18n="dyfi.map.sub"></p>
+          <div class="felt-legend"><strong data-i18n="dyfi.legend.t" style="color:var(--ink-soft);font-weight:600"></strong><span id="feltLegend"></span></div>
+          <div id="feltMap"></div>
+          <h3 style="margin:22px 0 0" data-i18n="dyfi.recent.t"></h3>
+          <div class="felt-recent" id="feltRecent"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/districts-data.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/felt.js"></script>
+  <script src="assets/js/mydistrict.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "eqsentry-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "EQ Sentry static site — production build (minifies CSS + JS into dist/).",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node scripts/smoke-test.mjs",
+    "update-data": "node scripts/update-catalog.mjs && node scripts/smoke-test.mjs"
+  },
+  "devDependencies": {
+    "clean-css": "^5.3.3",
+    "terser": "^5.31.6"
+  }
+}

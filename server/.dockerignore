@@ -1,0 +1,6 @@
+# Keep runtime and local-only files out of the Docker image.
+node_modules
+.env
+data/           # runtime subscriber/report store — never bake into an image
+backups/        # daily site backups live here; not part of the backend
+*.log

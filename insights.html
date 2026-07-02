@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Insights — EQ Sentry Nepal</title>
+  <meta name="description" content="Interactive earthquake insights for Nepal: charts of 811 recorded quakes since 1911, a magnitude explorer, and an animated quake time-machine." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%230A0C10'/%3E%3Cpath d='M5 21h6l3-9 5 16 4-12 2.5 5H35' stroke='%23FF4D2E' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://unpkg.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="preconnect" href="https://a.basemaps.cartocdn.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="canonical" href="https://eqsentry.com/insights.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="EQ Sentry" />
+  <meta property="og:title" content="Earthquake Insights — EQ Sentry Nepal" />
+  <meta property="og:description" content="Interactive charts, a magnitude explorer and a quake time-machine built from Nepal's earthquake record." />
+  <meta property="og:image" content="https://eqsentry.com/assets/icons/og-image.png" />
+  <meta property="og:url" content="https://eqsentry.com/insights.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://eqsentry.com/assets/icons/og-image.png" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "Significant earthquakes (M4.5+) in the Nepal region, 1911–present",
+    "description": "USGS-sourced catalogue of magnitude 4.5+ earthquakes within 26–31°N, 79–89°E, refreshed weekly. Includes the 1934 M8.0 Bihar–Nepal and 2015 M7.8 Gorkha events.",
+    "url": "https://eqsentry.com/insights.html",
+    "license": "https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits",
+    "creator": { "@type": "Organization", "name": "USGS Earthquake Hazards Program" },
+    "distribution": [
+      { "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://eqsentry.com/data/nepal_earthquakes.csv" },
+      { "@type": "DataDownload", "encodingFormat": "application/geo+json", "contentUrl": "https://eqsentry.com/data/nepal_earthquakes.geojson" }
+    ],
+    "spatialCoverage": { "@type": "Place", "name": "Nepal region", "geo": { "@type": "GeoShape", "box": "26 79 31 89" } }
+  }
+  </script>
+  <script type="application/json" id="page-i18n">
+    {
+      "en": {
+        "ins.eyebrow": "Insights",
+        "ins.h1": "Nepal's earthquakes, in data",
+        "ins.sub": "Everything below is built from the {count|811} recorded earthquakes (M4.5+) in the Nepal region since {since|1911}. Explore, drag and play.",
+        "ins.s.total": "recorded quakes (M4.5+)",
+        "ins.s.strong": "strongest",
+        "ins.s.peryear": "average per year",
+        "ins.s.m6": "major quakes (M6.0+)",
+        "ins.records": "Records span", "ins.deepest": "deepest",
+
+        "ins.csec": "The numbers",
+        "ins.c.year.t": "Earthquakes per year",
+        "ins.c.year.sub": "Count of M4.5+ events by year — note the 2015 Gorkha spike",
+        "ins.f.all": "All", "ins.f.m5": "M5+", "ins.f.m6": "M6+",
+        "ins.c.mag.t": "Magnitude distribution",
+        "ins.c.mag.sub": "How many events fall in each magnitude band",
+        "ins.c.depth.t": "Depth distribution",
+        "ins.c.depth.sub": "Most Himalayan quakes are shallow (km below surface)",
+
+        "exp.eyebrow": "Interactive",
+        "exp.title": "Magnitude explorer",
+        "exp.sub": "Drag the slider to see what each magnitude means — how it feels, how much energy it releases, and how often it happens.",
+        "exp.drag": "Drag to change magnitude",
+        "exp.m.energy": "Energy vs M4.0",
+        "exp.m.freq": "Global frequency",
+        "exp.m.tnt": "TNT equivalent",
+        "exp.cls.light": "Light", "exp.cls.moderate": "Moderate", "exp.cls.strong": "Strong", "exp.cls.major": "Major", "exp.cls.great": "Great",
+        "exp.feel.light": "Felt indoors as a shudder or rattle. Damage is rare.",
+        "exp.feel.moderate": "Felt by everyone nearby; can crack plaster and damage weak buildings.",
+        "exp.feel.strong": "Can cause serious damage in populated areas near the epicentre.",
+        "exp.feel.major": "Widespread, severe damage over large areas — like the 2015 Gorkha quake (M7.8).",
+        "exp.feel.great": "Devastating across an entire region — like the 1934 Nepal–Bihar quake (M8.0).",
+
+        "tm.eyebrow": "Time machine",
+        "tm.title": "Watch Nepal shake through the years",
+        "tm.sub": "Drag the year or press play to see where earthquakes struck, year by year, since {since|1911}.",
+        "tm.note": "Press play to animate the years.",
+
+        "fi.eyebrow": "Interactive",
+        "fi.title": "Will I feel it?",
+        "fi.sub": "Set a magnitude and how far you are from the epicentre to estimate the shaking intensity (Modified Mercalli) where you stand.",
+        "fi.mag": "Magnitude",
+        "fi.dist": "Your distance from the epicentre",
+        "fi.cls.notfelt": "Not felt", "fi.cls.weak": "Weak", "fi.cls.light": "Light", "fi.cls.moderate": "Moderate",
+        "fi.cls.strong": "Strong", "fi.cls.verystrong": "Very strong", "fi.cls.severe": "Severe", "fi.cls.violent": "Violent", "fi.cls.extreme": "Extreme",
+        "fi.feel.notfelt": "Not felt by people.", "fi.feel.weak": "Felt by a few at rest; hanging objects may swing.",
+        "fi.feel.light": "Felt indoors by many; windows and dishes rattle.", "fi.feel.moderate": "Felt by nearly everyone; some sleepers wake.",
+        "fi.feel.strong": "Felt by all; many frightened and run outdoors.", "fi.feel.verystrong": "Hard to stand; people rush outside.",
+        "fi.feel.severe": "Difficult to stand; alarming to everyone.", "fi.feel.violent": "General panic.", "fi.feel.extreme": "Catastrophic shaking.",
+        "fi.effect.notfelt": "Detected only by instruments.", "fi.effect.weak": "Like a passing truck; no damage.",
+        "fi.effect.light": "No damage; parked cars rock.", "fi.effect.moderate": "Unstable objects overturn; minor cracks.",
+        "fi.effect.strong": "Heavy furniture moves; slight damage to buildings.", "fi.effect.verystrong": "Damage to poorly built structures; some chimneys break.",
+        "fi.effect.severe": "Considerable damage to ordinary buildings; partial collapse.", "fi.effect.violent": "Heavy damage; buildings shift off foundations.",
+        "fi.effect.extreme": "Most masonry destroyed; ground cracks; bridges may fail.",
+
+        "ins.quakes": "quakes", "ins.max": "max", "ins.none": "No recorded M4.5+ events this year.", "ins.eg": "e.g.",
+
+        "nt.eyebrow": "Now & then",
+        "nt.month.t": "This month",
+        "nt.month.line": "{n} quakes (M4.5+) so far · largest M{m} — {place}",
+        "nt.month.one": "1 quake (M4.5+) so far: M{m} — {place}",
+        "nt.month.none": "No M4.5+ earthquakes recorded near Nepal so far this month.",
+        "nt.month.avg": "Typical for this month across the record: ~{avg} per year",
+        "nt.hist.t": "This month in history",
+        "nt.hist.none": "No major earthquakes on record for this calendar month.",
+
+        "rec.t": "Record book",
+        "rec.deep": "deepest recorded",
+        "rec.active": "most active year",
+        "rec.quiet": "quietest year",
+        "rec.gap": "longest quiet spell between M6+",
+        "rec.gapv": "{d} days",
+        "rec.evs": "events",
+
+        "ins.c.energy.t": "Seismic energy released, year by year",
+        "ins.c.energy.sub": "Cumulative energy since 1911 — the 1934 and 2015 ruptures dwarf everything else",
+        "ins.c.gr.t": "How often does each size strike?",
+        "ins.c.gr.sub": "Magnitude–frequency on a log scale (Gutenberg–Richter relation)",
+        "ins.c.gr.b": "Slope b ≈ {b} — roughly a tenfold drop in frequency per magnitude step",
+        "ins.c.sc.t": "Depth vs magnitude",
+        "ins.c.sc.sub": "Each dot is one earthquake — most Himalayan quakes rupture in the top 30 km",
+
+        "as.eyebrow": "Sequences",
+        "as.title": "Aftershock explorer",
+        "as.sub": "Every large earthquake is followed by aftershocks that fade with time. Pick a mainshock and watch its sequence decay — and remember: after a big quake, expect more shaking.",
+        "as.pick": "Mainshock",
+        "as.s.count": "aftershocks · 90 days, within 120 km",
+        "as.s.big": "largest aftershock",
+        "as.s.span": "sequence stayed active",
+        "as.days": "days",
+        "as.chart": "Recorded aftershocks per day after the mainshock (first 45 days)",
+        "as.none": "No M4.5+ aftershocks in the catalogue for this event — smaller ones weren't recorded at the time.",
+
+        "cmp.eyebrow": "Head to head",
+        "cmp.title": "Compare two earthquakes",
+        "cmp.sub": "Each magnitude step releases ~32× more energy. Put any two events side by side to feel the difference.",
+        "cmp.a": "Event A", "cmp.b": "Event B",
+        "cmp.mag": "Magnitude", "cmp.depth": "Depth", "cmp.deaths": "Deaths",
+        "cmp.energy": "Energy (vs the smaller)", "cmp.feltr": "Strong-shaking radius (est.)",
+        "cmp.line": "{a} released roughly {x}× the energy of {b}.",
+        "cmp.same": "These two events released roughly similar energy.",
+
+        "dl.title": "Take the data with you",
+        "dl.sub": "The full Nepal catalogue behind these charts (M4.5+, {since|1911}–{to|2026}, USGS) is open — download it for your own research, reporting or apps.",
+        "dl.csv": "⬇ CSV — spreadsheet",
+        "dl.geo": "⬇ GeoJSON — map data",
+        "dl.note": "Source: USGS Earthquake Hazards Program. Please credit USGS (and eqsentry.com) when you reuse it."
+      },
+      "ne": {
+        "ins.eyebrow": "तथ्याङ्क",
+        "ins.h1": "नेपालका भूकम्प, तथ्याङ्कमा",
+        "ins.sub": "तलका सबै कुरा {since|1911} यता नेपाल क्षेत्रमा दर्ता भएका {count|811} भूकम्प (M४.५+) मा आधारित छन्। अन्वेषण गर्नुहोस्, तान्नुहोस् र चलाउनुहोस्।",
+        "ins.s.total": "दर्ता भूकम्प (M४.५+)",
+        "ins.s.strong": "सबैभन्दा ठूलो",
+        "ins.s.peryear": "वार्षिक औसत",
+        "ins.s.m6": "ठूला भूकम्प (M६.०+)",
+        "ins.records": "अभिलेख अवधि", "ins.deepest": "सबैभन्दा गहिरो",
+
+        "ins.csec": "सङ्ख्याहरू",
+        "ins.c.year.t": "वार्षिक भूकम्प",
+        "ins.c.year.sub": "वर्षअनुसार M४.५+ घटना — २०१५ गोरखाको उछाल हेर्नुहोस्",
+        "ins.f.all": "सबै", "ins.f.m5": "M5+", "ins.f.m6": "M6+",
+        "ins.c.mag.t": "म्याग्निच्युड वितरण",
+        "ins.c.mag.sub": "प्रत्येक म्याग्निच्युड दायरामा कति घटना",
+        "ins.c.depth.t": "गहिराइ वितरण",
+        "ins.c.depth.sub": "धेरैजसो हिमालयन भूकम्प उथ्लो हुन्छन् (सतहमुनि कि.मी.)",
+
+        "exp.eyebrow": "अन्तरक्रियात्मक",
+        "exp.title": "म्याग्निच्युड अन्वेषक",
+        "exp.sub": "स्लाइडर तानेर हरेक म्याग्निच्युडको अर्थ हेर्नुहोस् — कस्तो महसुस हुन्छ, कति ऊर्जा निस्कन्छ, र कति पटक हुन्छ।",
+        "exp.drag": "म्याग्निच्युड बदल्न तान्नुहोस्",
+        "exp.m.energy": "M४.० सँग ऊर्जा",
+        "exp.m.freq": "विश्वव्यापी आवृत्ति",
+        "exp.m.tnt": "TNT बराबर",
+        "exp.cls.light": "हल्का", "exp.cls.moderate": "मध्यम", "exp.cls.strong": "बलियो", "exp.cls.major": "ठूलो", "exp.cls.great": "विशाल",
+        "exp.feel.light": "घरभित्र हल्लाइ वा कम्पनको रूपमा महसुस। क्षति विरलै।",
+        "exp.feel.moderate": "नजिकका सबैले महसुस; कमजोर भवनमा क्षति र प्लास्टर चर्किनसक्छ।",
+        "exp.feel.strong": "केन्द्र नजिकका बस्तीमा गम्भीर क्षति गर्नसक्छ।",
+        "exp.feel.major": "ठूलो क्षेत्रमा व्यापक, गम्भीर क्षति — २०१५ गोरखा भूकम्प (M७.८) जस्तै।",
+        "exp.feel.great": "सिङ्गो क्षेत्रभरि विनाशकारी — १९३४ नेपाल–बिहार भूकम्प (M८.०) जस्तै।",
+
+        "tm.eyebrow": "टाइम मेसिन",
+        "tm.title": "वर्षैपिच्छे नेपालको भूकम्प हेर्नुहोस्",
+        "tm.sub": "{since|1911} यता वर्षअनुसार कहाँ भूकम्प गए हेर्न वर्ष तान्नुहोस् वा प्ले थिच्नुहोस्।",
+        "tm.note": "वर्षहरू चलाउन प्ले थिच्नुहोस्।",
+
+        "fi.eyebrow": "अन्तरक्रियात्मक",
+        "fi.title": "के मैले महसुस गर्छु?",
+        "fi.sub": "म्याग्निच्युड र केन्द्रबाट तपाईंको दूरी राखेर तपाईं उभिएको ठाउँमा हुने कम्पन तीव्रता (मोडिफाइड मर्कली) अनुमान गर्नुहोस्।",
+        "fi.mag": "म्याग्निच्युड",
+        "fi.dist": "केन्द्रबाट तपाईंको दूरी",
+        "fi.cls.notfelt": "महसुस नहुने", "fi.cls.weak": "कमजोर", "fi.cls.light": "हल्का", "fi.cls.moderate": "मध्यम",
+        "fi.cls.strong": "बलियो", "fi.cls.verystrong": "धेरै बलियो", "fi.cls.severe": "गम्भीर", "fi.cls.violent": "प्रचण्ड", "fi.cls.extreme": "चरम",
+        "fi.feel.notfelt": "मानिसले महसुस गर्दैनन्।", "fi.feel.weak": "केहीले मात्र महसुस; झुन्डिएका वस्तु हल्लिन सक्छन्।",
+        "fi.feel.light": "घरभित्र धेरैले महसुस; झ्याल र भाँडा खस्किन्छन्।", "fi.feel.moderate": "लगभग सबैले महसुस; केही सुतेका ब्यूँझिन्छन्।",
+        "fi.feel.strong": "सबैले महसुस; धेरै डराएर बाहिर निस्कन्छन्।", "fi.feel.verystrong": "उभिन गाह्रो; मानिस बाहिर दौडन्छन्।",
+        "fi.feel.severe": "उभिन कठिन; सबैलाई त्रासदायी।", "fi.feel.violent": "सर्वत्र आतंक।", "fi.feel.extreme": "विनाशकारी कम्पन।",
+        "fi.effect.notfelt": "उपकरणले मात्र पत्ता लगाउँछ।", "fi.effect.weak": "गुड्दै गरेको ट्रक जस्तै; क्षति छैन।",
+        "fi.effect.light": "क्षति छैन; पार्क गरेका गाडी हल्लिन्छन्।", "fi.effect.moderate": "अस्थिर वस्तु पल्टिन्छन्; सानो चर्किने।",
+        "fi.effect.strong": "गह्रौं फर्निचर सर्छ; भवनमा हल्का क्षति।", "fi.effect.verystrong": "कमजोर संरचनामा क्षति; केही चिम्नी भाँचिन्छन्।",
+        "fi.effect.severe": "साधारण भवनमा उल्लेखनीय क्षति; आंशिक भत्किने।", "fi.effect.violent": "भारी क्षति; भवन जगबाट सर्छन्।",
+        "fi.effect.extreme": "अधिकांश गारो ध्वस्त; जमिन चर्किन्छ; पुल भत्किन सक्छन्।",
+
+        "ins.quakes": "भूकम्प", "ins.max": "अधिकतम", "ins.none": "यस वर्ष दर्ता M४.५+ भूकम्प छैन।", "ins.eg": "जस्तै",
+
+        "nt.eyebrow": "अहिले र इतिहास",
+        "nt.month.t": "यो महिना",
+        "nt.month.line": "हालसम्म {n} भूकम्प (M४.५+) · सबैभन्दा ठूलो M{m} — {place}",
+        "nt.month.one": "हालसम्म १ भूकम्प (M४.५+): M{m} — {place}",
+        "nt.month.none": "यो महिना नेपाल नजिक M४.५+ भूकम्प दर्ता भएको छैन।",
+        "nt.month.avg": "अभिलेखअनुसार यस महिनाको औसत: वर्षको ~{avg}",
+        "nt.hist.t": "इतिहासमा यो महिना",
+        "nt.hist.none": "यस महिनाका ठूला भूकम्प अभिलेखमा छैनन्।",
+
+        "rec.t": "कीर्तिमान",
+        "rec.deep": "सबैभन्दा गहिरो",
+        "rec.active": "सबैभन्दा सक्रिय वर्ष",
+        "rec.quiet": "सबैभन्दा शान्त वर्ष",
+        "rec.gap": "M६+ बीचको सबैभन्दा लामो शान्त अवधि",
+        "rec.gapv": "{d} दिन",
+        "rec.evs": "घटना",
+
+        "ins.c.energy.t": "वर्षैपिच्छे निस्केको भूकम्पीय ऊर्जा",
+        "ins.c.energy.sub": "१९११ यताको सञ्चित ऊर्जा — १९३४ र २०१५ का भूकम्पले अरू सबैलाई ओझेल पार्छन्",
+        "ins.c.gr.t": "कुन आकार कति पटक आउँछ?",
+        "ins.c.gr.sub": "म्याग्निच्युड–आवृत्ति, लग स्केलमा (गुटेनबर्ग–रिक्टर सम्बन्ध)",
+        "ins.c.gr.b": "ढलान b ≈ {b} — म्याग्निच्युड एक चरण बढ्दा आवृत्ति लगभग दस गुणा घट्छ",
+        "ins.c.sc.t": "गहिराइ बनाम म्याग्निच्युड",
+        "ins.c.sc.sub": "प्रत्येक थोप्लो एउटा भूकम्प — धेरैजसो हिमालयन भूकम्प माथिल्लो ३० कि.मी.मा हुन्छन्",
+
+        "as.eyebrow": "शृंखला",
+        "as.title": "पराकम्प अन्वेषक",
+        "as.sub": "हरेक ठूलो भूकम्पपछि समयसँगै घट्दै जाने पराकम्पहरू आउँछन्। मुख्य भूकम्प छानेर शृंखला कसरी घट्यो हेर्नुहोस् — र सम्झनुहोस्: ठूलो भूकम्पपछि थप हल्लाइको अपेक्षा गर्नुहोस्।",
+        "as.pick": "मुख्य भूकम्प",
+        "as.s.count": "पराकम्प · ९० दिन, १२० कि.मी.भित्र",
+        "as.s.big": "सबैभन्दा ठूलो पराकम्प",
+        "as.s.span": "शृंखला सक्रिय रह्यो",
+        "as.days": "दिन",
+        "as.chart": "मुख्य भूकम्पपछि दैनिक दर्ता पराकम्प (पहिलो ४५ दिन)",
+        "as.none": "यस घटनाका M४.५+ पराकम्प सूचीमा छैनन् — साना पराकम्प त्यसबेला दर्ता भएनन्।",
+
+        "cmp.eyebrow": "आमनेसामने",
+        "cmp.title": "दुई भूकम्प तुलना गर्नुहोस्",
+        "cmp.sub": "म्याग्निच्युडको हरेक चरणले ~३२ गुणा बढी ऊर्जा निकाल्छ। कुनै दुई घटना राखेर फरक महसुस गर्नुहोस्।",
+        "cmp.a": "घटना A", "cmp.b": "घटना B",
+        "cmp.mag": "म्याग्निच्युड", "cmp.depth": "गहिराइ", "cmp.deaths": "मृत्यु",
+        "cmp.energy": "ऊर्जा (सानोको तुलनामा)", "cmp.feltr": "बलियो हल्लाइको दायरा (अनुमानित)",
+        "cmp.line": "{a} ले {b} भन्दा लगभग {x} गुणा बढी ऊर्जा निकाल्यो।",
+        "cmp.same": "यी दुई घटनाले लगभग उस्तै ऊर्जा निकाले।",
+
+        "dl.title": "तथ्याङ्क आफैसँग लैजानुहोस्",
+        "dl.sub": "यी चार्टपछाडिको पूरा नेपाल सूची (M४.५+, {since|1911}–{to|2026}, USGS) खुला छ — आफ्नो अनुसन्धान, रिपोर्टिङ वा एपका लागि डाउनलोड गर्नुहोस्।",
+        "dl.csv": "⬇ CSV — स्प्रेडसिट",
+        "dl.geo": "⬇ GeoJSON — नक्सा डेटा",
+        "dl.note": "स्रोत: USGS Earthquake Hazards Program। पुनः प्रयोग गर्दा USGS (र eqsentry.com) लाई श्रेय दिनुहोस्।"
+      }
+    }
+  </script>
+</head>
+<body data-page="insights" data-eqdata>
+  <header class="site-header" id="site-header"></header>
+  <div id="alertBar"></div>
+
+  <section class="page-hero section tight">
+    <div class="container">
+      <span class="eyebrow" data-i18n="ins.eyebrow"></span>
+      <h1 data-i18n="ins.h1"></h1>
+      <p class="lead" data-i18n="ins.sub"></p>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="section tight">
+    <div class="container">
+      <div class="stat-row reveal">
+        <div class="stat"><div class="num accent" id="stTotal">—</div><div class="lbl" data-i18n="ins.s.total"></div></div>
+        <div class="stat"><div class="num" id="stStrong">—</div><div class="lbl"><span data-i18n="ins.s.strong"></span> · <span id="stStrongP" style="color:var(--ink-soft)"></span></div></div>
+        <div class="stat"><div class="num" id="stPerYear">—</div><div class="lbl" data-i18n="ins.s.peryear"></div></div>
+        <div class="stat"><div class="num" id="stM6">—</div><div class="lbl" data-i18n="ins.s.m6"></div></div>
+      </div>
+      <p class="muted" style="font-family:var(--mono);font-size:.8rem;margin-top:14px">
+        <span data-i18n="ins.records"></span>: <span id="stSpan">—</span> · <span data-i18n="ins.deepest"></span> <span id="stDeep">—</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- Now & then -->
+  <section class="section tight">
+    <div class="container">
+      <div class="sec-head left reveal" style="margin-bottom:18px"><span class="eyebrow" data-i18n="nt.eyebrow"></span></div>
+      <div class="grid cols-2" style="gap:20px;align-items:stretch">
+        <div class="card reveal" style="padding:22px">
+          <h3 style="margin:0 0 8px" data-i18n="nt.month.t"></h3>
+          <p id="ntMonth" style="margin:0;color:var(--ink-soft)"><span class="spinner"></span></p>
+          <p id="ntAvg" class="muted" style="font-family:var(--mono);font-size:.78rem;margin:10px 0 0"></p>
+        </div>
+        <div class="card reveal" style="padding:22px">
+          <h3 style="margin:0 0 8px" data-i18n="nt.hist.t"></h3>
+          <div id="ntHist" style="color:var(--ink-soft)"><span class="spinner"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Charts -->
+  <section class="section" style="padding-top:8px">
+    <div class="container">
+      <div class="sec-head left reveal" style="margin-bottom:26px">
+        <span class="eyebrow" data-i18n="ins.csec"></span>
+      </div>
+      <div class="chart-card reveal" style="margin-bottom:20px">
+        <div class="flex aic wrap" style="justify-content:space-between;gap:12px">
+          <div>
+            <h3 data-i18n="ins.c.year.t"></h3>
+            <div class="csub" data-i18n="ins.c.year.sub"></div>
+          </div>
+          <div class="chart-controls" id="yearFilter">
+            <button class="active" data-min="4.5" data-i18n="ins.f.all"></button>
+            <button data-min="5" data-i18n="ins.f.m5"></button>
+            <button data-min="6" data-i18n="ins.f.m6"></button>
+          </div>
+        </div>
+        <div class="chart-box tall"><canvas id="chartYear"></canvas></div>
+      </div>
+      <div class="charts-grid">
+        <div class="chart-card reveal">
+          <h3 data-i18n="ins.c.mag.t"></h3><div class="csub" data-i18n="ins.c.mag.sub"></div>
+          <div class="chart-box"><canvas id="chartMag"></canvas></div>
+        </div>
+        <div class="chart-card reveal">
+          <h3 data-i18n="ins.c.depth.t"></h3><div class="csub" data-i18n="ins.c.depth.sub"></div>
+          <div class="chart-box"><canvas id="chartDepth"></canvas></div>
+        </div>
+      </div>
+
+      <div class="chart-card reveal" style="margin-top:20px">
+        <h3 data-i18n="ins.c.energy.t"></h3><div class="csub" data-i18n="ins.c.energy.sub"></div>
+        <div class="chart-box tall"><canvas id="chartEnergy"></canvas></div>
+      </div>
+      <div class="charts-grid" style="margin-top:20px">
+        <div class="chart-card reveal">
+          <h3 data-i18n="ins.c.gr.t"></h3><div class="csub" data-i18n="ins.c.gr.sub"></div>
+          <div class="chart-box"><canvas id="chartGR"></canvas></div>
+          <p class="muted" id="grB" style="font-family:var(--mono);font-size:.76rem;margin:10px 0 0"></p>
+        </div>
+        <div class="chart-card reveal">
+          <h3 data-i18n="ins.c.sc.t"></h3><div class="csub" data-i18n="ins.c.sc.sub"></div>
+          <div class="chart-box"><canvas id="chartScatter"></canvas></div>
+        </div>
+      </div>
+
+      <h3 class="reveal" style="margin:34px 0 14px" data-i18n="rec.t"></h3>
+      <div class="stat-row reveal" id="recRow">
+        <div class="stat"><div class="num" id="recDeep">—</div><div class="lbl"><span data-i18n="rec.deep"></span> · <span id="recDeepP" style="color:var(--ink-soft)"></span></div></div>
+        <div class="stat"><div class="num accent" id="recActive">—</div><div class="lbl"><span data-i18n="rec.active"></span> · <span id="recActiveN" style="color:var(--ink-soft)"></span></div></div>
+        <div class="stat"><div class="num" id="recQuiet">—</div><div class="lbl"><span data-i18n="rec.quiet"></span> · <span id="recQuietN" style="color:var(--ink-soft)"></span></div></div>
+        <div class="stat"><div class="num" id="recGap">—</div><div class="lbl"><span data-i18n="rec.gap"></span> · <span id="recGapP" style="color:var(--ink-soft)"></span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Aftershock explorer -->
+  <section class="section alt">
+    <div class="container">
+      <div class="sec-head center reveal">
+        <span class="eyebrow" data-i18n="as.eyebrow"></span>
+        <h2 data-i18n="as.title"></h2>
+        <p class="lead" data-i18n="as.sub"></p>
+      </div>
+      <div class="reveal" style="max-width:420px;margin:0 auto 20px">
+        <label class="ctrl-label" for="asPick" data-i18n="as.pick"></label>
+        <select id="asPick" class="dir-search" style="width:100%"></select>
+      </div>
+      <div class="stat-row reveal" style="margin-bottom:18px">
+        <div class="stat"><div class="num accent" id="asCount">—</div><div class="lbl" data-i18n="as.s.count"></div></div>
+        <div class="stat"><div class="num" id="asBig">—</div><div class="lbl"><span data-i18n="as.s.big"></span> · <span id="asBigP" style="color:var(--ink-soft)"></span></div></div>
+        <div class="stat"><div class="num" id="asSpan">—</div><div class="lbl" data-i18n="as.s.span"></div></div>
+      </div>
+      <div class="chart-card reveal">
+        <div class="csub" data-i18n="as.chart"></div>
+        <div class="chart-box tall"><canvas id="chartAS"></canvas></div>
+        <p class="muted" id="asNone" style="display:none;margin:10px 0 0" data-i18n="as.none"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Compare two quakes -->
+  <section class="section">
+    <div class="container">
+      <div class="sec-head center reveal">
+        <span class="eyebrow" data-i18n="cmp.eyebrow"></span>
+        <h2 data-i18n="cmp.title"></h2>
+        <p class="lead" data-i18n="cmp.sub"></p>
+      </div>
+      <div class="grid cols-2 reveal" style="gap:14px;max-width:760px;margin:0 auto 18px">
+        <div><label class="ctrl-label" for="cmpA" data-i18n="cmp.a"></label><select id="cmpA" class="dir-search" style="width:100%"></select></div>
+        <div><label class="ctrl-label" for="cmpB" data-i18n="cmp.b"></label><select id="cmpB" class="dir-search" style="width:100%"></select></div>
+      </div>
+      <div class="card reveal" style="max-width:760px;margin:0 auto;padding:22px">
+        <div id="cmpTable"></div>
+        <p id="cmpLine" style="margin:14px 0 0;color:var(--ink);font-weight:600"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Magnitude explorer -->
+  <section class="section alt">
+    <div class="container">
+      <div class="sec-head center reveal">
+        <span class="eyebrow" data-i18n="exp.eyebrow"></span>
+        <h2 data-i18n="exp.title"></h2>
+        <p class="lead" data-i18n="exp.sub"></p>
+      </div>
+      <div class="explorer reveal">
+        <div class="exp-readout">
+          <div class="exp-mag" id="expMag">M7.8</div>
+          <div class="exp-class" id="expClass">—</div>
+          <div class="exp-bar"><i id="expPtr"></i></div>
+          <div class="exp-metrics">
+            <div class="m"><div class="mk" data-i18n="exp.m.energy"></div><div class="mv" id="expEnergy">—</div></div>
+            <div class="m"><div class="mk" data-i18n="exp.m.tnt"></div><div class="mv" id="expTNT">—</div></div>
+            <div class="m"><div class="mk" data-i18n="exp.m.freq"></div><div class="mv" id="expFreq">—</div></div>
+          </div>
+        </div>
+        <div>
+          <label class="ctrl-label" data-i18n="exp.drag"></label>
+          <input type="range" class="eq-range" id="magSlider" min="4" max="9" step="0.1" value="7.8" />
+          <p class="exp-feel" id="expFeel" style="margin-top:14px"></p>
+          <p class="exp-eg" id="expEg"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Time machine -->
+  <section class="section">
+    <div class="container">
+      <div class="sec-head center reveal">
+        <span class="eyebrow" data-i18n="tm.eyebrow"></span>
+        <h2 data-i18n="tm.title"></h2>
+        <p class="lead" data-i18n="tm.sub"></p>
+      </div>
+      <div class="tm-wrap reveal">
+        <div id="tmMap"></div>
+        <div class="tm-side">
+          <div class="tm-year" id="tmYear">2015</div>
+          <div class="tm-readout" id="tmReadout">—</div>
+          <input type="range" class="eq-range" id="tmYearSlider" min="1911" max="2026" value="2015" />
+          <div class="tm-controls">
+            <button class="tm-play" id="tmPlay" aria-label="Play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+            <span class="tm-note" data-i18n="tm.note"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Will I feel it? -->
+  <section class="section alt">
+    <div class="container">
+      <div class="sec-head center reveal">
+        <span class="eyebrow" data-i18n="fi.eyebrow"></span>
+        <h2 data-i18n="fi.title"></h2>
+        <p class="lead" data-i18n="fi.sub"></p>
+      </div>
+      <div class="explorer reveal">
+        <div class="exp-readout">
+          <div class="exp-mag" id="fiMMI" style="font-size:clamp(2.6rem,7vw,4rem)">—</div>
+          <div class="exp-class" id="fiClass">—</div>
+          <div class="exp-bar"><i id="fiPtr"></i></div>
+          <div class="exp-metrics">
+            <div class="m"><div class="mk" data-i18n="fi.mag"></div><div class="mv" id="fiMagV">M7.0</div></div>
+            <div class="m"><div class="mk" data-i18n="fi.dist"></div><div class="mv" id="fiDistV">50 km</div></div>
+          </div>
+        </div>
+        <div>
+          <label class="ctrl-label" data-i18n="fi.mag"></label>
+          <input type="range" class="eq-range" id="fiMag" min="4" max="9" step="0.1" value="7.0" />
+          <label class="ctrl-label" style="margin-top:16px;display:block" data-i18n="fi.dist"></label>
+          <input type="range" class="eq-range" id="fiDist" min="0" max="300" step="5" value="50" />
+          <p class="exp-feel" id="fiFeel" style="margin-top:16px"></p>
+          <p class="exp-eg" id="fiEffect"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Open data downloads -->
+  <section class="section tight">
+    <div class="container">
+      <div class="card reveal" style="padding:26px">
+        <div class="grid cols-2" style="gap:22px;align-items:center">
+          <div>
+            <h2 style="font-size:1.35rem;margin:0 0 6px" data-i18n="dl.title"></h2>
+            <p style="color:var(--ink-soft);margin:0" data-i18n="dl.sub"></p>
+          </div>
+          <div>
+            <div class="flex wrap" style="gap:10px">
+              <a class="btn btn-outline" href="data/nepal_earthquakes.csv" download data-i18n="dl.csv"></a>
+              <a class="btn btn-outline" href="data/nepal_earthquakes.geojson" download data-i18n="dl.geo"></a>
+            </div>
+            <p class="muted" style="font-size:.8rem;margin:12px 0 0" data-i18n="dl.note"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="site-footer"></footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/insights.js"></script>
+  <script src="assets/js/pages/insights-plus.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "title": "India–Eurasia plate boundary near Nepal (generalized)",
+    "description": "Generalized trace of the India–Eurasia / India–Sunda plate boundary across the Himalaya, eastern (Indo-Burman) and western (Chaman) syntaxes. Simplified for web use; based on the Bird (2003) PB2002 model and published Himalayan thrust-front maps. Not a survey-grade boundary.",
+    "source": "Generalized from Bird (2003) PB2002 plate boundaries"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name_en": "Himalayan front — India–Eurasia plate boundary",
+        "name_ne": "हिमालयन मोर्चा — भारत–युरेसिया प्लेट सीमा",
+        "kind": "convergent"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [74.0, 33.2],[75.0, 32.6],[76.0, 32.0],[77.2, 31.0],[78.5, 30.4],
+          [80.0, 29.9],[81.2, 29.3],[82.4, 28.8],[83.5, 28.3],[84.6, 27.9],
+          [85.7, 27.5],[86.8, 27.1],[88.0, 26.8],[89.0, 26.8],[90.2, 26.9],
+          [91.5, 27.0],[92.8, 27.4],[94.2, 28.2],[95.3, 28.7]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_en": "Indo-Burman ranges — India–Sunda boundary",
+        "name_ne": "इन्डो-बर्मन शृंखला — भारत–सुन्डा सीमा",
+        "kind": "convergent"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [95.3, 28.7],[96.2, 27.5],[95.6, 25.5],[94.6, 23.5],
+          [94.0, 21.5],[93.6, 19.5],[93.4, 17.5]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_en": "Chaman fault zone — western boundary",
+        "name_ne": "चमन भ्रंश क्षेत्र — पश्चिमी सीमा",
+        "kind": "transform"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [74.0, 33.2],[72.5, 32.0],[71.0, 30.5],[69.5, 29.5],
+          [67.8, 28.5],[66.5, 27.0],[65.8, 25.5]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name_en": "Main Boundary Thrust (MBT)", "name_ne": "मुख्य सीमा थ्रस्ट (MBT)", "kind": "fault" },
+      "geometry": { "type": "LineString", "coordinates": [
+        [80.0, 30.25],[81.2, 29.65],[82.4, 29.15],[83.5, 28.65],[84.6, 28.25],[85.7, 27.85],[86.8, 27.45],[88.0, 27.15]
+      ] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name_en": "Main Central Thrust (MCT)", "name_ne": "मुख्य केन्द्रीय थ्रस्ट (MCT)", "kind": "fault" },
+      "geometry": { "type": "LineString", "coordinates": [
+        [80.0, 30.6],[81.2, 30.0],[82.4, 29.5],[83.5, 29.0],[84.6, 28.6],[85.7, 28.2],[86.8, 27.8],[88.0, 27.5]
+      ] }
+    }
+  ]
+}

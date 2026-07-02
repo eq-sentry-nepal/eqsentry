@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EQ Sentry — Earthquake Monitoring & Safety for Nepal</title>
+  <meta name="description" content="Real-time earthquake monitoring, preparedness and emergency resources for Nepal. Live USGS data, bilingual (Nepali / English). भूकम्प निगरानी र सुरक्षा।" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%230A0C10'/%3E%3Cpath d='M5 21h6l3-9 5 16 4-12 2.5 5H35' stroke='%23FF4D2E' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="canonical" href="https://eqsentry.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="EQ Sentry" />
+  <meta property="og:title" content="EQ Sentry — Earthquake Monitoring & Safety for Nepal" />
+  <meta property="og:description" content="Real-time earthquake monitoring, preparedness and emergency resources for Nepal." />
+  <meta property="og:image" content="https://eqsentry.com/assets/icons/og-image.png" />
+  <meta property="og:url" content="https://eqsentry.com/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://eqsentry.com/assets/icons/og-image.png" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="alternate" type="application/rss+xml" title="EQ Sentry — latest earthquakes near Nepal" href="data/feed.xml" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "name": "EQ Sentry",
+        "url": "https://eqsentry.com/",
+        "description": "Real-time earthquake monitoring, preparedness and emergency resources for Nepal — bilingual (English / Nepali).",
+        "inLanguage": ["en", "ne"]
+      },
+      {
+        "@type": "Organization",
+        "name": "EQ Sentry",
+        "url": "https://eqsentry.com/",
+        "logo": "https://eqsentry.com/assets/icons/icon-512.png",
+        "founder": { "@type": "Person", "name": "Prashant Acharya", "url": "https://prashantacharya.com" }
+      }
+    ]
+  }
+  </script>
+  <script type="application/json" id="page-i18n">
+    {
+      "en": {
+        "status.chip": "Live · monitoring the Himalaya",
+        "hero.h1": "Know the moment <span class='accent'>the ground moves.</span>",
+        "hero.sub": "Real-time earthquake monitoring, plain-language safety guidance and local emergency resources — built so every household in Nepal can act faster and stay safer.",
+        "hero.cta1": "Open live map",
+        "hero.cta2": "How to prepare",
+
+        "ro.latest": "Latest nearby", "ro.week": "Near Nepal · 7 days",
+        "ro.record": "On record (M4.5+)", "ro.max": "Strongest on record",
+
+        "feat.eyebrow": "What it does",
+        "feat.title": "Watch, learn and prepare — in one place",
+        "feat.sub": "Earthquakes can't be predicted. Readiness is what saves lives. EQ Sentry turns raw seismic data into action.",
+        "feat.map.t": "Live quake map",
+        "feat.map.d": "Real-time earthquakes across Nepal and the Himalaya from USGS, plus the full local catalogue since 1911.",
+        "feat.prep.t": "Preparedness guide",
+        "feat.prep.d": "Clear steps for before, during and after a quake, an emergency-kit checklist and a family plan.",
+        "feat.alerts.t": "Get alerts",
+        "feat.alerts.d": "Register your district to be notified about significant earthquakes near you.",
+        "feat.res.t": "Emergency resources",
+        "feat.res.d": "Nepal's emergency numbers, hospitals and the official agencies you can rely on.",
+        "feat.more": "Open",
+
+        "why.eyebrow": "Why it matters here",
+        "why.title": "Nepal sits on one of Earth's most active fault zones",
+        "why.p1": "Nepal lies where the Indian plate pushes beneath the Eurasian plate, raising the Himalaya by about two centimetres a year. That collision stores enormous energy along faults beneath the country — making Nepal among the most earthquake-prone nations on Earth.",
+        "why.p2": "The 2015 Gorkha earthquake (M7.8) killed close to 9,000 people. The 1934 Nepal–Bihar quake (M8.0) was larger still. Scientists warn strain keeps building, especially in the west. Preparation is the one thing fully within our control.",
+        "stat.1n": "7.8", "stat.1l": "2015 Gorkha magnitude",
+        "stat.2n": "~9,000", "stat.2l": "lives lost in 2015",
+        "stat.3n": "~2cm", "stat.3l": "plate convergence / year",
+        "stat.4n": "24/7", "stat.4l": "global monitoring",
+
+        "nb.eyebrow": "Historic record",
+        "nb.title": "Major earthquakes that shaped Nepal",
+        "nb.sub": "Eight defining events, from the 1934 Nepal–Bihar disaster to the 2025 Dingri quake.",
+        "nb.deaths": "deaths",
+        "nb.view": "Explore all on the map",
+
+        "dch.title": "If you feel shaking: Drop, Cover, Hold On",
+        "dch.drop.t": "Drop", "dch.drop.d": "Drop to your hands and knees before the shaking knocks you down.",
+        "dch.cover.t": "Cover", "dch.cover.d": "Take cover under a sturdy table; protect your head and neck.",
+        "dch.hold.t": "Hold On", "dch.hold.d": "Hold on to your shelter until the shaking stops completely.",
+        "dch.more": "Full preparedness guide",
+
+        "cta.title": "Be ready before the next one",
+        "cta.sub": "Register for alerts and keep your household plan close. Two minutes today can save lives tomorrow.",
+        "cta.b1": "Register for alerts", "cta.b2": "View live map",
+        "la.eyebrow": "Live · Nepal",
+        "la.title": "Nepal's seismic pulse",
+        "la.sub": "Recent earthquake activity in and around Nepal, cross-checked live against USGS and EMSC.",
+        "la.s1l": "Last 30 days", "la.s2l": "Strongest · 30 days", "la.s3l": "Days since M4+", "la.s4l": "Recorded since {since|1911}",
+        "la.feed": "Latest earthquakes near Nepal", "la.empty": "No recent earthquakes detected near Nepal.", "la.more": "View all on the live map",
+        "la.sources": "Live data cross-checked from <a href='https://earthquake.usgs.gov/' target='_blank' rel='noopener'>USGS</a> and <a href='https://www.seismicportal.eu/' target='_blank' rel='noopener'>EMSC</a>. Official Nepal records: <a href='https://www.seismonepal.gov.np/' target='_blank' rel='noopener'>National Seismological Centre</a>.",
+        "dch.n1": "1", "dch.n2": "2", "dch.n3": "3"
+      },
+      "ne": {
+        "status.chip": "प्रत्यक्ष · हिमालयको निगरानी",
+        "hero.h1": "जमिन हल्लिने <span class='accent'>क्षण नै थाहा पाउनुहोस्।</span>",
+        "hero.sub": "वास्तविक-समयको भूकम्प निगरानी, सरल भाषामा सुरक्षा निर्देशन र स्थानीय आपत्कालीन स्रोत — ताकि नेपालको हरेक घरपरिवारले छिटो प्रतिक्रिया दिन र सुरक्षित रहन सकोस्।",
+        "hero.cta1": "प्रत्यक्ष नक्सा खोल्नुहोस्",
+        "hero.cta2": "कसरी तयारी गर्ने",
+
+        "ro.latest": "पछिल्लो नजिक", "ro.week": "नेपाल नजिक · ७ दिन",
+        "ro.record": "अभिलेखमा (M४.५+)", "ro.max": "अभिलेखकै ठूलो",
+
+        "feat.eyebrow": "यसले के गर्छ",
+        "feat.title": "हेर्न, सिक्न र तयारी गर्न — एकै ठाउँमा",
+        "feat.sub": "भूकम्पको पूर्वानुमान गर्न सकिँदैन। तयारीले नै ज्यान बचाउँछ। EQ Sentry ले भूकम्पीय तथ्याङ्कलाई कार्यमा बदल्छ।",
+        "feat.map.t": "प्रत्यक्ष भूकम्प नक्सा",
+        "feat.map.d": "USGS बाट नेपाल र हिमालयभरि वास्तविक-समयका भूकम्प, र १९११ यताको सम्पूर्ण स्थानीय सूची।",
+        "feat.prep.t": "पूर्वतयारी निर्देशिका",
+        "feat.prep.d": "भूकम्प अघि, बेला र पछिका स्पष्ट चरण, आपत्कालीन सामग्रीको सूची र पारिवारिक योजना।",
+        "feat.alerts.t": "सूचना प्राप्त गर्नुहोस्",
+        "feat.alerts.d": "आफ्नो जिल्ला दर्ता गरी नजिकका ठूला भूकम्पबारे सूचना पाउनुहोस्।",
+        "feat.res.t": "आपत्कालीन स्रोत",
+        "feat.res.d": "नेपालका आपत्कालीन नम्बर, अस्पताल र भरपर्दो आधिकारिक निकायहरू।",
+        "feat.more": "खोल्नुहोस्",
+
+        "why.eyebrow": "यो किन महत्त्वपूर्ण छ",
+        "why.title": "नेपाल पृथ्वीकै सबैभन्दा सक्रिय भूकम्पीय क्षेत्रमध्ये एकमा छ",
+        "why.p1": "नेपाल त्यहाँ छ जहाँ भारतीय प्लेट युरेसियन प्लेटमुनि घुस्रिँदै वर्षको करिब दुई सेन्टिमिटरले हिमाल उठाउँछ। यही टकरावले देशमुनिका भ्रंशमा ठूलो ऊर्जा सञ्चित गर्छ — जसले नेपाललाई विश्वकै बढी भूकम्प जोखिमयुक्त देशमध्ये बनाउँछ।",
+        "why.p2": "२०१५ को गोरखा भूकम्प (M७.८) ले करिब ९,००० को ज्यान लियो। १९३४ को नेपाल–बिहार भूकम्प (M८.०) झनै ठूलो थियो। वैज्ञानिकहरू भन्छन् तनाव बढ्दै छ, विशेषगरी पश्चिममा। तयारी नै हाम्रो पूर्ण नियन्त्रणको एक मात्र कुरा हो।",
+        "stat.1n": "७.८", "stat.1l": "२०१५ गोरखा म्याग्निच्युड",
+        "stat.2n": "~९,०००", "stat.2l": "२०१५ मा ज्यान गुमाए",
+        "stat.3n": "~२से.मी.", "stat.3l": "प्लेट सर्ने / वर्ष",
+        "stat.4n": "२४/७", "stat.4l": "विश्वव्यापी निगरानी",
+
+        "nb.eyebrow": "ऐतिहासिक अभिलेख",
+        "nb.title": "नेपाललाई आकार दिने ठूला भूकम्प",
+        "nb.sub": "१९३४ को नेपाल–बिहार विपद्देखि २०२५ को डिङ्ग्री भूकम्पसम्म, आठ निर्णायक घटना।",
+        "nb.deaths": "मृत्यु",
+        "nb.view": "नक्सामा सबै हेर्नुहोस्",
+
+        "dch.title": "हल्लिएको महसुस भए: घोप्टिनुहोस्, ओत लिनुहोस्, समाउनुहोस्",
+        "dch.drop.t": "घोप्टिनुहोस्", "dch.drop.d": "हल्लाइले लडाउनुअघि नै हात र घुँडाका भरमा घोप्टिनुहोस्।",
+        "dch.cover.t": "ओत लिनुहोस्", "dch.cover.d": "बलियो टेबलमुनि ओत लिनुहोस्; टाउको र घाँटी जोगाउनुहोस्।",
+        "dch.hold.t": "समाउनुहोस्", "dch.hold.d": "हल्लाइ पूर्ण रूपमा नरोकिएसम्म आफ्नो ओत समातिराख्नुहोस्।",
+        "dch.more": "पूर्ण पूर्वतयारी निर्देशिका",
+
+        "cta.title": "अर्को भूकम्प अघि नै तयार हुनुहोस्",
+        "cta.sub": "सूचनाका लागि दर्ता गर्नुहोस् र घरको योजना नजिक राख्नुहोस्। आजको दुई मिनेटले भोलि ज्यान बचाउन सक्छ।",
+        "cta.b1": "सूचनाका लागि दर्ता", "cta.b2": "प्रत्यक्ष नक्सा हेर्नुहोस्",
+        "la.eyebrow": "प्रत्यक्ष · नेपाल",
+        "la.title": "नेपालको भूकम्पीय नाडी",
+        "la.sub": "USGS र EMSC बाट प्रत्यक्ष क्रस-चेक — नेपाल वरपरको हालैको भूकम्पीय गतिविधि।",
+        "la.s1l": "विगत ३० दिन", "la.s2l": "सबैभन्दा ठूलो · ३० दिन", "la.s3l": "M४+ भएयताका दिन", "la.s4l": "{since|1911} यता अभिलेख",
+        "la.feed": "नेपाल नजिकका पछिल्ला भूकम्प", "la.empty": "नेपाल नजिक हालै भूकम्प पत्ता लागेन।", "la.more": "प्रत्यक्ष नक्सामा सबै हेर्नुहोस्",
+        "la.sources": "<a href='https://earthquake.usgs.gov/' target='_blank' rel='noopener'>USGS</a> र <a href='https://www.seismicportal.eu/' target='_blank' rel='noopener'>EMSC</a> बाट प्रत्यक्ष तथ्याङ्क क्रस-चेक। आधिकारिक नेपाल अभिलेख: <a href='https://www.seismonepal.gov.np/' target='_blank' rel='noopener'>राष्ट्रिय भूकम्प केन्द्र</a>।",
+        "dch.n1": "१", "dch.n2": "२", "dch.n3": "३"
+      }
+    }
+  </script>
+</head>
+<body data-page="home" data-eqdata>
+  <header class="site-header" id="site-header"></header>
+  <div id="alertBar"></div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="container">
+      <span class="status-chip"><span class="live-dot"></span><span data-i18n="status.chip"></span></span>
+      <h1 data-i18n-html="hero.h1"></h1>
+      <p class="lead" data-i18n="hero.sub"></p>
+      <div class="cta-row">
+        <a href="map.html" class="btn btn-primary" data-i18n="hero.cta1"></a>
+        <a href="preparedness.html" class="btn btn-ghost" data-i18n="hero.cta2"></a>
+      </div>
+
+      <div class="readout">
+        <div class="cell"><div class="k" data-i18n="ro.latest"></div><div class="v accent" id="roLatest" data-eq="latest.mag">—</div></div>
+        <div class="cell"><div class="k" data-i18n="ro.week"></div><div class="v" id="roWeek" data-eq="week.count">—</div></div>
+        <div class="cell"><div class="k" data-i18n="ro.record"></div><div class="v" id="roRecord" data-eq="total">—</div></div>
+        <div class="cell"><div class="k" data-i18n="ro.max"></div><div class="v" id="roMax" data-eq="maxMag">—</div></div>
+      </div>
+    </div>
+    <div class="seismo-wrap"><canvas id="seismoCanvas" aria-hidden="true"></canvas></div>
+  </section>
+
+  <!-- LIVE ACTIVITY -->
+  <section class="section">
+    <div class="container">
+      <div class="sec-head center reveal">
+        <span class="eyebrow" data-i18n="la.eyebrow"></span>
+        <h2 data-i18n="la.title"></h2>
+        <p class="lead" data-i18n="la.sub"></p>
+      </div>
+      <div class="pulse-row reveal">
+        <div class="pulse"><div class="pn accent" id="pa30" data-eq="month.count">—</div><div class="pl" data-i18n="la.s1l"></div></div>
+        <div class="pulse"><div class="pn" id="paBig" data-eq="strongest30d">—</div><div class="pl" data-i18n="la.s2l"></div></div>
+        <div class="pulse"><div class="pn" id="paSince" data-eq="daysSince">—</div><div class="pl" data-i18n="la.s3l"></div></div>
+        <div class="pulse"><div class="pn" id="paTotal" data-eq="total">—</div><div class="pl" data-i18n="la.s4l"></div></div>
+      </div>
+      <div class="feed-head reveal"><h3 data-i18n="la.feed"></h3><a href="map.html" class="feed-link" data-i18n="la.more"></a></div>
+      <div class="quake-feed reveal" id="quakeFeed"><div class="feed-empty"><span class="spinner"></span></div></div>
+      <p class="feed-sources reveal" data-i18n-html="la.sources"></p>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section alt">
+    <div class="container">
+      <div class="sec-head center reveal">
+        <span class="eyebrow" data-i18n="feat.eyebrow"></span>
+        <h2 data-i18n="feat.title"></h2>
+        <p class="lead" data-i18n="feat.sub"></p>
+      </div>
+      <div class="grid cols-4">
+        <a href="map.html" class="card link-card reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-6 2V6l6-2 6 2 6-2v16l-6 2-6-2z"/><path d="M9 4v16M15 6v16"/></svg></div>
+          <h3 data-i18n="feat.map.t"></h3><p data-i18n="feat.map.d"></p>
+          <span class="card-arrow" data-i18n="feat.more"></span> <span class="card-arrow">→</span>
+        </a>
+        <a href="preparedness.html" class="card link-card reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h3 data-i18n="feat.prep.t"></h3><p data-i18n="feat.prep.d"></p>
+          <span class="card-arrow" data-i18n="feat.more"></span> <span class="card-arrow">→</span>
+        </a>
+        <a href="alerts.html" class="card link-card reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+          <h3 data-i18n="feat.alerts.t"></h3><p data-i18n="feat.alerts.d"></p>
+          <span class="card-arrow" data-i18n="feat.more"></span> <span class="card-arrow">→</span>
+        </a>
+        <a href="resources.html" class="card link-card reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <h3 data-i18n="feat.res.t"></h3><p data-i18n="feat.res.d"></p>
+          <span class="card-arrow" data-i18n="feat.more"></span> <span class="card-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY NEPAL -->
+  <section class="section">
+    <div class="container">
+      <div class="grid cols-2" style="gap:48px;align-items:center">
+        <div class="reveal">
+          <span class="eyebrow" data-i18n="why.eyebrow"></span>
+          <h2 data-i18n="why.title"></h2>
+          <p data-i18n="why.p1"></p>
+          <p data-i18n="why.p2"></p>
+        </div>
+        <div class="reveal">
+          <svg class="tecto" viewBox="0 0 500 330" style="width:100%;height:auto;border-radius:16px;border:1px solid var(--line);background:#0b1016" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animated cross-section: the Indian plate pushes beneath the Eurasian plate, raising the Himalaya, while an earthquake epicentre on the fault sends out shockwaves">
+            <defs>
+              <linearGradient id="eurG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5b6776"/><stop offset="1" stop-color="#39424e"/></linearGradient>
+              <linearGradient id="indG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a5a36"/><stop offset="1" stop-color="#5a3b23"/></linearGradient>
+              <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c1526"/><stop offset="1" stop-color="#0b1016"/></linearGradient>
+              <marker id="cvar" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#FF4D2E"/></marker>
+            </defs>
+            <rect width="500" height="330" fill="url(#skyG)"/>
+            <!-- Eurasian crust + Himalaya -->
+            <path d="M0,150 L175,142 L250,95 L300,78 L360,110 L440,135 L500,142 L500,330 L0,330 Z" fill="url(#eurG)"/>
+            <polygon points="300,78 317,106 283,106" fill="#eef3f8" opacity=".9"/>
+            <!-- Indian plate subducting beneath -->
+            <path d="M0,205 L150,208 L262,243 L380,278 L500,300 L500,330 L0,330 Z" fill="url(#indG)"/>
+            <!-- fault: Main Himalayan Thrust -->
+            <path d="M0,205 L150,208 L262,243 L380,278 L500,300" fill="none" stroke="#ffc24b" stroke-width="2.5" stroke-linecap="round" opacity=".92"/>
+            <!-- convergence -->
+            <g stroke="#FF4D2E" stroke-width="2.5" fill="none" marker-end="url(#cvar)"><path d="M26,258 H104"/></g>
+            <text x="26" y="250" font-family="JetBrains Mono, monospace" font-size="10" fill="#e7c9a6">Indian plate ≈2 cm/yr</text>
+            <text x="352" y="198" font-family="JetBrains Mono, monospace" font-size="11" fill="#b6bdc6">Eurasian plate</text>
+            <text x="262" y="64" font-family="JetBrains Mono, monospace" font-size="11" fill="#e9eef3" text-anchor="middle">Himalaya</text>
+            <text x="300" y="262" font-family="JetBrains Mono, monospace" font-size="9" fill="#ffc24b">MHT fault</text>
+            <!-- epicentre + shockwaves -->
+            <circle class="eq-ring" cx="262" cy="243" r="80" fill="none" stroke="#ff7a4c" stroke-width="2.4"/>
+            <circle class="eq-ring eq-ring2" cx="262" cy="243" r="80" fill="none" stroke="#ff7a4c" stroke-width="2"/>
+            <circle class="eq-ring eq-ring3" cx="262" cy="243" r="80" fill="none" stroke="#ff7a4c" stroke-width="1.6"/>
+            <circle class="eq-epi" cx="262" cy="243" r="5.5" fill="#FF4D2E"/>
+            <circle cx="262" cy="243" r="2" fill="#fff"/>
+          </svg>
+        </div>
+      </div>
+      <div class="stat-row reveal" style="margin-top:40px">
+        <div class="stat"><div class="num accent" data-i18n="stat.1n"></div><div class="lbl" data-i18n="stat.1l"></div></div>
+        <div class="stat"><div class="num" data-i18n="stat.2n"></div><div class="lbl" data-i18n="stat.2l"></div></div>
+        <div class="stat"><div class="num" data-i18n="stat.3n"></div><div class="lbl" data-i18n="stat.3l"></div></div>
+        <div class="stat"><div class="num" data-i18n="stat.4n"></div><div class="lbl" data-i18n="stat.4l"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTABLE EVENTS -->
+  <section class="section alt">
+    <div class="container">
+      <div class="sec-head center reveal">
+        <span class="eyebrow" data-i18n="nb.eyebrow"></span>
+        <h2 data-i18n="nb.title"></h2>
+        <p class="lead" data-i18n="nb.sub"></p>
+      </div>
+      <div class="grid cols-4" id="notableGrid"></div>
+      <div class="center" style="margin-top:30px"><a href="map.html" class="btn btn-outline" data-i18n="nb.view"></a></div>
+    </div>
+  </section>
+
+  <!-- DROP COVER HOLD -->
+  <section class="section">
+    <div class="container">
+      <div class="sec-head center reveal"><h2 data-i18n="dch.title"></h2></div>
+      <div class="grid cols-3">
+        <div class="card dch-step reveal"><span class="dch-num" data-i18n="dch.n1">1</span><div class="dch-illus"><svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Drop to hands and knees"><line x1="18" y1="140" x2="202" y2="140" stroke="var(--line-2)" stroke-width="4" stroke-linecap="round"/><g stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".4"><path d="M176 30V58M167 49l9 9 9-9"/><path d="M197 44v22M189 58l8 8 8-8"/></g><circle cx="60" cy="84" r="16" fill="var(--accent)"/><g stroke="var(--accent)" stroke-linecap="round" stroke-linejoin="round"><path d="M73 80Q112 70 150 82" stroke-width="18"/><path d="M80 88L74 136" stroke-width="13"/><path d="M148 82L152 136" stroke-width="14"/><path d="M152 136L182 136" stroke-width="12"/></g></svg></div><h3 data-i18n="dch.drop.t"></h3><p data-i18n="dch.drop.d"></p></div>
+        <div class="card dch-step reveal"><span class="dch-num" data-i18n="dch.n2">2</span><div class="dch-illus"><svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cover under a sturdy table"><line x1="18" y1="140" x2="202" y2="140" stroke="var(--line-2)" stroke-width="4" stroke-linecap="round"/><rect x="34" y="52" width="152" height="9" rx="4.5" fill="var(--ink-faint)"/><g stroke="var(--ink-faint)" stroke-width="8" stroke-linecap="round"><line x1="50" y1="61" x2="50" y2="138"/><line x1="170" y1="61" x2="170" y2="138"/></g><circle cx="110" cy="96" r="15" fill="var(--accent)"/><g stroke="var(--accent)" stroke-linecap="round" stroke-linejoin="round"><path d="M101 108Q110 134 138 132" stroke-width="17"/><path d="M97 90Q110 69 123 84" stroke-width="9"/></g></svg></div><h3 data-i18n="dch.cover.t"></h3><p data-i18n="dch.cover.d"></p></div>
+        <div class="card dch-step reveal"><span class="dch-num" data-i18n="dch.n3">3</span><div class="dch-illus"><svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hold on to your shelter"><line x1="18" y1="140" x2="202" y2="140" stroke="var(--line-2)" stroke-width="4" stroke-linecap="round"/><g stroke="var(--accent)" stroke-width="4" stroke-linecap="round" opacity=".5"><path d="M28 46q-7 6 0 14M38 42q-9 8 0 18"/><path d="M192 46q7 6 0 14M182 42q9 8 0 18"/></g><rect x="40" y="52" width="150" height="9" rx="4.5" fill="var(--ink-faint)"/><g stroke="var(--ink-faint)" stroke-width="8" stroke-linecap="round"><line x1="56" y1="61" x2="56" y2="138"/><line x1="174" y1="61" x2="174" y2="138"/></g><circle cx="116" cy="96" r="15" fill="var(--accent)"/><g stroke="var(--accent)" stroke-linecap="round" stroke-linejoin="round"><path d="M107 108Q116 134 142 132" stroke-width="17"/><path d="M104 96L66 82" stroke-width="9"/></g><circle cx="60" cy="80" r="7" fill="var(--accent)"/></svg></div><h3 data-i18n="dch.hold.t"></h3><p data-i18n="dch.hold.d"></p></div>
+      </div>
+      <div class="center" style="margin-top:28px"><a href="preparedness.html" class="btn btn-outline" data-i18n="dch.more"></a></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section tight">
+    <div class="container">
+      <div class="cta-band reveal">
+        <h2 data-i18n="cta.title"></h2>
+        <p class="lead" style="margin:0 auto" data-i18n="cta.sub"></p>
+        <div class="cta-row">
+          <a href="alerts.html" class="btn btn-primary" data-i18n="cta.b1"></a>
+          <a href="map.html" class="btn btn-ghost" data-i18n="cta.b2"></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/engine.js"></script>
+  <script src="assets/js/seismograph.js"></script>
+  <script src="assets/js/pages/home.js"></script>
+</body>
+</html>

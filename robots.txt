@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /server/
+
+Sitemap: https://eqsentry.com/sitemap.xml
