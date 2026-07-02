@@ -132,6 +132,14 @@ try {
   if (!/const VERSION = "eqsentry-v\d+"/.test(sw)) fail("sw: VERSION constant malformed");
 } catch (e) { fail("service-worker.js unreadable: " + e.message); }
 
+/* 8b ── site version shown in the footer must match package.json */
+try {
+  const pkgVer = JSON.parse(read("package.json")).version;
+  const i18nVer = (read("assets/js/i18n.js").match(/var VERSION = "([^"]+)"/) || [])[1];
+  if (!i18nVer) fail("version: VERSION constant missing in assets/js/i18n.js");
+  else if (i18nVer !== pkgVer) fail(`version: footer shows v${i18nVer} but package.json says ${pkgVer}`);
+} catch (e) { fail("version check error: " + e.message); }
+
 /* 9 ── data sanity */
 try {
   const cat = JSON.parse(read("data/nepal_earthquakes.geojson"));

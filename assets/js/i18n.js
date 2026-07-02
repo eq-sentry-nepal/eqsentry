@@ -298,6 +298,7 @@
   }
 
   /* ---------- Header / Footer markup ---------- */
+  var VERSION = "2.0.0";   // shown in the footer — keep in sync with package.json (smoke test enforces)
   var LOGO = '<svg class="logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
     '<circle cx="20" cy="20" r="18" stroke="#FF4D2E" stroke-width="2.5"/>' +
     '<path d="M5 21h6l3-9 5 16 4-12 2.5 5H35" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -432,7 +433,8 @@
         '</div>' +
         '<p class="muted" style="font-size:.82rem;margin-top:22px" data-i18n="foot.disclaimer"></p>' +
         '<div class="foot-bottom">' +
-          '<span>© <span id="year"></span> EQ Sentry · eqsentry.com — <a href="https://prashantacharya.com" target="_blank" rel="noopener" data-i18n="foot.rights"></a></span>' +
+          '<span>© <span id="year"></span> EQ Sentry · eqsentry.com — <a href="https://prashantacharya.com" target="_blank" rel="noopener" data-i18n="foot.rights"></a>' +
+            '<br><span class="foot-ver" title="EQ Sentry version">v' + VERSION + '</span></span>' +
           '<span><a href="privacy.html" data-i18n="foot.privacy"></a> · Data: USGS Earthquake Hazards Program</span>' +
         '</div>' +
       '</div>';

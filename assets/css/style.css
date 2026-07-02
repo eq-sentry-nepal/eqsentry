@@ -854,6 +854,9 @@ html[lang="ne"] .score-tier { letter-spacing:0; text-transform:none; font-family
   .stat .num { font-size:1.4rem; }
 }
 
+/* ---------- Footer version badge ---------- */
+.foot-ver { font-family:var(--mono); font-size:.78rem; color:var(--ink-faint); }
+
 /* ---------- Hazard hunt ---------- */
 .hh-room { border-top:1px solid var(--line); padding:14px 0 8px; }
 .hh-room:first-child { border-top:0; padding-top:4px; }
