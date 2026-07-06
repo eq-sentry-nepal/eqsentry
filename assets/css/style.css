@@ -855,6 +855,18 @@ html[lang="ne"] .score-tier { letter-spacing:0; text-transform:none; font-family
   .stat .num { font-size:1.4rem; }
 }
 
+/* ---------- About: how-it-works flow ---------- */
+.hw-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:34px; }
+.hw-step { position:relative; }
+.hw-num { position:absolute; top:14px; right:16px; font-family:var(--mono); font-weight:700; font-size:2rem;
+  color:rgba(255,77,46,.22); line-height:1; }
+.hw-step:not(:last-child)::after { content:"→"; position:absolute; right:-27px; top:50%; transform:translateY(-50%);
+  color:var(--accent-2); font-size:1.5rem; font-weight:700; }
+@media (max-width:900px){
+  .hw-grid { grid-template-columns:1fr; gap:26px; }
+  .hw-step:not(:last-child)::after { content:"↓"; right:auto; left:50%; top:auto; bottom:-24px; transform:translateX(-50%); }
+}
+
 /* ---------- About: devastation timeline ---------- */
 .abt-tl { position:relative; margin:8px 0 0; padding-left:26px; }
 .abt-tl::before { content:""; position:absolute; left:7px; top:6px; bottom:6px; width:2px;
