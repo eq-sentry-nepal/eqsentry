@@ -855,6 +855,9 @@ html[lang="ne"] .score-tier { letter-spacing:0; text-transform:none; font-family
   .stat .num { font-size:1.4rem; }
 }
 
+/* ---------- CTA band inline links (e.g. author credit) ---------- */
+.cta-band .lead a:hover { text-decoration:underline !important; }
+
 /* ---------- About: how-it-works flow ---------- */
 .hw-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:34px; }
 .hw-step { position:relative; }
