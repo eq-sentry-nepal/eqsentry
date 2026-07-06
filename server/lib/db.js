@@ -150,3 +150,29 @@ export async function addReport(d) {
   return rec;
 }
 export async function listReports() { return await read(REPORTS, []); }
+
+// Server status samples (uptime history) — ring capped to ~30 days at 5-min sampling.
+const STATUS = path.join(DIR, "status-history.json");
+export async function appendStatusSample(s, cap = 9000) {
+  const list = await read(STATUS, []);
+  list.push(s);
+  if (list.length > cap) list.splice(0, list.length - cap);
+  await write(STATUS, list);
+}
+export async function listStatusSamples(sinceMs = 0) {
+  const list = await read(STATUS, []);
+  return sinceMs ? list.filter((s) => s.t >= sinceMs) : list;
+}
+
+// Client error reports — persisted ring (also kept for the admin endpoint).
+const CLIENTLOG = path.join(DIR, "client-log.json");
+export async function appendClientError(e, cap = 2000) {
+  const list = await read(CLIENTLOG, []);
+  list.push(e);
+  if (list.length > cap) list.splice(0, list.length - cap);
+  await write(CLIENTLOG, list);
+}
+export async function listClientErrors(sinceMs = 0) {
+  const list = await read(CLIENTLOG, []);
+  return sinceMs ? list.filter((e) => Date.parse(e.at) >= sinceMs) : list;
+}

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Site Health & Status — EQ Sentry Nepal</title>
-  <meta name="description" content="Live operational status of EQ Sentry: website health, USGS and EMSC data connections, map tiles, offline mode and catalogue freshness." />
+  <meta name="description" content="Uptime bars and live operational status of EQ Sentry: website, USGS and EMSC data feeds, map tiles, offline mode — by hour, day and month." />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%230A0C10'/%3E%3Cpath d='M5 21h6l3-9 5 16 4-12 2.5 5H35' stroke='%23FF4D2E' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,7 +13,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="EQ Sentry" />
   <meta property="og:title" content="Site Health & Status — EQ Sentry Nepal" />
-  <meta property="og:description" content="Live checks of the site and the earthquake data services it depends on." />
+  <meta property="og:description" content="Uptime bars for the site and the earthquake data services behind it." />
   <meta property="og:image" content="https://eqsentry.com/assets/icons/og-image.png" />
   <meta property="og:url" content="https://eqsentry.com/status.html" />
   <link rel="stylesheet" href="assets/css/style.css" />
@@ -21,123 +21,109 @@
     {
       "en": {
         "st.eyebrow": "Status",
-        "st.h1": "Site health & connections",
-        "st.sub": "Live checks of this site and the data services it depends on — run from your device, right now.",
-        "st.checking": "Running checks…",
-        "st.overall.ok": "All systems operational",
-        "st.overall.warn": "Partial degradation — something is slow or unreachable",
-        "st.overall.down": "Core data services unreachable",
-        "st.last": "Last checked",
+        "st.h1": "Site health & uptime",
+        "st.sub": "Every check as a bar timeline — switch between the last hour, day and month. Checks run from your device every minute while this page is open.",
+        "st.p.hour": "Hour", "st.p.day": "Day", "st.p.month": "Month",
+        "st.up.t": "uptime · selected period",
+        "st.up.now": "current state",
+        "st.last": "last check",
         "st.recheck": "↻ Re-check now",
-        "st.auto": "Checks re-run automatically every minute.",
-        "st.ok": "OK", "st.slow": "Slow", "st.fail": "Unreachable", "st.na": "Not configured", "st.off": "Off",
-        "st.c.site": "This website",
-        "st.d.site": "App shell — pages, styles and scripts",
-        "st.c.usgs": "USGS live feed",
-        "st.d.usgs": "Real-time earthquakes · earthquake.usgs.gov",
-        "st.c.emsc": "EMSC live feed",
-        "st.d.emsc": "Independent cross-check · seismicportal.eu",
-        "st.c.tiles": "Map tiles",
-        "st.d.tiles": "CARTO / OpenStreetMap basemap imagery",
-        "st.c.cat": "Bundled catalogue",
-        "st.d.cat": "Offline earthquake record behind the charts and map",
-        "st.c.sw": "Offline mode",
-        "st.d.sw": "Service worker + cached emergency pages",
-        "st.c.api": "Alerts backend",
-        "st.d.api": "Optional server for SMS / email / push alerts",
-        "st.c.net": "Your connection",
-        "st.d.net": "This device's network state",
-        "st.events": "events",
-        "st.updated": "updated",
-        "st.stale": "over {d} days old — the weekly refresh may not be running",
-        "st.sw.on": "Active — emergency pages available offline",
-        "st.sw.wait": "Registered — finishing first install",
-        "st.sw.off": "Not active yet — browse a page or two to enable offline",
-        "st.sw.no": "Not supported by this browser",
-        "st.api.static": "Static mode — the site runs fully without it; browser push alerts need it",
-        "st.net.on": "Online",
-        "st.net.off": "Offline — cached pages still work",
-        "st.ov.ok": "OPERATIONAL",
-        "st.ov.warn": "DEGRADED",
-        "st.ov.down": "OFFLINE",
-        "st.ov.wait": "CHECKING",
-        "st.mon.tag": "live monitor",
-        "st.hist.t": "Check history",
-        "st.hist.sub": "Recent status runs from this device — kept locally, newest first.",
-        "st.hist.time": "Time",
-        "st.hist.overall": "Overall",
-        "st.hist.lat": "Site / USGS / EMSC",
-        "st.hist.fails": "Issues",
-        "st.hist.none": "No history yet — it fills in as checks run.",
-        "st.err.t": "Error log",
-        "st.err.sub": "Client-side errors captured on this device by the built-in monitor — handy when reporting a bug.",
-        "st.err.none": "No errors recorded on this device. Clean run ✓",
-        "st.err.clear": "Clear log",
-        "st.err.when": "When",
-        "st.err.what": "What",
-        "st.err.where": "Where",
-        "st.note": "These checks run from your browser, so results also reflect your own network, not just our services. Once cached, the preparedness pages and emergency numbers on this site keep working with no connection at all.",
-        "st.legend": "OK = responded quickly · Slow = responded over 4 s · Unreachable = no response in 8 s"
+        "st.nodata": "—",
+        "st.ov.ok": "OPERATIONAL", "st.ov.warn": "DEGRADED", "st.ov.down": "OFFLINE", "st.ov.wait": "CHECKING…",
+        "st.ok": "OK", "st.slow": "SLOW", "st.fail": "DOWN", "st.na": "N/A",
+        "st.c.site": "This website", "st.d.site": "App shell — pages, styles, scripts",
+        "st.c.usgs": "USGS live feed", "st.d.usgs": "Real-time earthquakes · earthquake.usgs.gov",
+        "st.c.emsc": "EMSC live feed", "st.d.emsc": "Independent cross-check · seismicportal.eu",
+        "st.c.tiles": "Map tiles", "st.d.tiles": "CARTO / OpenStreetMap imagery",
+        "st.c.cat": "Bundled catalogue", "st.d.cat": "Offline record behind charts & map",
+        "st.c.sw": "Offline mode", "st.d.sw": "Service worker + cached pages",
+        "st.c.api": "Alerts backend", "st.d.api": "Optional SMS / email / push server",
+        "st.c.net": "Your connection", "st.d.net": "This device's network",
+        "st.events": "events", "st.updated": "updated",
+        "st.stale": "over {d} days old — weekly refresh may be stuck",
+        "st.sw.on": "Active — emergency pages cached", "st.sw.wait": "Registered — installing",
+        "st.sw.off": "Not active yet — browse a page or two", "st.sw.no": "Not supported by this browser",
+        "st.api.static": "Static mode — site runs fully without it",
+        "st.net.on": "Online", "st.net.off": "Offline — cached pages still work",
+        "st.leg.ok": "operational", "st.leg.slow": "degraded / slow", "st.leg.fail": "outage", "st.leg.na": "no data",
+        "st.leg.note": "Slow = over 4 s · Down = no answer in 8 s. Bars reflect checks made from this device; gaps mean the page wasn't open.",
+
+        "ad.t": "Admin — server-side history",
+        "ad.sub": "Uptime and error logs recorded by the EQ Sentry server itself, around the clock — independent of your browser. Periods follow the tabs above.",
+        "ad.key.ph": "Admin key (from server .env)",
+        "ad.connect": "Connect",
+        "ad.static": "The alerts backend isn't configured on this deployment (static mode), so server-side history isn't available here. Device-local logs below still work.",
+        "ad.denied": "Server refused the key — check ADMIN_KEY in the server's .env.",
+        "ad.err": "Couldn't reach the server status API.",
+        "ad.usgs": "USGS probes (from server)", "ad.emsc": "EMSC probes (from server)",
+        "ad.meta": "Server uptime {up} · Node {node} · {n} samples in period · feed uptime {pct}%",
+        "ad.errors.t": "Client errors reported to the server",
+        "ad.errors.none": "No client errors in this period. ✓",
+
+        "lg.t": "This device — full logs",
+        "lg.sub": "Everything recorded locally in your browser: every status run and every captured error, with timestamps.",
+        "lg.hist.t": "Check runs",
+        "lg.time": "Time", "lg.overall": "Overall", "lg.lat": "Site / USGS / EMSC (ms)", "lg.issues": "Issues",
+        "lg.none": "Nothing recorded yet — it fills in as checks run.",
+        "lg.err.t": "Error log",
+        "lg.err.none": "No errors recorded on this device. ✓",
+        "lg.clear": "Clear",
+        "lg.export": "⬇ Export JSON",
+        "lg.when": "When", "lg.what": "What", "lg.where": "Where",
+        "st.note": "Browser checks reflect your own network too, not just our services. Once cached, the preparedness pages and emergency numbers keep working with no connection at all."
       },
       "ne": {
         "st.eyebrow": "स्थिति",
-        "st.h1": "साइट स्वास्थ्य र जडान",
-        "st.sub": "यो साइट र यसले प्रयोग गर्ने डेटा सेवाहरूको प्रत्यक्ष जाँच — तपाईंकै यन्त्रबाट, अहिल्यै।",
-        "st.checking": "जाँच चल्दै…",
-        "st.overall.ok": "सबै प्रणाली सञ्चालनमा",
-        "st.overall.warn": "आंशिक समस्या — केही ढिलो वा पहुँचबाहिर छ",
-        "st.overall.down": "मुख्य डेटा सेवाहरू पहुँचबाहिर",
+        "st.h1": "साइट स्वास्थ्य र अपटाइम",
+        "st.sub": "हरेक जाँच बार टाइमलाइनका रूपमा — पछिल्लो घण्टा, दिन र महिनाबीच बदल्नुहोस्। यो पृष्ठ खुला रहँदा हरेक मिनेट तपाईंकै यन्त्रबाट जाँच चल्छ।",
+        "st.p.hour": "घण्टा", "st.p.day": "दिन", "st.p.month": "महिना",
+        "st.up.t": "अपटाइम · छानिएको अवधि",
+        "st.up.now": "हालको अवस्था",
         "st.last": "पछिल्लो जाँच",
         "st.recheck": "↻ फेरि जाँच्नुहोस्",
-        "st.auto": "जाँचहरू हरेक मिनेट आफैँ दोहोरिन्छन्।",
-        "st.ok": "ठीक", "st.slow": "ढिलो", "st.fail": "पहुँच भएन", "st.na": "कन्फिगर छैन", "st.off": "बन्द",
-        "st.c.site": "यो वेबसाइट",
-        "st.d.site": "एप सेल — पृष्ठ, स्टाइल र स्क्रिप्ट",
-        "st.c.usgs": "USGS प्रत्यक्ष फिड",
-        "st.d.usgs": "वास्तविक-समय भूकम्प · earthquake.usgs.gov",
-        "st.c.emsc": "EMSC प्रत्यक्ष फिड",
-        "st.d.emsc": "स्वतन्त्र क्रस-चेक · seismicportal.eu",
-        "st.c.tiles": "नक्सा टाइल",
-        "st.d.tiles": "CARTO / OpenStreetMap आधार नक्सा",
-        "st.c.cat": "समावेशित सूची",
-        "st.d.cat": "चार्ट र नक्साले प्रयोग गर्ने अफलाइन भूकम्प अभिलेख",
-        "st.c.sw": "अफलाइन मोड",
-        "st.d.sw": "सर्भिस वर्कर + क्यास गरिएका आपत्कालीन पृष्ठ",
-        "st.c.api": "सूचना ब्याकइन्ड",
-        "st.d.api": "SMS / इमेल / पुश सूचनाका लागि वैकल्पिक सर्भर",
-        "st.c.net": "तपाईंको जडान",
-        "st.d.net": "यस यन्त्रको नेटवर्क अवस्था",
-        "st.events": "घटना",
-        "st.updated": "अद्यावधिक",
-        "st.stale": "{d} दिनभन्दा पुरानो — साप्ताहिक ताजगी नचलेको हुनसक्छ",
-        "st.sw.on": "सक्रिय — आपत्कालीन पृष्ठ अफलाइन उपलब्ध",
-        "st.sw.wait": "दर्ता भयो — पहिलो इन्स्टल सकिँदै",
-        "st.sw.off": "अझै सक्रिय छैन — अफलाइनका लागि एक-दुई पृष्ठ हेर्नुहोस्",
-        "st.sw.no": "यो ब्राउजरले समर्थन गर्दैन",
-        "st.api.static": "स्ट्याटिक मोड — साइट यसविनै पूर्ण चल्छ; ब्राउजर पुश सूचनालाई चाहिन्छ",
-        "st.net.on": "अनलाइन",
-        "st.net.off": "अफलाइन — क्यास गरिएका पृष्ठ चल्छन्",
-        "st.ov.ok": "सञ्चालनमा",
-        "st.ov.warn": "आंशिक समस्या",
-        "st.ov.down": "अफलाइन",
-        "st.ov.wait": "जाँच हुँदै",
-        "st.mon.tag": "प्रत्यक्ष मनिटर",
-        "st.hist.t": "जाँच इतिहास",
-        "st.hist.sub": "यस यन्त्रबाट गरिएका पछिल्ला स्थिति जाँच — स्थानीय रूपमा राखिएको, नयाँ पहिले।",
-        "st.hist.time": "समय",
-        "st.hist.overall": "समग्र",
-        "st.hist.lat": "साइट / USGS / EMSC",
-        "st.hist.fails": "समस्या",
-        "st.hist.none": "इतिहास छैन — जाँच चल्दै जाँदा भरिन्छ।",
-        "st.err.t": "त्रुटि लग",
-        "st.err.sub": "यस यन्त्रमा अन्तर्निहित मनिटरले समातेका क्लाइन्ट-साइड त्रुटि — बग रिपोर्ट गर्दा उपयोगी।",
-        "st.err.none": "यस यन्त्रमा कुनै त्रुटि रेकर्ड छैन। सफा ✓",
-        "st.err.clear": "लग खाली गर्नुहोस्",
-        "st.err.when": "कहिले",
-        "st.err.what": "के",
-        "st.err.where": "कहाँ",
-        "st.note": "यी जाँच तपाईंकै ब्राउजरबाट चल्छन्, त्यसैले नतिजामा हाम्रा सेवा मात्र होइन तपाईंको नेटवर्क पनि झल्किन्छ। एकपटक क्यास भएपछि यस साइटका पूर्वतयारी पृष्ठ र आपत्कालीन नम्बर इन्टरनेटविनै काम गर्छन्।",
-        "st.legend": "ठीक = छिटो जवाफ · ढिलो = ४ से.भन्दा बढी · पहुँच भएन = ८ से.मा जवाफ आएन"
+        "st.nodata": "—",
+        "st.ov.ok": "सञ्चालनमा", "st.ov.warn": "आंशिक समस्या", "st.ov.down": "अफलाइन", "st.ov.wait": "जाँच हुँदै…",
+        "st.ok": "ठीक", "st.slow": "ढिलो", "st.fail": "बन्द", "st.na": "N/A",
+        "st.c.site": "यो वेबसाइट", "st.d.site": "एप सेल — पृष्ठ, स्टाइल, स्क्रिप्ट",
+        "st.c.usgs": "USGS प्रत्यक्ष फिड", "st.d.usgs": "वास्तविक-समय भूकम्प · earthquake.usgs.gov",
+        "st.c.emsc": "EMSC प्रत्यक्ष फिड", "st.d.emsc": "स्वतन्त्र क्रस-चेक · seismicportal.eu",
+        "st.c.tiles": "नक्सा टाइल", "st.d.tiles": "CARTO / OpenStreetMap चित्र",
+        "st.c.cat": "समावेशित सूची", "st.d.cat": "चार्ट-नक्साको अफलाइन अभिलेख",
+        "st.c.sw": "अफलाइन मोड", "st.d.sw": "सर्भिस वर्कर + क्यास पृष्ठ",
+        "st.c.api": "सूचना ब्याकइन्ड", "st.d.api": "वैकल्पिक SMS / इमेल / पुश सर्भर",
+        "st.c.net": "तपाईंको जडान", "st.d.net": "यस यन्त्रको नेटवर्क",
+        "st.events": "घटना", "st.updated": "अद्यावधिक",
+        "st.stale": "{d} दिनभन्दा पुरानो — साप्ताहिक ताजगी अड्किएको हुनसक्छ",
+        "st.sw.on": "सक्रिय — आपत्कालीन पृष्ठ क्यासमा", "st.sw.wait": "दर्ता भयो — इन्स्टल हुँदै",
+        "st.sw.off": "अझै सक्रिय छैन — एक-दुई पृष्ठ हेर्नुहोस्", "st.sw.no": "यो ब्राउजरमा समर्थन छैन",
+        "st.api.static": "स्ट्याटिक मोड — साइट यसविनै पूर्ण चल्छ",
+        "st.net.on": "अनलाइन", "st.net.off": "अफलाइन — क्यास पृष्ठ चल्छन्",
+        "st.leg.ok": "सञ्चालनमा", "st.leg.slow": "ढिलो / आंशिक", "st.leg.fail": "बन्द", "st.leg.na": "डेटा छैन",
+        "st.leg.note": "ढिलो = ४ से.भन्दा बढी · बन्द = ८ से.मा जवाफ छैन। बारहरू यस यन्त्रका जाँच हुन्; खाली भाग = पृष्ठ खुला थिएन।",
+
+        "ad.t": "एडमिन — सर्भर-साइड इतिहास",
+        "ad.sub": "EQ Sentry सर्भर आफैँले चौबीसै घण्टा रेकर्ड गरेको अपटाइम र त्रुटि लग — तपाईंको ब्राउजरभन्दा स्वतन्त्र। अवधि माथिकै ट्याबअनुसार।",
+        "ad.key.ph": "एडमिन कुञ्जी (सर्भरको .env बाट)",
+        "ad.connect": "जोड्नुहोस्",
+        "ad.static": "यस डिप्लोयमेन्टमा सूचना ब्याकइन्ड कन्फिगर छैन (स्ट्याटिक मोड), त्यसैले सर्भर-साइड इतिहास यहाँ उपलब्ध छैन। तलका यन्त्र-स्थानीय लग भने चल्छन्।",
+        "ad.denied": "सर्भरले कुञ्जी अस्वीकार गर्‍यो — सर्भरको .env मा ADMIN_KEY जाँच्नुहोस्।",
+        "ad.err": "सर्भर स्थिति API मा पुग्न सकिएन।",
+        "ad.usgs": "USGS प्रोब (सर्भरबाट)", "ad.emsc": "EMSC प्रोब (सर्भरबाट)",
+        "ad.meta": "सर्भर अपटाइम {up} · Node {node} · अवधिमा {n} नमुना · फिड अपटाइम {pct}%",
+        "ad.errors.t": "सर्भरमा रिपोर्ट भएका क्लाइन्ट त्रुटि",
+        "ad.errors.none": "यस अवधिमा कुनै क्लाइन्ट त्रुटि छैन। ✓",
+
+        "lg.t": "यो यन्त्र — पूर्ण लग",
+        "lg.sub": "तपाईंको ब्राउजरमा स्थानीय रूपमा रेकर्ड भएका सबै: हरेक स्थिति जाँच र हरेक समातिएको त्रुटि, समयसहित।",
+        "lg.hist.t": "जाँचहरू",
+        "lg.time": "समय", "lg.overall": "समग्र", "lg.lat": "साइट / USGS / EMSC (ms)", "lg.issues": "समस्या",
+        "lg.none": "अझै केही रेकर्ड छैन — जाँच चल्दै जाँदा भरिन्छ।",
+        "lg.err.t": "त्रुटि लग",
+        "lg.err.none": "यस यन्त्रमा कुनै त्रुटि रेकर्ड छैन। ✓",
+        "lg.clear": "खाली गर्नुहोस्",
+        "lg.export": "⬇ JSON निर्यात",
+        "lg.when": "कहिले", "lg.what": "के", "lg.where": "कहाँ",
+        "st.note": "ब्राउजर जाँचमा हाम्रा सेवा मात्र होइन तपाईंको नेटवर्क पनि झल्किन्छ। एकपटक क्यास भएपछि पूर्वतयारी पृष्ठ र आपत्कालीन नम्बर इन्टरनेटविनै चल्छन्।"
       }
     }
   </script>
@@ -151,57 +137,99 @@
       <span class="eyebrow" data-i18n="st.eyebrow"></span>
       <h1 data-i18n="st.h1"></h1>
       <p class="lead" data-i18n="st.sub"></p>
-      <div class="st-monitor wait" id="stMonitor">
-        <svg class="st-trace" viewBox="0 0 140 36" preserveAspectRatio="none" aria-hidden="true">
-          <path id="stTrace" d="M0,18 L140,18" fill="none" />
-        </svg>
-        <div class="st-mon-txt">
-          <span class="st-mon-tag" data-i18n="st.mon.tag"></span>
-          <b id="stOverallTxt" data-i18n="st.ov.wait"></b>
-          <span class="st-mon-sub"><span id="stOverallSub" data-i18n="st.checking"></span> · <span data-i18n="st.last"></span>: <span id="stWhen">—</span></span>
+
+      <div class="up-head">
+        <div class="seg" id="stPeriod">
+          <button data-value="hour" data-i18n="st.p.hour"></button>
+          <button data-value="day" class="active" data-i18n="st.p.day"></button>
+          <button data-value="month" data-i18n="st.p.month"></button>
         </div>
-        <button type="button" class="btn btn-outline" id="stRecheck" style="font-size:.82rem;padding:.5rem .9rem" data-i18n="st.recheck"></button>
+        <div class="up-overall">
+          <div class="up-big"><b id="upPct">—</b><span class="up-lbl" data-i18n="st.up.t"></span></div>
+          <div class="up-big"><b id="upNow" class="wait" data-i18n="st.ov.wait"></b><span class="up-lbl"><span data-i18n="st.up.now"></span> · <span data-i18n="st.last"></span> <span id="stWhen">—</span></span></div>
+          <button type="button" class="btn btn-outline" id="stRecheck" style="font-size:.82rem;padding:.5rem .9rem" data-i18n="st.recheck"></button>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section" style="padding-top:8px">
+  <!-- Uptime bar rows -->
+  <section class="section" style="padding-top:6px">
     <div class="container">
-      <div class="grid cols-2" id="stGrid" style="gap:14px"></div>
-      <p class="muted" style="font-family:var(--mono);font-size:.76rem;margin-top:16px" data-i18n="st.legend"></p>
-      <p class="muted" style="font-size:.82rem;margin-top:4px" data-i18n="st.auto"></p>
+      <div class="card" style="padding:10px 22px 16px" id="upRows"></div>
+      <div class="up-legend">
+        <span><i class="ok"></i><span data-i18n="st.leg.ok"></span></span>
+        <span><i class="slow"></i><span data-i18n="st.leg.slow"></span></span>
+        <span><i class="fail"></i><span data-i18n="st.leg.fail"></span></span>
+        <span><i class="na"></i><span data-i18n="st.leg.na"></span></span>
+      </div>
+      <p class="muted" style="font-size:.78rem;font-family:var(--mono);margin-top:6px" data-i18n="st.leg.note"></p>
+    </div>
+  </section>
+
+  <!-- Admin: server-side history -->
+  <section class="section alt tight">
+    <div class="container">
+      <div class="card" style="padding:22px">
+        <h3 style="margin:0 0 4px" data-i18n="ad.t"></h3>
+        <p class="muted" style="font-size:.85rem;margin:0 0 14px" data-i18n="ad.sub"></p>
+        <p class="muted" id="adStatic" style="display:none;margin:0" data-i18n="ad.static"></p>
+        <div id="adPanel" style="display:none">
+          <div class="flex wrap" style="gap:8px;margin-bottom:14px">
+            <input type="password" id="adKey" class="dir-search" style="flex:1 1 240px;margin:0" data-i18n-placeholder="ad.key.ph" />
+            <button type="button" class="btn btn-primary" id="adConnect" data-i18n="ad.connect"></button>
+          </div>
+          <p id="adMsg" class="muted" style="font-size:.84rem;margin:0 0 10px"></p>
+          <div id="adBars"></div>
+          <p class="muted" id="adMeta" style="font-family:var(--mono);font-size:.76rem;margin:8px 0 16px"></p>
+          <h4 style="margin:0 0 8px" data-i18n="ad.errors.t"></h4>
+          <div class="table-wrap"><table class="data st-log">
+            <thead><tr><th data-i18n="lg.when"></th><th data-i18n="lg.what"></th><th data-i18n="lg.where"></th></tr></thead>
+            <tbody id="adErrBody"></tbody>
+          </table></div>
+          <p style="color:#34D399;font-size:.88rem;margin:8px 0 0;display:none" id="adErrNone" data-i18n="ad.errors.none"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Device-local full logs -->
+  <section class="section tight">
+    <div class="container">
+      <div class="sec-head left reveal" style="margin-bottom:14px">
+        <h2 style="font-size:1.35rem" data-i18n="lg.t"></h2>
+        <p class="muted" style="margin:4px 0 0" data-i18n="lg.sub"></p>
+      </div>
+      <div class="grid cols-2" style="gap:20px;align-items:start">
+        <div class="card" style="padding:20px 22px">
+          <div class="flex aic" style="justify-content:space-between;gap:10px;margin-bottom:10px">
+            <h3 style="margin:0" data-i18n="lg.hist.t"></h3>
+            <button type="button" class="btn btn-outline" id="lgExport" style="font-size:.74rem;padding:.4rem .8rem" data-i18n="lg.export"></button>
+          </div>
+          <div class="table-wrap"><table class="data st-log">
+            <thead><tr><th data-i18n="lg.time"></th><th data-i18n="lg.overall"></th><th data-i18n="lg.lat"></th><th data-i18n="lg.issues"></th></tr></thead>
+            <tbody id="lgHistBody"></tbody>
+          </table></div>
+          <p class="muted" id="lgHistNone" style="font-size:.84rem;margin:10px 0 0;display:none" data-i18n="lg.none"></p>
+        </div>
+        <div class="card" style="padding:20px 22px">
+          <div class="flex aic" style="justify-content:space-between;gap:10px;margin-bottom:10px">
+            <h3 style="margin:0" data-i18n="lg.err.t"></h3>
+            <span class="flex" style="gap:8px">
+              <button type="button" class="btn btn-outline" id="lgErrExport" style="font-size:.74rem;padding:.4rem .8rem" data-i18n="lg.export"></button>
+              <button type="button" class="btn btn-outline" id="lgErrClear" style="font-size:.74rem;padding:.4rem .8rem" data-i18n="lg.clear"></button>
+            </span>
+          </div>
+          <div class="table-wrap"><table class="data st-log">
+            <thead><tr><th data-i18n="lg.when"></th><th data-i18n="lg.what"></th><th data-i18n="lg.where"></th></tr></thead>
+            <tbody id="lgErrBody"></tbody>
+          </table></div>
+          <p style="color:#34D399;font-size:.88rem;margin:10px 0 0;display:none" id="lgErrNone" data-i18n="lg.err.none"></p>
+        </div>
+      </div>
       <div class="callout info" style="margin-top:18px">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
         <p data-i18n="st.note"></p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Check history + error log (device-local) -->
-  <section class="section alt tight">
-    <div class="container">
-      <div class="grid cols-2" style="gap:20px;align-items:start">
-        <div class="card" style="padding:20px 22px">
-          <h3 style="margin:0 0 4px" data-i18n="st.hist.t"></h3>
-          <p class="muted" style="font-size:.82rem;margin:0 0 12px" data-i18n="st.hist.sub"></p>
-          <div class="table-wrap"><table class="data st-log">
-            <thead><tr><th data-i18n="st.hist.time"></th><th data-i18n="st.hist.overall"></th><th data-i18n="st.hist.lat"></th><th data-i18n="st.hist.fails"></th></tr></thead>
-            <tbody id="stHistBody"></tbody>
-          </table></div>
-          <p class="muted" id="stHistNone" style="font-size:.84rem;margin:10px 0 0;display:none" data-i18n="st.hist.none"></p>
-        </div>
-        <div class="card" style="padding:20px 22px">
-          <div class="flex aic" style="justify-content:space-between;gap:10px">
-            <h3 style="margin:0 0 4px" data-i18n="st.err.t"></h3>
-            <button type="button" class="btn btn-outline" id="stErrClear" style="font-size:.76rem;padding:.4rem .8rem" data-i18n="st.err.clear"></button>
-          </div>
-          <p class="muted" style="font-size:.82rem;margin:0 0 12px" data-i18n="st.err.sub"></p>
-          <div class="table-wrap"><table class="data st-log">
-            <thead><tr><th data-i18n="st.err.when"></th><th data-i18n="st.err.what"></th><th data-i18n="st.err.where"></th></tr></thead>
-            <tbody id="stErrBody"></tbody>
-          </table></div>
-          <p style="color:#34D399;font-size:.88rem;margin:10px 0 0;display:none" id="stErrNone" data-i18n="st.err.none"></p>
-        </div>
       </div>
     </div>
   </section>

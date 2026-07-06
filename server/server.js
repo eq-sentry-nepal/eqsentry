@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { addPending, confirm, removeByUnsub, addReport, listReports, addPush, removeByEndpoint, listConfirmed } from "./lib/db.js";
+import { addPending, confirm, removeByUnsub, addReport, listReports, addPush, removeByEndpoint, listConfirmed, appendStatusSample, listStatusSamples, appendClientError, listClientErrors } from "./lib/db.js";
 import { findDistrict } from "./lib/districts.js";
 import { sendSMS, sendEmail, smsConfigured, emailConfigured } from "./lib/channels.js";
 import { runOnce } from "./lib/alertEngine.js";
@@ -141,11 +141,10 @@ app.get("/api/unsubscribe", async (req, res) => {
   res.send(page(ok ? "Unsubscribed" : "Already removed", `<p>${ok ? "You will no longer receive EQ Sentry alerts." : "This contact is not on our list."}</p>`));
 });
 
-/* ── Client error reports (monitor.js) — in-memory, capped ── */
-const clientLog = [];
-app.post("/api/client-log", (req, res) => {
+/* ── Client error reports (monitor.js) — persisted ring ── */
+app.post("/api/client-log", async (req, res) => {
   const b = req.body || {};
-  clientLog.push({
+  await appendClientError({
     at: new Date().toISOString(),
     type: String(b.type || "").slice(0, 20),
     msg: String(b.msg || "").slice(0, 300),
@@ -153,15 +152,72 @@ app.post("/api/client-log", (req, res) => {
     line: Number(b.line) || 0,
     page: String(b.page || "").slice(0, 120)
   });
-  if (clientLog.length > 500) clientLog.splice(0, clientLog.length - 500);
   console.warn("[client]", b.type || "error", "—", String(b.msg || "").slice(0, 120), "@", b.page);
   res.json({ ok: true });
 });
-// Dev-only: inspect collected client errors. Disabled in production.
-app.get("/api/client-log", (_req, res) => {
-  if (process.env.NODE_ENV === "production") return res.status(404).end();
-  res.json({ count: clientLog.length, log: clientLog.slice(-100) });
+
+/* ── Admin status API: uptime history + error log with time periods ──
+   Protect with ADMIN_KEY in .env (required in production; open in dev). */
+function adminOk(req) {
+  const key = env.ADMIN_KEY || "";
+  if (!key) return process.env.NODE_ENV !== "production";
+  const got = req.query.key || req.get("x-admin-key") || "";
+  return got === key;
+}
+const PERIOD_MS = { hour: 36e5, day: 864e5, month: 30 * 864e5 };
+app.get("/api/status/history", async (req, res) => {
+  if (!adminOk(req)) return res.status(401).json({ error: "admin key required" });
+  const period = PERIOD_MS[req.query.period] ? req.query.period : "day";
+  const span = PERIOD_MS[period];
+  const bucketMs = period === "hour" ? 12e4 : period === "day" ? 36e5 : 864e5;
+  const since = Date.now() - span;
+  const samples = await listStatusSamples(since);
+  const buckets = [];
+  for (let t = since; t < Date.now(); t += bucketMs) {
+    const in_ = samples.filter((s) => s.t >= t && s.t < t + bucketMs);
+    if (!in_.length) { buckets.push({ t, n: 0 }); continue; }
+    const worst = in_.some((s) => !s.usgs.ok || !s.emsc.ok) ? "fail"
+      : in_.some((s) => s.usgs.ms > 4000 || s.emsc.ms > 4000) ? "slow" : "ok";
+    buckets.push({
+      t, n: in_.length, state: worst,
+      usgs_ms: Math.round(in_.reduce((a, s) => a + (s.usgs.ms || 0), 0) / in_.length),
+      emsc_ms: Math.round(in_.reduce((a, s) => a + (s.emsc.ms || 0), 0) / in_.length)
+    });
+  }
+  const withData = buckets.filter((b) => b.n);
+  const upt = withData.length
+    ? Math.round(100 * withData.filter((b) => b.state !== "fail").length / withData.length * 10) / 10 : null;
+  res.json({ period, bucketMs, generated: Date.now(), uptime: upt,
+    samples: samples.length, buckets,
+    server: { uptime_s: Math.round(process.uptime()), node: process.version } });
 });
+app.get("/api/status/errors", async (req, res) => {
+  if (!adminOk(req)) return res.status(401).json({ error: "admin key required" });
+  const period = PERIOD_MS[req.query.period] ? req.query.period : "day";
+  const list = await listClientErrors(Date.now() - PERIOD_MS[period]);
+  res.json({ period, count: list.length, errors: list.slice(-500).reverse() });
+});
+
+/* Self-sampling: probe USGS + EMSC on an interval and persist the result. */
+async function probe(url, opts) {
+  const t0 = Date.now();
+  try {
+    const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 8000);
+    const r = await fetch(url, { ...opts, signal: ctl.signal });
+    clearTimeout(to);
+    return { ok: r.ok || r.status === 204, ms: Date.now() - t0, code: r.status };
+  } catch { return { ok: false, ms: Date.now() - t0, code: 0 }; }
+}
+async function sampleStatus() {
+  const [usgs, emsc] = await Promise.all([
+    probe("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_hour.geojson"),
+    probe("https://www.seismicportal.eu/fdsnws/event/1/query?format=json&limit=1")
+  ]);
+  await appendStatusSample({ t: Date.now(), usgs, emsc });
+}
+const STATUS_POLL_S = Number(env.STATUS_POLL_SECONDS) || 300;
+sampleStatus().catch(() => {});
+setInterval(() => sampleStatus().catch(() => {}), STATUS_POLL_S * 1000);
 
 /* ── Community "Did you feel it?" reports ── */
 app.post("/api/report", async (req, res) => {
