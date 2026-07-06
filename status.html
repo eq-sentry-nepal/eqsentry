@@ -57,6 +57,25 @@
         "st.api.static": "Static mode — the site runs fully without it; browser push alerts need it",
         "st.net.on": "Online",
         "st.net.off": "Offline — cached pages still work",
+        "st.ov.ok": "OPERATIONAL",
+        "st.ov.warn": "DEGRADED",
+        "st.ov.down": "OFFLINE",
+        "st.ov.wait": "CHECKING",
+        "st.mon.tag": "live monitor",
+        "st.hist.t": "Check history",
+        "st.hist.sub": "Recent status runs from this device — kept locally, newest first.",
+        "st.hist.time": "Time",
+        "st.hist.overall": "Overall",
+        "st.hist.lat": "Site / USGS / EMSC",
+        "st.hist.fails": "Issues",
+        "st.hist.none": "No history yet — it fills in as checks run.",
+        "st.err.t": "Error log",
+        "st.err.sub": "Client-side errors captured on this device by the built-in monitor — handy when reporting a bug.",
+        "st.err.none": "No errors recorded on this device. Clean run ✓",
+        "st.err.clear": "Clear log",
+        "st.err.when": "When",
+        "st.err.what": "What",
+        "st.err.where": "Where",
         "st.note": "These checks run from your browser, so results also reflect your own network, not just our services. Once cached, the preparedness pages and emergency numbers on this site keep working with no connection at all.",
         "st.legend": "OK = responded quickly · Slow = responded over 4 s · Unreachable = no response in 8 s"
       },
@@ -98,6 +117,25 @@
         "st.api.static": "स्ट्याटिक मोड — साइट यसविनै पूर्ण चल्छ; ब्राउजर पुश सूचनालाई चाहिन्छ",
         "st.net.on": "अनलाइन",
         "st.net.off": "अफलाइन — क्यास गरिएका पृष्ठ चल्छन्",
+        "st.ov.ok": "सञ्चालनमा",
+        "st.ov.warn": "आंशिक समस्या",
+        "st.ov.down": "अफलाइन",
+        "st.ov.wait": "जाँच हुँदै",
+        "st.mon.tag": "प्रत्यक्ष मनिटर",
+        "st.hist.t": "जाँच इतिहास",
+        "st.hist.sub": "यस यन्त्रबाट गरिएका पछिल्ला स्थिति जाँच — स्थानीय रूपमा राखिएको, नयाँ पहिले।",
+        "st.hist.time": "समय",
+        "st.hist.overall": "समग्र",
+        "st.hist.lat": "साइट / USGS / EMSC",
+        "st.hist.fails": "समस्या",
+        "st.hist.none": "इतिहास छैन — जाँच चल्दै जाँदा भरिन्छ।",
+        "st.err.t": "त्रुटि लग",
+        "st.err.sub": "यस यन्त्रमा अन्तर्निहित मनिटरले समातेका क्लाइन्ट-साइड त्रुटि — बग रिपोर्ट गर्दा उपयोगी।",
+        "st.err.none": "यस यन्त्रमा कुनै त्रुटि रेकर्ड छैन। सफा ✓",
+        "st.err.clear": "लग खाली गर्नुहोस्",
+        "st.err.when": "कहिले",
+        "st.err.what": "के",
+        "st.err.where": "कहाँ",
         "st.note": "यी जाँच तपाईंकै ब्राउजरबाट चल्छन्, त्यसैले नतिजामा हाम्रा सेवा मात्र होइन तपाईंको नेटवर्क पनि झल्किन्छ। एकपटक क्यास भएपछि यस साइटका पूर्वतयारी पृष्ठ र आपत्कालीन नम्बर इन्टरनेटविनै काम गर्छन्।",
         "st.legend": "ठीक = छिटो जवाफ · ढिलो = ४ से.भन्दा बढी · पहुँच भएन = ८ से.मा जवाफ आएन"
       }
@@ -113,9 +151,15 @@
       <span class="eyebrow" data-i18n="st.eyebrow"></span>
       <h1 data-i18n="st.h1"></h1>
       <p class="lead" data-i18n="st.sub"></p>
-      <div class="flex aic wrap" style="gap:12px;margin-top:6px">
-        <span id="stOverall" class="st-pill"><span class="st-dot wait"></span><span data-i18n="st.checking"></span></span>
-        <span class="muted" style="font-family:var(--mono);font-size:.8rem"><span data-i18n="st.last"></span>: <span id="stWhen">—</span></span>
+      <div class="st-monitor wait" id="stMonitor">
+        <svg class="st-trace" viewBox="0 0 140 36" preserveAspectRatio="none" aria-hidden="true">
+          <path id="stTrace" d="M0,18 L140,18" fill="none" />
+        </svg>
+        <div class="st-mon-txt">
+          <span class="st-mon-tag" data-i18n="st.mon.tag"></span>
+          <b id="stOverallTxt" data-i18n="st.ov.wait"></b>
+          <span class="st-mon-sub"><span id="stOverallSub" data-i18n="st.checking"></span> · <span data-i18n="st.last"></span>: <span id="stWhen">—</span></span>
+        </div>
         <button type="button" class="btn btn-outline" id="stRecheck" style="font-size:.82rem;padding:.5rem .9rem" data-i18n="st.recheck"></button>
       </div>
     </div>
@@ -129,6 +173,35 @@
       <div class="callout info" style="margin-top:18px">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
         <p data-i18n="st.note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Check history + error log (device-local) -->
+  <section class="section alt tight">
+    <div class="container">
+      <div class="grid cols-2" style="gap:20px;align-items:start">
+        <div class="card" style="padding:20px 22px">
+          <h3 style="margin:0 0 4px" data-i18n="st.hist.t"></h3>
+          <p class="muted" style="font-size:.82rem;margin:0 0 12px" data-i18n="st.hist.sub"></p>
+          <div class="table-wrap"><table class="data st-log">
+            <thead><tr><th data-i18n="st.hist.time"></th><th data-i18n="st.hist.overall"></th><th data-i18n="st.hist.lat"></th><th data-i18n="st.hist.fails"></th></tr></thead>
+            <tbody id="stHistBody"></tbody>
+          </table></div>
+          <p class="muted" id="stHistNone" style="font-size:.84rem;margin:10px 0 0;display:none" data-i18n="st.hist.none"></p>
+        </div>
+        <div class="card" style="padding:20px 22px">
+          <div class="flex aic" style="justify-content:space-between;gap:10px">
+            <h3 style="margin:0 0 4px" data-i18n="st.err.t"></h3>
+            <button type="button" class="btn btn-outline" id="stErrClear" style="font-size:.76rem;padding:.4rem .8rem" data-i18n="st.err.clear"></button>
+          </div>
+          <p class="muted" style="font-size:.82rem;margin:0 0 12px" data-i18n="st.err.sub"></p>
+          <div class="table-wrap"><table class="data st-log">
+            <thead><tr><th data-i18n="st.err.when"></th><th data-i18n="st.err.what"></th><th data-i18n="st.err.where"></th></tr></thead>
+            <tbody id="stErrBody"></tbody>
+          </table></div>
+          <p style="color:#34D399;font-size:.88rem;margin:10px 0 0;display:none" id="stErrNone" data-i18n="st.err.none"></p>
+        </div>
       </div>
     </div>
   </section>

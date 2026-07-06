@@ -902,9 +902,33 @@ html[lang="ne"] .score-tier { letter-spacing:0; text-transform:none; font-family
 .st-dot.slow { background:#FBBF24; box-shadow:0 0 8px rgba(251,191,36,.5); }
 .st-dot.fail { background:#EF4444; box-shadow:0 0 8px rgba(239,68,68,.6); }
 .st-dot.na { background:#6B7480; }
-.st-dot.wait { background:#22d3ee; animation:stpulse 1.1s ease-in-out infinite; }
-@keyframes stpulse { 0%,100%{opacity:1} 50%{opacity:.25} }
-html.reduce-motion .st-dot.wait { animation:none; }
+.st-pill.wait { color:var(--ink-faint); font-family:var(--mono); letter-spacing:.2em; }
+
+/* seismogram overall monitor */
+.st-monitor { display:flex; align-items:center; gap:18px; margin-top:10px; padding:16px 20px;
+  background:var(--surface); border:1px solid var(--line-2); border-radius:16px; flex-wrap:wrap; }
+.st-trace { width:150px; height:40px; flex:0 0 150px; }
+.st-trace path { stroke:#22d3ee; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+.st-monitor.ok .st-trace path { stroke:#34D399; filter:drop-shadow(0 0 5px rgba(52,211,153,.55)); }
+.st-monitor.slow .st-trace path { stroke:#FBBF24; filter:drop-shadow(0 0 5px rgba(251,191,36,.5)); }
+.st-monitor.fail .st-trace path { stroke:#EF4444; filter:drop-shadow(0 0 6px rgba(239,68,68,.6)); }
+.st-monitor.wait .st-trace path { stroke:#22d3ee; stroke-dasharray:340; stroke-dashoffset:340;
+  animation:stdraw 1.6s linear infinite; }
+@keyframes stdraw { to { stroke-dashoffset:0; } }
+html.reduce-motion .st-monitor.wait .st-trace path { animation:none; stroke-dasharray:none; }
+.st-mon-txt { display:flex; flex-direction:column; gap:2px; flex:1 1 240px; min-width:200px; }
+.st-mon-tag { font-family:var(--mono); font-size:.64rem; text-transform:uppercase; letter-spacing:.18em; color:var(--ink-faint); }
+html[lang="ne"] .st-mon-tag { letter-spacing:0; text-transform:none; font-family:var(--font); }
+.st-mon-txt b { font-family:var(--mono); font-size:1.35rem; letter-spacing:.06em; color:var(--ink); line-height:1.15; }
+.st-monitor.ok .st-mon-txt b { color:#34D399; }
+.st-monitor.slow .st-mon-txt b { color:#FBBF24; }
+.st-monitor.fail .st-mon-txt b { color:#EF4444; }
+.st-mon-sub { color:var(--ink-soft); font-size:.84rem; }
+
+/* history / error log tables */
+.st-log th, .st-log td { font-size:.8rem; padding:8px 9px; }
+.st-log td.mono { font-family:var(--mono); white-space:nowrap; }
+.st-log .st-pill.sm { font-size:.66rem; padding:.16rem .5rem; }
 
 /* ---------- Footer version badge ---------- */
 .foot-ver { font-family:var(--mono); font-size:.78rem; color:var(--ink-faint); }
