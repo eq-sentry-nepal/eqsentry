@@ -39,6 +39,7 @@
     { u: "alerts.html", en: "Get alerts — browser & registration", ne: "सूचना दर्ता", k: "alerts notify push browser sms register सूचना दर्ता" },
     { u: "school-plan.html", en: "School & office plan template (printable)", ne: "विद्यालय/कार्यालय योजना टेम्प्लेट", k: "school office template print drill roles विद्यालय कार्यालय टेम्प्लेट" },
     { u: "insights.html#chartEnergy", en: "Download the earthquake data (CSV/GeoJSON)", ne: "भूकम्प तथ्याङ्क डाउनलोड", k: "download csv geojson data open डाउनलोड" },
+    { u: "status.html", en: "Site status — health of data connections", ne: "साइट स्थिति — डेटा जडानको स्वास्थ्य", k: "status health uptime usgs emsc connection online offline स्थिति जडान" },
     { u: "about.html", en: "About EQ Sentry — mission & data sources", ne: "हाम्रोबारे — उद्देश्य र स्रोत", k: "about mission sources usgs contact disclaimer हाम्रोबारे" },
     { u: "privacy.html", en: "Privacy policy", ne: "गोपनीयता नीति", k: "privacy data policy गोपनीयता" }
   ];

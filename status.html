@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Site Health & Status — EQ Sentry Nepal</title>
+  <meta name="description" content="Live operational status of EQ Sentry: website health, USGS and EMSC data connections, map tiles, offline mode and catalogue freshness." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%230A0C10'/%3E%3Cpath d='M5 21h6l3-9 5 16 4-12 2.5 5H35' stroke='%23FF4D2E' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="canonical" href="https://eqsentry.com/status.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="EQ Sentry" />
+  <meta property="og:title" content="Site Health & Status — EQ Sentry Nepal" />
+  <meta property="og:description" content="Live checks of the site and the earthquake data services it depends on." />
+  <meta property="og:image" content="https://eqsentry.com/assets/icons/og-image.png" />
+  <meta property="og:url" content="https://eqsentry.com/status.html" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script type="application/json" id="page-i18n">
+    {
+      "en": {
+        "st.eyebrow": "Status",
+        "st.h1": "Site health & connections",
+        "st.sub": "Live checks of this site and the data services it depends on — run from your device, right now.",
+        "st.checking": "Running checks…",
+        "st.overall.ok": "All systems operational",
+        "st.overall.warn": "Partial degradation — something is slow or unreachable",
+        "st.overall.down": "Core data services unreachable",
+        "st.last": "Last checked",
+        "st.recheck": "↻ Re-check now",
+        "st.auto": "Checks re-run automatically every minute.",
+        "st.ok": "OK", "st.slow": "Slow", "st.fail": "Unreachable", "st.na": "Not configured", "st.off": "Off",
+        "st.c.site": "This website",
+        "st.d.site": "App shell — pages, styles and scripts",
+        "st.c.usgs": "USGS live feed",
+        "st.d.usgs": "Real-time earthquakes · earthquake.usgs.gov",
+        "st.c.emsc": "EMSC live feed",
+        "st.d.emsc": "Independent cross-check · seismicportal.eu",
+        "st.c.tiles": "Map tiles",
+        "st.d.tiles": "CARTO / OpenStreetMap basemap imagery",
+        "st.c.cat": "Bundled catalogue",
+        "st.d.cat": "Offline earthquake record behind the charts and map",
+        "st.c.sw": "Offline mode",
+        "st.d.sw": "Service worker + cached emergency pages",
+        "st.c.api": "Alerts backend",
+        "st.d.api": "Optional server for SMS / email / push alerts",
+        "st.c.net": "Your connection",
+        "st.d.net": "This device's network state",
+        "st.events": "events",
+        "st.updated": "updated",
+        "st.stale": "over {d} days old — the weekly refresh may not be running",
+        "st.sw.on": "Active — emergency pages available offline",
+        "st.sw.wait": "Registered — finishing first install",
+        "st.sw.off": "Not active yet — browse a page or two to enable offline",
+        "st.sw.no": "Not supported by this browser",
+        "st.api.static": "Static mode — the site runs fully without it; browser push alerts need it",
+        "st.net.on": "Online",
+        "st.net.off": "Offline — cached pages still work",
+        "st.note": "These checks run from your browser, so results also reflect your own network, not just our services. Once cached, the preparedness pages and emergency numbers on this site keep working with no connection at all.",
+        "st.legend": "OK = responded quickly · Slow = responded over 4 s · Unreachable = no response in 8 s"
+      },
+      "ne": {
+        "st.eyebrow": "स्थिति",
+        "st.h1": "साइट स्वास्थ्य र जडान",
+        "st.sub": "यो साइट र यसले प्रयोग गर्ने डेटा सेवाहरूको प्रत्यक्ष जाँच — तपाईंकै यन्त्रबाट, अहिल्यै।",
+        "st.checking": "जाँच चल्दै…",
+        "st.overall.ok": "सबै प्रणाली सञ्चालनमा",
+        "st.overall.warn": "आंशिक समस्या — केही ढिलो वा पहुँचबाहिर छ",
+        "st.overall.down": "मुख्य डेटा सेवाहरू पहुँचबाहिर",
+        "st.last": "पछिल्लो जाँच",
+        "st.recheck": "↻ फेरि जाँच्नुहोस्",
+        "st.auto": "जाँचहरू हरेक मिनेट आफैँ दोहोरिन्छन्।",
+        "st.ok": "ठीक", "st.slow": "ढिलो", "st.fail": "पहुँच भएन", "st.na": "कन्फिगर छैन", "st.off": "बन्द",
+        "st.c.site": "यो वेबसाइट",
+        "st.d.site": "एप सेल — पृष्ठ, स्टाइल र स्क्रिप्ट",
+        "st.c.usgs": "USGS प्रत्यक्ष फिड",
+        "st.d.usgs": "वास्तविक-समय भूकम्प · earthquake.usgs.gov",
+        "st.c.emsc": "EMSC प्रत्यक्ष फिड",
+        "st.d.emsc": "स्वतन्त्र क्रस-चेक · seismicportal.eu",
+        "st.c.tiles": "नक्सा टाइल",
+        "st.d.tiles": "CARTO / OpenStreetMap आधार नक्सा",
+        "st.c.cat": "समावेशित सूची",
+        "st.d.cat": "चार्ट र नक्साले प्रयोग गर्ने अफलाइन भूकम्प अभिलेख",
+        "st.c.sw": "अफलाइन मोड",
+        "st.d.sw": "सर्भिस वर्कर + क्यास गरिएका आपत्कालीन पृष्ठ",
+        "st.c.api": "सूचना ब्याकइन्ड",
+        "st.d.api": "SMS / इमेल / पुश सूचनाका लागि वैकल्पिक सर्भर",
+        "st.c.net": "तपाईंको जडान",
+        "st.d.net": "यस यन्त्रको नेटवर्क अवस्था",
+        "st.events": "घटना",
+        "st.updated": "अद्यावधिक",
+        "st.stale": "{d} दिनभन्दा पुरानो — साप्ताहिक ताजगी नचलेको हुनसक्छ",
+        "st.sw.on": "सक्रिय — आपत्कालीन पृष्ठ अफलाइन उपलब्ध",
+        "st.sw.wait": "दर्ता भयो — पहिलो इन्स्टल सकिँदै",
+        "st.sw.off": "अझै सक्रिय छैन — अफलाइनका लागि एक-दुई पृष्ठ हेर्नुहोस्",
+        "st.sw.no": "यो ब्राउजरले समर्थन गर्दैन",
+        "st.api.static": "स्ट्याटिक मोड — साइट यसविनै पूर्ण चल्छ; ब्राउजर पुश सूचनालाई चाहिन्छ",
+        "st.net.on": "अनलाइन",
+        "st.net.off": "अफलाइन — क्यास गरिएका पृष्ठ चल्छन्",
+        "st.note": "यी जाँच तपाईंकै ब्राउजरबाट चल्छन्, त्यसैले नतिजामा हाम्रा सेवा मात्र होइन तपाईंको नेटवर्क पनि झल्किन्छ। एकपटक क्यास भएपछि यस साइटका पूर्वतयारी पृष्ठ र आपत्कालीन नम्बर इन्टरनेटविनै काम गर्छन्।",
+        "st.legend": "ठीक = छिटो जवाफ · ढिलो = ४ से.भन्दा बढी · पहुँच भएन = ८ से.मा जवाफ आएन"
+      }
+    }
+  </script>
+</head>
+<body data-page="status">
+  <header class="site-header" id="site-header"></header>
+  <div id="alertBar"></div>
+
+  <section class="page-hero section tight">
+    <div class="container">
+      <span class="eyebrow" data-i18n="st.eyebrow"></span>
+      <h1 data-i18n="st.h1"></h1>
+      <p class="lead" data-i18n="st.sub"></p>
+      <div class="flex aic wrap" style="gap:12px;margin-top:6px">
+        <span id="stOverall" class="st-pill"><span class="st-dot wait"></span><span data-i18n="st.checking"></span></span>
+        <span class="muted" style="font-family:var(--mono);font-size:.8rem"><span data-i18n="st.last"></span>: <span id="stWhen">—</span></span>
+        <button type="button" class="btn btn-outline" id="stRecheck" style="font-size:.82rem;padding:.5rem .9rem" data-i18n="st.recheck"></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:8px">
+    <div class="container">
+      <div class="grid cols-2" id="stGrid" style="gap:14px"></div>
+      <p class="muted" style="font-family:var(--mono);font-size:.76rem;margin-top:16px" data-i18n="st.legend"></p>
+      <p class="muted" style="font-size:.82rem;margin-top:4px" data-i18n="st.auto"></p>
+      <div class="callout info" style="margin-top:18px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <p data-i18n="st.note"></p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/pages/status.js"></script>
+</body>
+</html>

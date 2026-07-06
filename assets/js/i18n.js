@@ -76,6 +76,7 @@
       "nav.glossary": "Glossary",
       "nav.history": "1934 & 2015",
       "nav.search": "Search",
+      "nav.status": "Site Status",
       "rel.t": "Keep going",
       "nd.prep": "Make a plan and a go-bag",
       "nd.plan": "Build & save your family plan",
@@ -148,6 +149,7 @@
       "nav.glossary": "शब्दावली",
       "nav.history": "१९३४ र २०१५",
       "nav.search": "खोज",
+      "nav.status": "साइट स्थिति",
       "rel.t": "अगाडि बढ्नुहोस्",
       "nd.prep": "योजना र आपत्कालीन झोला बनाउनुहोस्",
       "nd.plan": "योजना बनाई यन्त्रमा सेभ गर्नुहोस्",
@@ -334,11 +336,10 @@
         ["aftermath.html", "nav.after", "after", "nd.after"],
         ["facts.html", "nav.facts", "facts", "nd.facts"],
         ["faq.html", "nav.faq", "faq", "nd.faq"],
-        ["history.html", "nav.history", "history", "nd.history"],
-        ["glossary.html", "nav.glossary", "glossary", "nd.glossary"],
-        ["resources.html", "nav.resources", "resources", "nd.resources"],
-        ["directory.html", "nav.directory", "directory", "nd.directory"]
+        ["resources.html", "nav.resources", "resources", "nd.resources"]
       ];
+      // history + glossary now live under Insights; the hospitals directory
+      // is reached from Emergency Resources — keeps this menu to one screen.
       var on = kids.some(function (k) { return k[2] === active; }) ? " active" : "";
       var items = kids.map(function (k) {
         return '<a class="dd-item' + (k[2] === active ? " active" : "") + '" href="' + k[0] + '"' + (k[2] === active ? ' aria-current="page"' : "") + '>' +
@@ -421,6 +422,7 @@
             '<a href="https://earthquake.usgs.gov/earthquakes/feed/" target="_blank" rel="noopener" data-i18n="foot.datasrc"></a>' +
             '<a href="https://www.seismicportal.eu/" target="_blank" rel="noopener" data-i18n="foot.emsc"></a>' +
             '<a href="https://www.seismonepal.gov.np/" target="_blank" rel="noopener" data-i18n="foot.seismo"></a>' +
+            '<a href="status.html" data-i18n="nav.status"></a>' +
             '<a href="about.html" data-i18n="foot.about"></a>' +
           '</div>' +
           '<div>' +

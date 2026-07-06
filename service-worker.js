@@ -1,12 +1,12 @@
 /* EQ Sentry service worker — offline app shell.
    Preparedness guidance and emergency numbers stay available even with no
    network (critical right after a quake). Live USGS data is never cached. */
-const VERSION = "eqsentry-v7";
+const VERSION = "eqsentry-v8";
 const SHELL = [
   "./", "index.html", "map.html", "insights.html", "preparedness.html",
   "resources.html", "alerts.html", "plan.html", "felt.html", "about.html", "privacy.html",
   "building.html", "district.html", "directory.html", "faq.html", "facts.html", "aftermath.html",
-  "glossary.html", "history.html", "school-plan.html", "search.html", "404.html",
+  "glossary.html", "history.html", "school-plan.html", "search.html", "404.html", "status.html",
   "assets/css/style.css",
   "assets/js/i18n.js", "assets/js/config.js", "assets/js/engine.js", "assets/js/a11y.js", "assets/js/map.js",
   "assets/js/insights.js", "assets/js/data-layers.js", "assets/js/push.js", "assets/js/plan.js", "assets/js/felt.js",
@@ -17,7 +17,7 @@ const SHELL = [
   "assets/js/pages/resources-form.js", "assets/js/pages/about-sim.js", "assets/js/pages/faq.js",
   "assets/js/pages/insights-plus.js", "assets/js/pages/drill.js", "assets/js/pages/hazard-hunt.js",
   "assets/js/pages/wallet-card.js", "assets/js/pages/glossary.js", "assets/js/pages/search.js",
-  "assets/js/pages/print-btn.js", "assets/js/pages/related.js",
+  "assets/js/pages/print-btn.js", "assets/js/pages/related.js", "assets/js/pages/status.js",
   "assets/downloads/eq-emergency-kit-checklist.pdf", "assets/downloads/eq-family-plan.pdf",
   "manifest.webmanifest", "assets/icons/icon.svg", "assets/icons/icon-192.png"
 ];
