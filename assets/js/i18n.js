@@ -404,18 +404,19 @@
             '<h4 data-i18n="foot.explore"></h4>' +
             '<a href="map.html" data-i18n="nav.map"></a>' +
             '<a href="insights.html" data-i18n="nav.insights"></a>' +
+            '<a href="history.html" data-i18n="nav.history"></a>' +
+            '<a href="glossary.html" data-i18n="nav.glossary"></a>' +
+            '<a href="alerts.html" data-i18n="nav.alerts"></a>' +
+            '<a href="search.html" data-i18n="nav.search"></a>' +
+          '</div>' +
+          '<div>' +
+            '<h4 data-i18n="foot.safety"></h4>' +
             '<a href="preparedness.html" data-i18n="foot.prep"></a>' +
+            '<a href="plan.html" data-i18n="nav.plan"></a>' +
             '<a href="building.html" data-i18n="nav.building"></a>' +
             '<a href="district.html" data-i18n="nav.district"></a>' +
             '<a href="aftermath.html" data-i18n="nav.after"></a>' +
-            '<a href="facts.html" data-i18n="nav.facts"></a>' +
-            '<a href="faq.html" data-i18n="nav.faq"></a>' +
-            '<a href="history.html" data-i18n="nav.history"></a>' +
-            '<a href="glossary.html" data-i18n="nav.glossary"></a>' +
             '<a href="resources.html" data-i18n="foot.resources"></a>' +
-            '<a href="directory.html" data-i18n="nav.directory"></a>' +
-            '<a href="alerts.html" data-i18n="nav.alerts"></a>' +
-            '<a href="search.html" data-i18n="nav.search"></a>' +
           '</div>' +
           '<div>' +
             '<h4 data-i18n="foot.data"></h4>' +
@@ -473,14 +474,15 @@
     var dec = parseInt(el.getAttribute("data-decimals") || "0", 10);
     var pre = el.getAttribute("data-prefix") || "";
     var suf = el.getAttribute("data-suffix") || "";
-    if (motionOff()) { el.textContent = pre + target.toFixed(dec) + suf; return; }
+    function fmt(v) { return dec ? v.toFixed(dec) : Math.round(v).toLocaleString("en-US"); }
+    if (motionOff()) { el.textContent = pre + fmt(target) + suf; return; }
     var dur = 1100, start = performance.now();
     function step(now) {
       var p = Math.min(1, (now - start) / dur);
       var e = 1 - Math.pow(1 - p, 3); // easeOutCubic
-      el.textContent = pre + (target * e).toFixed(dec) + suf;
+      el.textContent = pre + fmt(target * e) + suf;
       if (p < 1) requestAnimationFrame(step);
-      else el.textContent = pre + target.toFixed(dec) + suf;
+      else el.textContent = pre + fmt(target) + suf;
     }
     requestAnimationFrame(step);
   }
