@@ -12,6 +12,8 @@
   function T(k) { return window.EQ ? window.EQ.t(k) : k; }
   function lang() { return window.EQ ? window.EQ.getLang() : "en"; }
   function api() { return window.EQ_API ? String(window.EQ_API).replace(/\/+$/, "") : ""; }
+  function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
+
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
   var SLOW = 4000, TIMEOUT = 8000;
@@ -55,7 +57,7 @@
   /* ---------- checks (unchanged behaviour) ---------- */
   function checkSite() {
     return timed(function () { return fetch(bust("manifest.webmanifest"), { cache: "no-store" }).then(function (r) { return r.ok; }); })
-      .then(function (r) { results.site = { state: stOf(r), detail: r.ok ? r.ms + " ms" : "", ms: r.ms }; });
+      .then(function (r) { results.site = { state: stOf(r), detail: r.ok ? dg(r.ms + " ms") : "", ms: r.ms }; });
   }
   function checkUSGS() {
     var url = (typeof window.EQ_FEED_URL === "function") ? window.EQ_FEED_URL("2.5_day")
@@ -66,7 +68,7 @@
         return r.json().then(function (d) { results._usgsN = (d.features || []).length; return true; });
       });
     }).then(function (r) {
-      results.usgs = { state: stOf(r), detail: r.ok ? r.ms + " ms · " + (results._usgsN || 0) + " " + T("st.events") + "/24h" : "", ms: r.ms };
+      results.usgs = { state: stOf(r), detail: r.ok ? dg(r.ms + " ms · " + (results._usgsN || 0)) + " " + T("st.events") + dg("/24h") : "", ms: r.ms };
     });
   }
   function checkEMSC() {
@@ -75,7 +77,7 @@
       : "https://www.seismicportal.eu/fdsnws/event/1/query?" + params;
     return timed(function () {
       return fetch(url, { cache: "no-store" }).then(function (r) { return r.ok || r.status === 204; });
-    }).then(function (r) { results.emsc = { state: stOf(r), detail: r.ok ? r.ms + " ms" : "", ms: r.ms }; });
+    }).then(function (r) { results.emsc = { state: stOf(r), detail: r.ok ? dg(r.ms + " ms") : "", ms: r.ms }; });
   }
   function checkTiles() {
     return timed(function () {
@@ -85,7 +87,7 @@
         img.onerror = function () { rej(new Error("tile")); };
         img.src = bust("https://a.basemaps.cartocdn.com/dark_all/6/45/27.png");
       });
-    }).then(function (r) { results.tiles = { state: stOf(r), detail: r.ok ? r.ms + " ms" : "" }; });
+    }).then(function (r) { results.tiles = { state: stOf(r), detail: r.ok ? dg(r.ms + " ms") : "" }; });
   }
   function checkCatalog() {
     return fetch(bust("data/summary.json"), { cache: "no-store" }).then(function (r) { return r.json(); })
@@ -93,8 +95,8 @@
         var days = s.generated ? Math.floor((Date.now() - Date.parse(s.generated)) / 864e5) : null;
         var stale = days != null && days > 40;
         results.cat = { state: stale ? "slow" : "ok",
-          detail: (s.count || 0).toLocaleString() + " " + T("st.events") +
-            (stale ? " · " + T("st.stale").replace("{d}", "40") : (days != null ? " · " + T("st.updated") + " " + days + "d" : "")) };
+          detail: dg((s.count || 0).toLocaleString()) + " " + T("st.events") +
+            (stale ? " · " + T("st.stale").replace("{d}", dg("40")) : (days != null ? " · " + T("st.updated") + " " + dg(days + "d") : "")) };
       })
       .catch(function () { results.cat = { state: "fail", detail: "" }; });
   }
@@ -120,7 +122,7 @@
       });
     }).then(function (r) {
       var h = results._api || {};
-      results.api = { state: stOf(r), detail: r.ok ? r.ms + " ms · SMS:" + (h.sms ? "✓" : "–") + " Email:" + (h.email ? "✓" : "–") + " Push:" + (h.push ? "✓" : "–") : "" };
+      results.api = { state: stOf(r), detail: r.ok ? dg(r.ms + " ms") + " · SMS:" + (h.sms ? "✓" : "–") + " Email:" + (h.email ? "✓" : "–") + " Push:" + (h.push ? "✓" : "–") : "" };
     });
   }
   function checkNet() {
@@ -199,11 +201,12 @@
       var r = results[ch.id] || { state: "na", detail: "" };
       if (ch.core && r.state !== "na") coreStates.push(r.state);
       var bks = buckets(ch.id), pct = uptimePct(bks);
+      var pctTxt = pct == null ? T("st.nodata") : dg(pct + "%");
       return '<div class="up-row">' +
         '<div class="up-rowhead">' +
           '<div><b>' + T("st.c." + ch.id) + "</b>" + stateWord(r.state) +
             '<span class="up-detail">' + (r.detail || "") + "</span></div>" +
-          '<span class="up-pct">' + (pct == null ? T("st.nodata") : pct + "%") + "</span>" +
+          '<span class="up-pct">' + pctTxt + "</span>" +
         "</div>" + barHTML(bks) +
         '<p class="up-sub">' + T("st.d." + ch.id) + "</p></div>";
     }).join("");
@@ -220,7 +223,7 @@
     var coreB = ["site", "usgs", "emsc"].map(function (id) { return uptimePct(buckets(id)); })
       .filter(function (p) { return p != null; });
     var pctEl = document.getElementById("upPct");
-    if (pctEl) pctEl.textContent = coreB.length ? (Math.round(10 * coreB.reduce(function (a, b) { return a + b; }, 0) / coreB.length) / 10) + "%" : T("st.nodata");
+    if (pctEl) pctEl.textContent = coreB.length ? dg((Math.round(10 * coreB.reduce(function (a, b) { return a + b; }, 0) / coreB.length) / 10) + "%") : T("st.nodata");
     var when = document.getElementById("stWhen");
     if (when) when.textContent = fmtT(Date.now());
     renderLocalLogs();
@@ -235,13 +238,13 @@
   function renderLocalLogs() {
     var hb = document.getElementById("lgHistBody");
     if (hb) {
-      var runs = ls(RKEY, []).slice().reverse().slice(0, 15);
+      var runs = ls(RKEY, []).slice().reverse().slice(0, 100);
       hb.innerHTML = runs.map(function (r) {
         var ov = ovOfRun(r);
         var issues = CHECKS.filter(function (c) { return /fail|slow/.test(r.c[c.id]); })
           .map(function (c) { return T("st.c." + c.id) + (r.c[c.id] === "fail" ? " ✕" : " ~"); });
         return "<tr><td class=\"mono\">" + fmtT(r.t) + "</td><td>" + stateWord(ov) + "</td>" +
-          '<td class="mono">' + [r.ms.site, r.ms.usgs, r.ms.emsc].map(function (m) { return m == null ? "–" : m; }).join(" / ") + "</td>" +
+          '<td class="mono">' + dg([r.ms.site, r.ms.usgs, r.ms.emsc].map(function (m) { return m == null ? "–" : m; }).join(" / ")) + "</td>" +
           "<td>" + (issues.length ? esc(issues.join(", ")) : "—") + "</td></tr>";
       }).join("");
       var none = document.getElementById("lgHistNone");
@@ -249,7 +252,7 @@
     }
     var eb = document.getElementById("lgErrBody");
     if (eb) {
-      var errs = ls(EKEY, []).slice().reverse().slice(0, 12);
+      var errs = ls(EKEY, []).slice().reverse().slice(0, 50);
       eb.innerHTML = errs.map(function (e) {
         return "<tr><td class=\"mono\">" + fmtT(e.t) + "</td>" +
           "<td><b>" + esc(e.type) + "</b> " + esc((e.msg || "").slice(0, 90)) + "</td>" +
@@ -292,19 +295,19 @@
           return { t: b.t, state: b.n ? b.state : "na" };
         });
         return '<div class="up-row"><div class="up-rowhead"><div><b>' + T(labelKey) + "</b></div>" +
-          '<span class="up-pct">' + (hist.uptime == null ? T("st.nodata") : hist.uptime + "%") + "</span></div>" +
+          '<span class="up-pct">' + (hist.uptime == null ? T("st.nodata") : dg(hist.uptime + "%")) + "</span></div>" +
           barHTML(bks) + "</div>";
       };
       if (barsBox) barsBox.innerHTML = mk("ad.usgs") + mk("ad.emsc");
       var meta = document.getElementById("adMeta");
       if (meta && hist.server) {
         var up = hist.server.uptime_s, ustr = up > 86400 ? Math.floor(up / 86400) + "d " + Math.floor(up % 86400 / 3600) + "h" : Math.floor(up / 3600) + "h " + Math.floor(up % 3600 / 60) + "m";
-        meta.textContent = T("ad.meta").replace("{up}", ustr).replace("{node}", hist.server.node)
-          .replace("{n}", hist.samples).replace("{pct}", hist.uptime == null ? "—" : hist.uptime);
+        meta.textContent = T("ad.meta").replace("{up}", dg(ustr)).replace("{node}", dg(hist.server.node))
+          .replace("{n}", dg(hist.samples)).replace("{pct}", hist.uptime == null ? "—" : dg(hist.uptime));
       }
       var eb = document.getElementById("adErrBody");
       if (eb) {
-        eb.innerHTML = (errs.errors || []).slice(0, 20).map(function (e) {
+        eb.innerHTML = (errs.errors || []).slice(0, 100).map(function (e) {
           return "<tr><td class=\"mono\">" + fmtT(Date.parse(e.at)) + "</td>" +
             "<td><b>" + esc(e.type) + "</b> " + esc((e.msg || "").slice(0, 90)) + "</td>" +
             '<td class="mono">' + esc((e.page || "") + (e.line ? ":" + e.line : "")) + "</td></tr>";

@@ -112,6 +112,7 @@
       "foot.emsc": "EMSC (Euro-Med)",
       "foot.seismo": "Nat'l Seismological Centre",
       "foot.emergency": "In an emergency",
+      "foot.bignum": "100 · 102 · 1149",
       "foot.police": "Police 100 · Ambulance 102 · Disaster 1149",
       "foot.disclaimer": "EQ Sentry is an informational service, not an official warning authority. Earthquakes cannot be predicted. Always follow instructions from Nepal's official agencies.",
       "foot.rights": "A public-safety initiative by Prashant Acharya",
@@ -185,6 +186,7 @@
       "foot.emsc": "EMSC (युरो-मेड)",
       "foot.seismo": "राष्ट्रिय भूकम्प केन्द्र",
       "foot.emergency": "आपत्कालमा",
+      "foot.bignum": "१०० · १०२ · ११४९",
       "foot.police": "प्रहरी १०० · एम्बुलेन्स १०२ · विपद् ११४९",
       "foot.disclaimer": "EQ Sentry जानकारीमूलक सेवा हो, आधिकारिक चेतावनी निकाय होइन। भूकम्पको पूर्वानुमान गर्न सकिँदैन। सधैं नेपालका आधिकारिक निकायका निर्देशन पालना गर्नुहोस्।",
       "foot.rights": "प्रशान्त आचार्यद्वारा सञ्चालित सार्वजनिक-सुरक्षा अभियान",
@@ -238,6 +240,8 @@
      pipe ({n}, {place}, …) are untouched — pages substitute those themselves. */
   var NE_DIGITS = "०१२३४५६७८९";
   function neDigits(s) { return String(s).replace(/[0-9]/g, function (d) { return NE_DIGITS[+d]; }); }
+  // Localize digits in any display string: Devanagari for Nepali, unchanged otherwise.
+  function dgS(s) { return getLang() === "ne" ? neDigits(s) : String(s); }
   function statVal(key) {
     var sum = window.EQ_DATA && window.EQ_DATA.summary;
     if (!sum) return null;
@@ -429,7 +433,7 @@
           '<div>' +
             '<h4 data-i18n="foot.emergency"></h4>' +
             '<div class="foot-emergency">' +
-              '<div class="big">100 · 102 · 1149</div>' +
+              '<div class="big" data-i18n="foot.bignum"></div>' +
               '<div data-i18n="foot.police" style="font-size:.82rem"></div>' +
             '</div>' +
           '</div>' +
@@ -453,11 +457,11 @@
     var s = Math.max(0, Date.now() - ms);
     var min = Math.floor(s / 60000);
     if (min < 1) return t("time.justnow");
-    if (min < 60) return min + " " + t("time.min") + " " + t("time.ago");
+    if (min < 60) return dgS(min) + " " + t("time.min") + " " + t("time.ago");
     var hr = Math.floor(min / 60);
-    if (hr < 24) return hr + " " + t("time.hr") + " " + t("time.ago");
+    if (hr < 24) return dgS(hr) + " " + t("time.hr") + " " + t("time.ago");
     var d = Math.floor(hr / 24);
-    return d + " " + (d === 1 ? t("time.day") : t("time.days")) + " " + t("time.ago");
+    return dgS(d) + " " + (d === 1 ? t("time.day") : t("time.days")) + " " + t("time.ago");
   }
 
   /* The live banner (#alertBar) is rendered by the shared engine (engine.js). */
@@ -474,7 +478,7 @@
     var dec = parseInt(el.getAttribute("data-decimals") || "0", 10);
     var pre = el.getAttribute("data-prefix") || "";
     var suf = el.getAttribute("data-suffix") || "";
-    function fmt(v) { return dec ? v.toFixed(dec) : Math.round(v).toLocaleString("en-US"); }
+    function fmt(v) { return dgS(dec ? v.toFixed(dec) : Math.round(v).toLocaleString("en-US")); }
     if (motionOff()) { el.textContent = pre + fmt(target) + suf; return; }
     var dur = 1100, start = performance.now();
     function step(now) {
@@ -632,7 +636,7 @@
 
   // expose helpers for other scripts
   window.EQ = {
-    getLang: getLang, setLang: setLang, t: t,
+    getLang: getLang, setLang: setLang, t: t, dg: dgS,
     NEPAL_BOX: NEPAL_BOX, inNepalRegion: inNepalRegion, fmtAgo: fmtAgo,
     addDict: function (obj) {
       DICT.en = Object.assign(DICT.en, obj.en || {});

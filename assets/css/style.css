@@ -923,7 +923,9 @@ html.light .up-bars i.na { background:rgba(15,23,42,.08); }
 .up-legend i.ok { background:#2fbd8b; } .up-legend i.slow { background:#FBBF24; }
 .up-legend i.fail { background:#EF4444; } .up-legend i.na { background:var(--line-2); }
 
-/* history / error log tables */
+/* history / error log tables — scroll instead of growing */
+.st-scroll { max-height:320px; overflow-y:auto; border:1px solid var(--line); border-radius:10px; }
+.st-scroll thead th { position:sticky; top:0; background:var(--surface-2); z-index:1; }
 .st-log th, .st-log td { font-size:.8rem; padding:8px 9px; }
 .st-log td.mono { font-family:var(--mono); white-space:nowrap; }
 

@@ -11,6 +11,8 @@
   ready(init);
 
   function T(k) { return window.EQ ? window.EQ.t(k) : k; }
+  function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
+
   function lang() { return window.EQ ? window.EQ.getLang() : "en"; }
   function hav(aLat, aLon, bLat, bLon) {
     var R = 6371, r = function (d) { return d * Math.PI / 180; };
@@ -102,8 +104,8 @@
     var dist = Math.round(hav(d.lat, d.lon, q.lat, q.lon));
     var label = esc(q.notable ? q.name : (q.place || ""));
     var when = q.notable ? q.year : (q.time != null ? yearOf(q.time) : "");
-    return '<b>M' + (q.mag != null ? q.mag.toFixed(1) : "?") + '</b> ' + label +
-      '<br>' + (when ? when + " · " : "") + dist + " km" + (q.depth != null ? " · " + Math.round(q.depth) + " km deep" : "");
+    return '<b>' + dg("M" + (q.mag != null ? q.mag.toFixed(1) : "?")) + '</b> ' + label +
+      '<br>' + (when ? dg(when) + " · " : "") + dg(dist + " km") + (q.depth != null ? " · " + dg(Math.round(q.depth) + " km") : "");
   }
   function updateMap(d, name, nearby) {
     ensureMap();
@@ -117,7 +119,7 @@
         fillColor: magColor(q.mag), fillOpacity: q.notable ? .95 : .68, opacity: 1
       });
       mk.bindPopup(popupHTML(q, d));
-      if (q.notable) mk.bindTooltip("M" + q.mag.toFixed(1) + (q.year ? " · " + q.year : ""), { direction: "top", className: "dist-tt" });
+      if (q.notable) mk.bindTooltip(dg("M" + q.mag.toFixed(1) + (q.year ? " · " + q.year : "")), { direction: "top", className: "dist-tt" });
       qLayer.addLayer(mk);
     });
     L.circleMarker([d.lat, d.lon], { radius: 7, color: "#fff", weight: 2, fillColor: "#FF4D2E", fillOpacity: 1 })
@@ -202,19 +204,19 @@
       '<p style="margin:.6rem 0 0;color:var(--ink-soft)">' + T("dr.universal") + "</p></div>";
 
     h += '<div class="stat-row reveal in" style="margin-bottom:14px">' +
-      '<div class="stat"><div class="num accent">' + n100 + '</div><div class="lbl">' + T("dr.s.count") + "</div></div>" +
-      '<div class="stat"><div class="num">' + (strongest ? "M" + strongest.mag.toFixed(1) : "—") + '</div><div class="lbl">' + T("dr.s.max") + "</div></div>" +
-      '<div class="stat"><div class="num">' + (nearest ? Math.round(nd) + " km" : "—") + '</div><div class="lbl">' + T("dr.s.nearest") + "</div></div>" +
-      '<div class="stat"><div class="num">' + (recent ? recent.year : "—") + '</div><div class="lbl">' + T("dr.s.recent") + "</div></div></div>";
+      '<div class="stat"><div class="num accent">' + dg(n100) + '</div><div class="lbl">' + T("dr.s.count") + "</div></div>" +
+      '<div class="stat"><div class="num">' + (strongest ? dg("M" + strongest.mag.toFixed(1)) : "—") + '</div><div class="lbl">' + T("dr.s.max") + "</div></div>" +
+      '<div class="stat"><div class="num">' + (nearest ? dg(Math.round(nd) + " km") : "—") + '</div><div class="lbl">' + T("dr.s.nearest") + "</div></div>" +
+      '<div class="stat"><div class="num">' + (recent ? dg(recent.year) : "—") + '</div><div class="lbl">' + T("dr.s.recent") + "</div></div></div>";
 
     /* ---- insights card ---- */
     var lines = [];
-    if (strongest) lines.push(T("dr.strongline").replace("{m}", strongest.mag.toFixed(1)).replace("{place}", esc(strongest.place)).replace("{year}", strongest.year).replace("{d}", Math.round(strongest.d)));
-    if (recent) lines.push(T("dr.recentline").replace("{m}", recent.mag.toFixed(1)).replace("{place}", esc(recent.place)).replace("{when}", recent.year).replace("{d}", Math.round(recent.d)));
-    if (n100 > 0) lines.push(T("dr.bandline").replace("{a}", b6).replace("{b}", b5).replace("{c}", b45).replace("{n}", n50));
+    if (strongest) lines.push(T("dr.strongline").replace("{m}", dg(strongest.mag.toFixed(1))).replace("{place}", esc(strongest.place)).replace("{year}", dg(strongest.year)).replace("{d}", dg(Math.round(strongest.d))));
+    if (recent) lines.push(T("dr.recentline").replace("{m}", dg(recent.mag.toFixed(1))).replace("{place}", esc(recent.place)).replace("{when}", dg(recent.year)).replace("{d}", dg(Math.round(recent.d))));
+    if (n100 > 0) lines.push(T("dr.bandline").replace("{a}", dg(b6)).replace("{b}", dg(b5)).replace("{c}", dg(b45)).replace("{n}", dg(n50)));
     else lines.push(T("dr.none.near"));
-    if (medDepth != null) lines.push(T("dr.depthline").replace("{d}", Math.round(medDepth)));
-    if (fault) lines.push(T("dr.faultline").replace("{name}", fault.name).replace("{d}", Math.round(fault.d)));
+    if (medDepth != null) lines.push(T("dr.depthline").replace("{d}", dg(Math.round(medDepth))));
+    if (fault) lines.push(T("dr.faultline").replace("{name}", fault.name).replace("{d}", dg(Math.round(fault.d))));
 
     var insights = '<div class="card reveal in" style="margin-bottom:14px">' +
       '<h4 style="margin:0 0 10px">' + T("dr.insights.t") + "</h4>" +
@@ -225,7 +227,7 @@
       var feltKm = 12 * Math.pow(10, 0.30 * (gNear.mag - 3));
       var feltKey = gNear.d <= feltKm ? "dr.felt.strong" : (gNear.d <= 2 * feltKm ? "dr.felt.mod" : "dr.felt.light");
       insights += '<div class="callout" style="margin-top:12px"><div><strong>' + T("dr.great.t") + "</strong>" +
-        '<p style="margin-top:6px">' + T("dr.greatline").replace("{name}", esc(gNear.name)).replace("{m}", gNear.mag.toFixed(1)).replace("{year}", gNear.year).replace("{d}", Math.round(gNear.d)) +
+        '<p style="margin-top:6px">' + T("dr.greatline").replace("{name}", esc(gNear.name)).replace("{m}", dg(gNear.mag.toFixed(1))).replace("{year}", dg(gNear.year)).replace("{d}", dg(Math.round(gNear.d))) +
         " " + T(feltKey) + "</p></div></div>";
     }
     insights += "</div>";

@@ -9,6 +9,8 @@
   var box = document.getElementById("hhRooms");
   if (!box) return;
   function T(k) { return window.EQ ? window.EQ.t(k) : k; }
+  function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
+
   var KEY = "eqsentry_hazards";
   var ROOMS = [
     { key: "hh.r.kitchen", items: ["hh.k1", "hh.k2", "hh.k3", "hh.k4"] },
@@ -29,7 +31,7 @@
       var done = r.items.filter(function (i) { return state[i]; }).length;
       return '<div class="hh-room">' +
         '<div class="hh-roomhead"><h4 style="margin:0">' + T(r.key) + '</h4>' +
-        '<span class="muted" style="font-family:var(--mono);font-size:.8rem">' + done + "/" + r.items.length + "</span></div>" +
+        '<span class="muted" style="font-family:var(--mono);font-size:.8rem">' + dg(done + "/" + r.items.length) + "</span></div>" +
         r.items.map(function (i) {
           var on = !!state[i];
           return '<label class="kit-item' + (on ? " on" : "") + '" style="display:flex;gap:10px;align-items:flex-start;margin:6px 0">' +
@@ -40,7 +42,7 @@
   }
   function paintScore() {
     var n = count(), pct = Math.round(n / TOTAL * 100);
-    var s = document.getElementById("hhScore"); if (s) s.textContent = n + "/" + TOTAL;
+    var s = document.getElementById("hhScore"); if (s) s.textContent = dg(n + "/" + TOTAL);
     var bar = document.getElementById("hhBar"); if (bar) bar.style.width = pct + "%";
     var tier = document.getElementById("hhTier");
     if (tier) tier.textContent = n === TOTAL ? T("hh.done")
@@ -60,7 +62,7 @@
     if (room) {
       var boxes = room.querySelectorAll("input[data-hh]"), d = 0;
       boxes.forEach(function (b) { if (b.checked) d++; });
-      var c = room.querySelector(".hh-roomhead .muted"); if (c) c.textContent = d + "/" + boxes.length;
+      var c = room.querySelector(".hh-roomhead .muted"); if (c) c.textContent = dg(d + "/" + boxes.length);
     }
   });
 

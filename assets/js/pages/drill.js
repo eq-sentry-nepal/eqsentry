@@ -9,6 +9,8 @@
   var card = document.getElementById("drillCard");
   if (!card) return;
   function T(k) { return window.EQ ? window.EQ.t(k) : k; }
+  function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
+
   var KEY = "eqsentry_drills";
   var STEPS = [
     { key: "dm.ready", dur: 3, cls: "" },
@@ -39,7 +41,7 @@
         '<p style="text-align:center;color:var(--ink-soft);max-width:46ch;margin:10px auto 18px">' + T("dm.done.d") + "</p>" : "") +
       '<div style="text-align:center">' +
       '<p class="muted" style="margin:0 0 6px">' +
-        (last ? T("dm.last") + " <b>" + fmtDate(last) + "</b> · " + l.length + " " + T("dm.count") : T("dm.never")) + "</p>" +
+        (last ? T("dm.last") + " <b>" + fmtDate(last) + "</b> · " + dg(l.length) + " " + T("dm.count") : T("dm.never")) + "</p>" +
       (due && !justDone ? '<p style="color:#FBBF24;font-weight:600;margin:0 0 14px">' + T("dm.due") + "</p>" : "") +
       '<button class="btn btn-primary" id="drillStart" style="margin-top:10px">' + T(justDone || last ? "dm.again" : "dm.start") + "</button></div>";
     var b = document.getElementById("drillStart");
@@ -63,7 +65,7 @@
         if (si >= STEPS.length) { finish(); return; }
         runStep(); return;
       }
-      var n = document.getElementById("drillNum"); if (n) n.textContent = left;
+      var n = document.getElementById("drillNum"); if (n) n.textContent = dg(left);
       var bar = document.getElementById("drillBar"); if (bar) bar.style.width = ((st.dur - left) / st.dur * 100) + "%";
     }, 1000);
   }
@@ -74,7 +76,7 @@
       '<div class="quiz-progress"><i style="width:' + Math.round(doneBefore / total * 100) + '%"></i></div>' +
       '<div style="text-align:center;padding:14px 0 4px">' +
       '<div class="drill-step">' + T(st.key) + '</div>' +
-      '<div class="drill-num" id="drillNum">' + left + "</div>" +
+      '<div class="drill-num" id="drillNum">' + dg(left) + "</div>" +
       (st.desc ? '<p style="color:var(--ink-soft);max-width:44ch;margin:8px auto 0">' + T(st.desc) + "</p>" : "") +
       '<div class="drill-barwrap"><i id="drillBar"></i></div></div>';
   }

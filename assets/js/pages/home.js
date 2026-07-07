@@ -18,10 +18,10 @@
         var ev = fc.features.map(function (f) { return f.properties; }).sort(function (a, b) { return b.year - a.year; });
         grid.innerHTML = ev.map(function (p) {
           var name = lang === "ne" ? p.name_ne : p.name_en;
-          var deaths = p.deaths ? p.deaths.toLocaleString() + " " + window.EQ.t("nb.deaths") : "";
+          var deaths = p.deaths ? window.EQ.dg(p.deaths.toLocaleString()) + " " + window.EQ.t("nb.deaths") : "";
           return '<div class="card reveal in" style="padding:20px">' +
-            '<div style="font-family:var(--mono);color:var(--ink-faint);font-size:.78rem">' + p.year + '</div>' +
-            '<div style="font-family:var(--mono);font-size:1.7rem;font-weight:700;color:var(--accent);line-height:1.1;margin:.2rem 0">M' + p.mag.toFixed(1) + '</div>' +
+            '<div style="font-family:var(--mono);color:var(--ink-faint);font-size:.78rem">' + window.EQ.dg(p.year) + '</div>' +
+            '<div style="font-family:var(--mono);font-size:1.7rem;font-weight:700;color:var(--accent);line-height:1.1;margin:.2rem 0">' + window.EQ.dg("M" + p.mag.toFixed(1)) + '</div>' +
             '<div style="font-weight:600;color:var(--ink);font-size:.95rem;margin-bottom:.3rem">' + name + '</div>' +
             '<div style="font-family:var(--mono);font-size:.78rem;color:var(--ink-faint)">' + deaths + '</div>' +
             '</div>';
@@ -35,6 +35,7 @@
   /* Recent-quakes feed — driven by the shared engine (USGS + EMSC, merged). */
   (function () {
     var feed = document.getElementById("quakeFeed"); if (!feed) return;
+    function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
     function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
     function magColor(m) { if (m == null) return "#9aa3af"; if (m < 4) return "#34D399"; if (m < 5) return "#FB923C"; if (m < 6) return "#F97316"; if (m < 7) return "#EF4444"; return "#b91c1c"; }
     function catRecent() {
@@ -47,7 +48,7 @@
       feed.innerHTML = list.slice(0, 6).map(function (q) {
         var col = magColor(q.mag);
         return '<a class="feed-item" href="map.html">' +
-          '<span class="fi-mag" style="background:' + col + '">' + (q.mag != null ? q.mag.toFixed(1) : "?") + '</span>' +
+          '<span class="fi-mag" style="background:' + col + '">' + dg(q.mag != null ? q.mag.toFixed(1) : "?") + '</span>' +
           '<span class="fi-meta"><span class="fi-place">' + esc(q.place || "—") + '</span>' +
           '<span class="fi-time">' + window.EQ.fmtAgo(q.time) + (q.source ? ' · <b style="color:var(--ink-soft)">' + q.source + '</b>' : '') + '</span></span>' +
           '<span class="fi-arrow">→</span></a>';

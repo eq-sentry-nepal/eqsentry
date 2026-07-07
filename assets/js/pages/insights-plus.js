@@ -8,6 +8,8 @@
 (function () {
   "use strict";
   function T(k) { return window.EQ ? window.EQ.t(k) : k; }
+  function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
+
   function lang() { return window.EQ ? window.EQ.getLang() : "en"; }
   function $(id) { return document.getElementById(id); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
@@ -24,7 +26,7 @@
   }
   function energyJ(m) { return Math.pow(10, 1.5 * m + 4.8); }
   function feltKm(m) { return Math.min(500, 12 * Math.pow(10, 0.30 * (m - 3))); }
-  function sub(str, map) { return String(str).replace(/\{(\w+)\}/g, function (_, k) { return map[k] != null ? map[k] : "{" + k + "}"; }); }
+  function sub(str, map) { return String(str).replace(/\{(\w+)\}/g, function (_, k) { return map[k] != null ? dg(map[k]) : "{" + k + "}"; }); }
 
   var Q = [], NOTABLE = [], minY = 0, maxY = 0;
   var charts = {};
@@ -34,8 +36,10 @@
       responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false }, tooltip: { backgroundColor: "#171C27", borderColor: "rgba(255,255,255,.14)", borderWidth: 1, titleColor: "#EEF1F6", bodyColor: "#AAB2BF" } },
       scales: {
-        x: { grid: { color: "rgba(255,255,255,.05)" }, ticks: { color: "#6B7480", maxRotation: 0, autoSkip: true, maxTicksLimit: 12 } },
-        y: { grid: { color: "rgba(255,255,255,.05)" }, ticks: { color: "#6B7480" }, beginAtZero: true }
+        x: { grid: { color: "rgba(255,255,255,.05)" }, ticks: { color: "#6B7480", maxRotation: 0, autoSkip: true, maxTicksLimit: 12,
+          callback: function (v) { var l = this.getLabelForValue ? this.getLabelForValue(v) : v; return dg(l); } } },
+        y: { grid: { color: "rgba(255,255,255,.05)" }, ticks: { color: "#6B7480",
+          callback: function (v) { return dg(v); } }, beginAtZero: true }
       }
     };
   }
@@ -97,8 +101,8 @@
       hist.innerHTML = items.length
         ? items.slice(0, 5).map(function (i) {
             return '<div style="display:flex;gap:10px;align-items:baseline;padding:4px 0">' +
-              '<b style="font-family:var(--mono);color:' + magColor(i.mag) + '">M' + i.mag.toFixed(1) + '</b>' +
-              '<span>' + esc(i.label || "—") + '</span><span class="muted" style="margin-left:auto;font-family:var(--mono);font-size:.8rem">' + i.year + "</span></div>";
+              '<b style="font-family:var(--mono);color:' + magColor(i.mag) + '">' + dg("M" + i.mag.toFixed(1)) + '</b>' +
+              '<span>' + esc(i.label || "—") + '</span><span class="muted" style="margin-left:auto;font-family:var(--mono);font-size:.8rem">' + dg(i.year) + "</span></div>";
           }).join("")
         : '<p class="muted" style="margin:0">' + T("nt.hist.none") + "</p>";
     }
@@ -120,12 +124,12 @@
       var d = m6[i].time - m6[i - 1].time;
       if (!gap || d > gap.d) gap = { d: d, from: m6[i - 1], to: m6[i] };
     }
-    set("recDeep", Math.round(deep.depth) + " km"); set("recDeepP", deep.year + " · " + (deep.place || ""));
-    set("recActive", String(act.y)); set("recActiveN", act.n + " " + T("rec.evs"));
-    set("recQuiet", String(quiet.y)); set("recQuietN", quiet.n + " " + T("rec.evs"));
+    set("recDeep", dg(Math.round(deep.depth) + " km")); set("recDeepP", dg(deep.year) + " · " + (deep.place || ""));
+    set("recActive", dg(act.y)); set("recActiveN", dg(act.n) + " " + T("rec.evs"));
+    set("recQuiet", dg(quiet.y)); set("recQuietN", dg(quiet.n) + " " + T("rec.evs"));
     if (gap) {
       set("recGap", sub(T("rec.gapv"), { d: Math.round(gap.d / 864e5).toLocaleString() }));
-      set("recGapP", gap.from.year + " → " + gap.to.year);
+      set("recGapP", dg(gap.from.year) + " → " + dg(gap.to.year));
     }
   }
   function set(id, v) { var e = $(id); if (e) e.textContent = v; }
@@ -189,7 +193,7 @@
 
   /* ---------- Aftershock explorer ---------- */
   var mains = [], asChart = null;
-  function eventLabel(e) { return e.year + " · M" + e.mag.toFixed(1) + " — " + (e.place || "—"); }
+  function eventLabel(e) { return dg(e.year + " · M" + e.mag.toFixed(1)) + " — " + (e.place || "—"); }
   function initAftershocks() {
     var sel = $("asPick"); if (!sel) return;
     mains = Q.filter(function (e) { return e.mag >= 6.8; }).sort(function (a, b) { return b.time - a.time; });
@@ -213,12 +217,12 @@
     var af = Q.filter(function (e) {
       return e.time > ms.time && e.time <= ms.time + W && e.mag < ms.mag && hav(ms.lat, ms.lon, e.lat, e.lon) <= 120;
     });
-    set("asCount", String(af.length));
+    set("asCount", dg(af.length));
     var big = af.length ? af.reduce(function (a, b) { return b.mag > a.mag ? b : a; }) : null;
-    set("asBig", big ? "M" + big.mag.toFixed(1) : "—");
+    set("asBig", big ? dg("M" + big.mag.toFixed(1)) : "—");
     set("asBigP", big ? (big.place || "") : "");
     var span = af.length ? Math.ceil((Math.max.apply(null, af.map(function (e) { return e.time; })) - ms.time) / 864e5) : 0;
-    set("asSpan", af.length ? span + " " + T("as.days") : "—");
+    set("asSpan", af.length ? dg(span) + " " + T("as.days") : "—");
     var none = $("asNone"); if (none) none.style.display = af.length ? "none" : "block";
 
     var days = [], counts = [];
@@ -256,7 +260,7 @@
   }
   function fillCmp(sel) {
     var cur = sel.value;
-    sel.innerHTML = cmpEvents.map(function (e, i) { return '<option value="' + i + '">M' + e.mag.toFixed(1) + " — " + esc(e.label()) + "</option>"; }).join("");
+    sel.innerHTML = cmpEvents.map(function (e, i) { return '<option value="' + i + '">' + dg("M" + e.mag.toFixed(1)) + " — " + esc(e.label()) + "</option>"; }).join("");
     if (cur !== "") sel.value = cur;
   }
   function row(k, va, vb) {
@@ -271,11 +275,11 @@
     var bigger = a.mag >= b.mag ? a : b, smaller = a.mag >= b.mag ? b : a;
     box.innerHTML =
       row("", esc(a.label()), esc(b.label())) +
-      row(T("cmp.mag"), "M" + a.mag.toFixed(1), "M" + b.mag.toFixed(1)) +
-      row(T("cmp.depth"), a.depth != null ? Math.round(a.depth) + " km" : "—", b.depth != null ? Math.round(b.depth) + " km" : "—") +
-      row(T("cmp.deaths"), a.deaths != null ? a.deaths.toLocaleString() : "—", b.deaths != null ? b.deaths.toLocaleString() : "—") +
-      row(T("cmp.feltr"), "~" + Math.round(feltKm(a.mag)) + " km", "~" + Math.round(feltKm(b.mag)) + " km") +
-      row(T("cmp.energy"), (a === bigger ? Math.round(ratio).toLocaleString() + "×" : "1×"), (b === bigger ? Math.round(ratio).toLocaleString() + "×" : "1×"));
+      row(T("cmp.mag"), dg("M" + a.mag.toFixed(1)), dg("M" + b.mag.toFixed(1))) +
+      row(T("cmp.depth"), a.depth != null ? dg(Math.round(a.depth) + " km") : "—", b.depth != null ? dg(Math.round(b.depth) + " km") : "—") +
+      row(T("cmp.deaths"), a.deaths != null ? dg(a.deaths.toLocaleString()) : "—", b.deaths != null ? dg(b.deaths.toLocaleString()) : "—") +
+      row(T("cmp.feltr"), dg("~" + Math.round(feltKm(a.mag)) + " km"), dg("~" + Math.round(feltKm(b.mag)) + " km")) +
+      row(T("cmp.energy"), (a === bigger ? dg(Math.round(ratio).toLocaleString() + "×") : dg("1×")), (b === bigger ? dg(Math.round(ratio).toLocaleString() + "×") : dg("1×")));
     var line = $("cmpLine");
     if (line) line.textContent = ratio < 1.5 ? T("cmp.same")
       : sub(T("cmp.line"), { a: bigger.label(), b: smaller.label(), x: Math.round(ratio).toLocaleString() });
@@ -284,6 +288,8 @@
   /* ---------- language change ---------- */
   function relabel() {
     nowAndThen(); records();
+    Object.keys(charts).forEach(function (k) { if (charts[k]) charts[k].update(); });
+    if (asChart) asChart.update();
     var g = $("grB"); if (g && g.getAttribute("data-b")) g.textContent = sub(T("ins.c.gr.b"), { b: g.getAttribute("data-b") });
     var sel = $("asPick");
     if (sel && mains.length) { fillMainSelect(sel); renderAS(+sel.value || 0); }

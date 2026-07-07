@@ -11,6 +11,8 @@
   ready(init);
 
   function T(k) { return window.EQ ? window.EQ.t(k) : k; }
+  function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
+
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function $(id) { return document.getElementById(id); }
 
@@ -49,10 +51,10 @@
 
     // Water + food targets
     html += '<div class="stat-row" style="margin:16px 0 18px">' +
-      '<div class="stat"><div class="num accent">' + litres + '</div><div class="lbl">' + T("pg.r.water") + ' · ' +
-        T("pg.r.waterv").replace("{cans}", cans) + '</div></div>' +
-      '<div class="stat"><div class="num">' + s.n + '</div><div class="lbl">' + T("pg.r.food") + ' · ' +
-        T("pg.r.foodv").replace("{n}", s.n) + '</div></div></div>';
+      '<div class="stat"><div class="num accent">' + dg(litres) + '</div><div class="lbl">' + T("pg.r.water") + ' · ' +
+        T("pg.r.waterv").replace("{cans}", dg(cans)) + '</div></div>' +
+      '<div class="stat"><div class="num">' + dg(s.n) + '</div><div class="lbl">' + T("pg.r.food") + ' · ' +
+        T("pg.r.foodv").replace("{n}", dg(s.n)) + '</div></div></div>';
 
     // Home-type advice
     html += '<h4 style="margin:0 0 6px">' + T("pg.r.home") + '</h4>' +

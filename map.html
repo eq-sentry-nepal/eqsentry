@@ -36,6 +36,7 @@
         "map.region": "Region", "map.r.nepal": "Nepal", "map.r.south": "South Asia", "map.r.world": "World",
         "map.period": "Time", "map.p.day": "24h", "map.p.week": "7 days", "map.minmag": "Min magnitude",
         "map.daterange": "Date range", "map.from": "From", "map.to": "To", "map.dp.all": "All", "map.dp.1y": "1 yr", "map.dp.10y": "10 yr", "map.dp.2015": "Since 2015", "map.filtermag": "Minimum magnitude", "map.mm.all": "All",
+        "map.b25": "2.5+", "map.b45": "4.5+", "map.b5": "5+", "map.b6": "6+", "map.b7": "7+",
         "map.loading": "Loading…", "map.error": "Couldn't load data. Check your connection and retry.",
         "map.empty": "No earthquakes match these filters.",
         "map.quakes": "quakes", "map.events": "events", "map.largest": "largest",
@@ -64,6 +65,7 @@
         "map.region": "क्षेत्र", "map.r.nepal": "नेपाल", "map.r.south": "दक्षिण एसिया", "map.r.world": "विश्व",
         "map.period": "समय", "map.p.day": "२४ घण्टा", "map.p.week": "७ दिन", "map.minmag": "न्यून म्याग्निच्युड",
         "map.daterange": "मिति दायरा", "map.from": "देखि", "map.to": "सम्म", "map.dp.all": "सबै", "map.dp.1y": "१ वर्ष", "map.dp.10y": "१० वर्ष", "map.dp.2015": "२०१५ यता", "map.filtermag": "न्यूनतम म्याग्निच्युड", "map.mm.all": "सबै",
+        "map.b25": "२.५+", "map.b45": "४.५+", "map.b5": "५+", "map.b6": "६+", "map.b7": "७+",
         "map.loading": "लोड हुँदै…", "map.error": "तथ्याङ्क लोड भएन। इन्टरनेट जाँची पुनः प्रयास गर्नुहोस्।",
         "map.empty": "यी फिल्टरसँग मिल्ने भूकम्प छैन।",
         "map.quakes": "भूकम्प", "map.events": "घटना", "map.largest": "सबैभन्दा ठूलो",
@@ -127,8 +129,8 @@
             <div>
               <p class="ctrl-label" data-i18n="map.minmag"></p>
               <div class="seg" id="segMag">
-                <button data-value="2.5" class="active">2.5+</button>
-                <button data-value="4.5">4.5+</button>
+                <button data-value="2.5" class="active" data-i18n="map.b25"></button>
+                <button data-value="4.5" data-i18n="map.b45"></button>
               </div>
             </div>
           </div>
@@ -149,9 +151,9 @@
           <p class="ctrl-label" data-i18n="map.filtermag"></p>
           <div class="seg" id="segFmag">
             <button data-value="0" class="active" data-i18n="map.mm.all"></button>
-            <button data-value="5">5+</button>
-            <button data-value="6">6+</button>
-            <button data-value="7">7+</button>
+            <button data-value="5" data-i18n="map.b5"></button>
+            <button data-value="6" data-i18n="map.b6"></button>
+            <button data-value="7" data-i18n="map.b7"></button>
           </div>
         </div>
 

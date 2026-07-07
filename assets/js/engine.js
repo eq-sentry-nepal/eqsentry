@@ -31,6 +31,7 @@
     return 2 * R * Math.asin(Math.sqrt(x));
   }
   function fmtAgo(t) { return EQ.fmtAgo ? EQ.fmtAgo(t) : ""; }
+  function dg(s) { return EQ.dg ? EQ.dg(s) : String(s); }
   function tr(k) { return EQ.t ? EQ.t(k) : k; }
 
   function fetchUSGS() {
@@ -105,18 +106,18 @@
   function field(model, f) {
     var L = model.latest;
     switch (f) {
-      case "latest.mag": return L && L.mag != null ? "M" + L.mag.toFixed(1) : "—";
+      case "latest.mag": return L && L.mag != null ? dg("M" + L.mag.toFixed(1)) : "—";
       case "latest.place": return L ? (L.place || "—") : "—";
       case "latest.ago": return L ? fmtAgo(L.time) : "—";
       case "latest.source": return L ? L.source : "";
-      case "week.count": return String(model.week.count);
-      case "month.count": return String(model.month.count);
-      case "strongest7d": return model.strongest7d ? "M" + model.strongest7d.mag.toFixed(1) : "—";
-      case "strongest30d": return model.strongest30d ? "M" + model.strongest30d.mag.toFixed(1) : "—";
-      case "daysSince": return model.daysSinceFelt != null ? String(model.daysSinceFelt) : "—";
-      case "total": return model.total != null ? model.total.toLocaleString() : "—";
-      case "maxMag": return model.maxMag != null ? "M" + model.maxMag.toFixed(1) : "—";
-      case "since": return model.since != null ? String(model.since) : "—";
+      case "week.count": return dg(model.week.count);
+      case "month.count": return dg(model.month.count);
+      case "strongest7d": return model.strongest7d ? dg("M" + model.strongest7d.mag.toFixed(1)) : "—";
+      case "strongest30d": return model.strongest30d ? dg("M" + model.strongest30d.mag.toFixed(1)) : "—";
+      case "daysSince": return model.daysSinceFelt != null ? dg(model.daysSinceFelt) : "—";
+      case "total": return model.total != null ? dg(model.total.toLocaleString()) : "—";
+      case "maxMag": return model.maxMag != null ? dg("M" + model.maxMag.toFixed(1)) : "—";
+      case "since": return model.since != null ? dg(model.since) : "—";
       default: return "";
     }
   }
@@ -134,7 +135,7 @@
     if (L && Date.now() - L.time <= 14 * 864e5) {
       bar.className = "alert-bar"; bar.style.background = ""; bar.style.borderBottom = "";
       bar.innerHTML = '<div class="container"><span class="dot"></span>' +
-        '<span><strong>' + tr("banner.latest") + '</strong> M' + (L.mag != null ? L.mag.toFixed(1) : "?") +
+        '<span><strong>' + tr("banner.latest") + '</strong> ' + dg("M" + (L.mag != null ? L.mag.toFixed(1) : "?")) +
         ' — ' + esc(L.place || "") + ' · ' + fmtAgo(L.time) + ' · ' + L.source + '</span>' +
         '<a href="map.html" style="margin-left:auto">' + tr("banner.view") + ' →</a></div>';
     } else {

@@ -9,6 +9,8 @@
   var answers = QS.map(function () { return null; });
   var idx = 0, done = false;
   function T(k) { return window.EQ.t(k); }
+  function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
+
   function render() {
     if (done) return renderResult();
     var pct = Math.round(idx / QS.length * 100), sel = answers[idx];
@@ -17,7 +19,7 @@
     }).join("");
     card.innerHTML =
       '<div class="quiz-progress"><i style="width:' + pct + '%"></i></div>' +
-      '<div class="quiz-step">' + T("quiz.step") + " " + (idx + 1) + " " + T("quiz.of") + " " + QS.length + "</div>" +
+      '<div class="quiz-step">' + T("quiz.step") + " " + dg(idx + 1) + " " + T("quiz.of") + " " + dg(QS.length) + "</div>" +
       '<div class="quiz-q">' + T(QS[idx]) + "</div>" +
       '<div class="quiz-opts">' + opts + "</div>" +
       '<div class="quiz-nav">' +
@@ -43,7 +45,7 @@
     var col = tier === "high" ? "#34D399" : tier === "mid" ? "#FBBF24" : "#EF4444";
     card.innerHTML =
       '<div class="quiz-result">' +
-      '<div class="score-ring" style="border-radius:50%;background:conic-gradient(' + col + ' ' + pct + '%, var(--line) 0)"><div style="position:absolute;inset:11px;border-radius:50%;background:var(--surface)"></div><div class="num">' + pct + '%</div></div>' +
+      '<div class="score-ring" style="border-radius:50%;background:conic-gradient(' + col + ' ' + pct + '%, var(--line) 0)"><div style="position:absolute;inset:11px;border-radius:50%;background:var(--surface)"></div><div class="num">' + dg(pct) + '%</div></div>' +
       '<div class="score-tier" style="color:' + col + '">' + T("quiz.tier." + tier) + '</div>' +
       '<div style="color:var(--ink-faint);font-size:.84rem;margin-top:4px">' + T("quiz.result") + '</div>' +
       '<ul class="score-tips">' + T("quiz.tips." + tier) + '</ul>' +

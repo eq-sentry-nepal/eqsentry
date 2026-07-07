@@ -10,6 +10,8 @@
   ready(init);
 
   function T(k) { return window.EQ ? window.EQ.t(k) : k; }
+  function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
+
   function lang() { return window.EQ && window.EQ.getLang ? window.EQ.getLang() : (document.documentElement.lang || "en"); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function $(id) { return document.getElementById(id); }
@@ -67,7 +69,7 @@
       return '<label class="felt-opt' + (sel ? " sel" : "") + '" data-v="' + o.v + '">' +
         '<input type="radio" name="felt-int" value="' + o.v + '"' + (sel ? " checked" : "") + ' />' +
         '<span class="felt-sw" style="background:' + o.c + '"></span>' +
-        '<span class="lv">' + o.v + '</span><span class="tx">' + esc(T(o.key)) + "</span></label>";
+        '<span class="lv">' + dg(o.v) + '</span><span class="tx">' + esc(T(o.key)) + "</span></label>";
     }).join("");
   }
   function renderLegend() {
@@ -80,9 +82,9 @@
     var d = new Date(at).getTime(); if (isNaN(d)) return "";
     var s = Math.max(0, (Date.now() - d) / 1000);
     if (s < 90) return T("dyfi.now");
-    if (s < 3600) return Math.round(s / 60) + T("dyfi.min");
-    if (s < 86400) return Math.round(s / 3600) + T("dyfi.hr");
-    return Math.round(s / 86400) + T("dyfi.day");
+    if (s < 3600) return dg(Math.round(s / 60)) + T("dyfi.min");
+    if (s < 86400) return dg(Math.round(s / 3600)) + T("dyfi.hr");
+    return dg(Math.round(s / 86400)) + T("dyfi.day");
   }
 
   /* ---- map ---- */
@@ -119,7 +121,7 @@
         fillColor: intColor(avg), fillOpacity: 0.72
       }).bindPopup(
         '<strong>' + esc(g.name || "—") + '</strong><br>' +
-        g.n + " " + esc(T(g.n === 1 ? "dyfi.report1" : "dyfi.reports")) + " · " + esc(T(intLabelKey(avg)))
+        dg(g.n) + " " + esc(T(g.n === 1 ? "dyfi.report1" : "dyfi.reports")) + " · " + esc(T(intLabelKey(avg)))
       ).addTo(layer);
     });
   }

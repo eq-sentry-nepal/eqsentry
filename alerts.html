@@ -32,6 +32,7 @@
         "al.district": "District / location", "al.district.ph": "e.g. Kathmandu, Gorkha",
         "al.lang": "Preferred language", "al.lang.en": "English", "al.lang.ne": "Nepali / नेपाली",
         "al.thresh": "Alert me for magnitude", "al.thresh.help": "and above, near your area",
+        "al.t40": "M 4.0+", "al.t45": "M 4.5+", "al.t50": "M 5.0+", "al.t60": "M 6.0+",
         "al.consent": "I agree to be contacted about earthquake safety alerts.",
         "al.submit": "Register for alerts",
         "al.success": "✓ Registered. Your alert preferences have been saved on this device.",
@@ -69,6 +70,7 @@
         "al.district": "जिल्ला / स्थान", "al.district.ph": "जस्तै काठमाडौं, गोरखा",
         "al.lang": "रुचाइएको भाषा", "al.lang.en": "English", "al.lang.ne": "नेपाली",
         "al.thresh": "यति म्याग्निच्युडमा सूचना", "al.thresh.help": "र माथि, तपाईंको क्षेत्र नजिक",
+        "al.t40": "M ४.०+", "al.t45": "M ४.५+", "al.t50": "M ५.०+", "al.t60": "M ६.०+",
         "al.consent": "भूकम्प सुरक्षा सूचनाका लागि सम्पर्क गर्न म सहमत छु।",
         "al.submit": "सूचनाका लागि दर्ता गर्नुहोस्",
         "al.success": "✓ दर्ता भयो। तपाईंको सूचना प्राथमिकता यस यन्त्रमा सेभ गरिएको छ।",
@@ -158,10 +160,10 @@
               <div class="field">
                 <label for="f-thresh" data-i18n="al.thresh"></label>
                 <select id="f-thresh" name="threshold">
-                  <option value="4.0">M 4.0+</option>
-                  <option value="4.5" selected>M 4.5+</option>
-                  <option value="5.0">M 5.0+</option>
-                  <option value="6.0">M 6.0+</option>
+                  <option value="4.0" data-i18n="al.t40"></option>
+                  <option value="4.5" selected data-i18n="al.t45"></option>
+                  <option value="5.0" data-i18n="al.t50"></option>
+                  <option value="6.0" data-i18n="al.t60"></option>
                 </select>
                 <div class="hint" data-i18n="al.thresh.help"></div>
               </div>

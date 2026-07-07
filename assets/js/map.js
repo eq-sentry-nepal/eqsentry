@@ -60,6 +60,7 @@
   };
 
   function T(k) { return window.EQ ? window.EQ.t(k) : k; }
+  function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
   /* ---------- Shareable URLs: filters live in the hash (#src=…&fmag=…) ---------- */
@@ -167,25 +168,25 @@
     if (!youLoc || typeof e.lat !== "number") return "";
     var d = haversineKm(youLoc.lat, youLoc.lon, e.lat, e.lon);
     return '<br><span class="sub" style="color:var(--accent-2)">' + T("map.youline")
-      .replace("{d}", Math.round(d)).replace("{p}", Math.max(1, Math.round(d / 8)))
-      .replace("{s}", Math.max(1, Math.round(d / 4.6))) + '</span>';
+      .replace("{d}", dg(Math.round(d))).replace("{p}", dg(Math.max(1, Math.round(d / 8))))
+      .replace("{s}", dg(Math.max(1, Math.round(d / 4.6)))) + '</span>';
   }
   function popupHTML(e) {
     var color = magColor(e.mag);
     if (e.notable) {
       var name = window.EQ.getLang() === "ne" ? e.name_ne : e.name_en;
       var sum = window.EQ.getLang() === "ne" ? e.summary_ne : e.summary_en;
-      return '<div class="lpop"><span class="m" style="color:' + color + '">M ' + e.mag.toFixed(1) + '</span> · ' + e.year +
+      return '<div class="lpop"><span class="m" style="color:' + color + '">' + dg("M " + e.mag.toFixed(1)) + '</span> · ' + dg(e.year) +
         '<br><b>' + name + '</b><br>' +
-        (e.deaths ? '<span class="sub">' + e.deaths.toLocaleString() + ' ' + T("map.deaths") + '</span><br>' : '') +
+        (e.deaths ? '<span class="sub">' + dg(e.deaths.toLocaleString()) + ' ' + T("map.deaths") + '</span><br>' : '') +
         '<span style="font-size:.82rem;color:var(--ink-soft)">' + sum + '</span>' + youLine(e) +
         (e.url ? '<br><a href="' + e.url + '" target="_blank" rel="noopener">' + T("map.viewusgs") + " →</a>" : "") + '</div>';
     }
-    return '<div class="lpop"><span class="m" style="color:' + color + '">M ' + (e.mag != null ? e.mag.toFixed(1) : "?") +
+    return '<div class="lpop"><span class="m" style="color:' + color + '">' + dg("M " + (e.mag != null ? e.mag.toFixed(1) : "?")) +
       '</span><br><b>' + esc(e.place || "—") + '</b><br><span class="sub">' + T("map.depth") + ": " +
-      (e.depth != null ? e.depth.toFixed(0) : "?") + " km · " + fmtLocal(e.time) + '</span>' +
-      (e.mmi != null ? '<br><span class="sub">' + T("map.mmi") + ": " + e.mmi.toFixed(1) + '</span>' : "") +
-      (e.felt != null && e.felt > 0 ? '<br><span class="sub">' + T("map.felt") + ": " + e.felt + (e.cdi != null ? " · " + T("map.cdi") + " " + e.cdi.toFixed(1) : "") + '</span>' : "") +
+      dg((e.depth != null ? e.depth.toFixed(0) : "?") + " km") + " · " + fmtLocal(e.time) + '</span>' +
+      (e.mmi != null ? '<br><span class="sub">' + T("map.mmi") + ": " + dg(e.mmi.toFixed(1)) + '</span>' : "") +
+      (e.felt != null && e.felt > 0 ? '<br><span class="sub">' + T("map.felt") + ": " + dg(e.felt) + (e.cdi != null ? " · " + T("map.cdi") + " " + dg(e.cdi.toFixed(1)) : "") + '</span>' : "") +
       youLine(e) +
       (e.url ? '<br><a href="' + e.url + '" target="_blank" rel="noopener">' + (e.source === "EMSC" ? T("map.viewemsc") : T("map.viewusgs")) + " →</a>" : "") +
       (e.url && e.source !== "EMSC" ? '<br><a href="' + e.url + '/tellus" target="_blank" rel="noopener" style="color:var(--accent)">' + T("map.dyfi") + "</a>" : "") + "</div>";
@@ -225,14 +226,14 @@
       if (e.mag != null && e.mag > maxMag) maxMag = e.mag;
 
       var sub = e.notable
-        ? (e.year + (e.deaths ? " · " + e.deaths.toLocaleString() + " " + T("map.deaths") : ""))
-        : (T("map.depth") + " " + (e.depth != null ? e.depth.toFixed(0) : "?") + " km · " + window.EQ.fmtAgo(e.time));
+        ? (dg(e.year) + (e.deaths ? " · " + dg(e.deaths.toLocaleString()) + " " + T("map.deaths") : ""))
+        : (T("map.depth") + " " + dg((e.depth != null ? e.depth.toFixed(0) : "?") + " km") + " · " + window.EQ.fmtAgo(e.time));
       var place = esc(e.notable ? (window.EQ.getLang() === "ne" ? e.name_ne : e.name_en) : (e.place || "—"));
 
       var item = document.createElement("div");
       item.className = "quake-item";
       item.innerHTML = '<div class="mag-badge" style="background:' + color + '">' +
-        (e.mag != null ? e.mag.toFixed(1) : "?") + '</div><div class="quake-meta"><div class="place">' +
+        dg(e.mag != null ? e.mag.toFixed(1) : "?") + '</div><div class="quake-meta"><div class="place">' +
         place + '</div><div class="sub">' + sub + "</div></div>";
       item.addEventListener("click", function () {
         map.setView([e.lat, e.lon], Math.max(map.getZoom(), 7));
@@ -243,8 +244,8 @@
     });
 
     var label = state.source === "notable" ? T("map.events") : T("map.quakes");
-    setStatus(list.length + " " + label +
-      (maxMag > -Infinity ? " · " + T("map.largest") + " M" + maxMag.toFixed(1) : ""), false);
+    setStatus(dg(list.length) + " " + label +
+      (maxMag > -Infinity ? " · " + T("map.largest") + " " + dg("M" + maxMag.toFixed(1)) : ""), false);
 
     buildHeat(list);
     if (platesLayer && state.plates) platesLayer.bringToFront();
@@ -362,7 +363,7 @@
       var list = f.parse(data);
       var fresh = list.filter(function (e) { return e.id && !seenLive[e.id]; });
       render(list);
-      if (fresh.length) { var n = fresh[0]; toast("<b>" + T("map.new") + ":</b> M" + (n.mag != null ? n.mag.toFixed(1) : "?") + " — " + esc(n.place)); }
+      if (fresh.length) { var n = fresh[0]; toast("<b>" + T("map.new") + ":</b> " + dg("M" + (n.mag != null ? n.mag.toFixed(1) : "?")) + " — " + esc(n.place)); }
     }).catch(function () {});
   }
   function manageAutoRefresh() {
@@ -398,7 +399,7 @@
 
     var hud = document.createElement("div");
     hud.className = "wave-hud";
-    hud.innerHTML = '<b>M ' + mag.toFixed(1) + '</b><span><i class="wd wp"></i>P-wave <u id="wpk">0</u> km</span>' +
+    hud.innerHTML = '<b>' + dg("M " + mag.toFixed(1)) + '</b><span><i class="wd wp"></i>P-wave <u id="wpk">0</u> km</span>' +
       '<span><i class="wd ws"></i>S-wave <u id="wsk">0</u> km</span><span class="wt"><u id="wts">0</u> s</span>' +
       '<button type="button" class="wave-x" aria-label="' + T("map.stopwave") + '" title="' + T("map.stopwave") + ' (Esc)">✕</button>';
     map.getContainer().appendChild(hud);
@@ -435,9 +436,9 @@
       pRing.setStyle({ opacity: Math.max(0.12, 0.85 - pr / 1500) });
       sRing.setStyle({ opacity: Math.max(0.18, 0.95 - sr / 950) });
       epi.setStyle({ radius: 5 + 2.2 * Math.abs(Math.sin(te * 5)) });
-      if (wpk) wpk.textContent = Math.round(pr);
-      if (wsk) wsk.textContent = Math.round(sr);
-      if (wts) wts.textContent = te.toFixed(0);
+      if (wpk) wpk.textContent = dg(Math.round(pr));
+      if (wsk) wsk.textContent = dg(Math.round(sr));
+      if (wts) wts.textContent = dg(te.toFixed(0));
       if (te < SIM) { requestAnimationFrame(step); return; }
       var fadeStart = now;
       (function fade(n2) {
@@ -477,7 +478,7 @@
         current.forEach(function (e) { var d = haversineKm(la, lo, e.lat, e.lon); if (d < bd) { bd = d; best = e; } });
         if (best) {
           var place = best.notable ? (window.EQ.getLang() === "ne" ? best.name_ne : best.name_en) : best.place;
-          toast(T("map.nearest") + ": M" + (best.mag != null ? best.mag.toFixed(1) : "?") + " — " + Math.round(bd) + " km · " + place);
+          toast(T("map.nearest") + ": " + dg("M" + (best.mag != null ? best.mag.toFixed(1) : "?")) + " — " + dg(Math.round(bd) + " km") + " · " + place);
         }
       }
     }, function () { toast(T("map.geoerr")); }, { timeout: 8000, enableHighAccuracy: false });

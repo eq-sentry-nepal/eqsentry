@@ -105,7 +105,7 @@
         var a = Math.min(1, (W - x) / 130) * Math.min(1, (x - 26) / 50);
         ctx.globalAlpha = a; ctx.strokeStyle = "rgba(255,138,61,0.30)";
         ctx.beginPath(); ctx.moveTo(x, mid); ctx.lineTo(x, laneY - 11); ctx.stroke();
-        ctx.fillStyle = "#FF8A3D"; ctx.fillText("M" + ev.mag.toFixed(1) + (ev.year ? " · " + ev.year : ""), x + 4, laneY);
+        ctx.fillStyle = "#FF8A3D"; ctx.fillText((window.EQ && window.EQ.dg ? window.EQ.dg("M" + ev.mag.toFixed(1) + (ev.year ? " · " + ev.year : "")) : "M" + ev.mag.toFixed(1)), x + 4, laneY);
         ctx.globalAlpha = 1;
       });
       // recording pen on the LEFT
