@@ -61,6 +61,7 @@
 
   function T(k) { return window.EQ ? window.EQ.t(k) : k; }
   function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
+  function PL(s) { return (window.EQ && window.EQ.place) ? window.EQ.place(s) : String(s == null ? "" : s); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
   /* ---------- Shareable URLs: filters live in the hash (#src=…&fmag=…) ---------- */
@@ -183,7 +184,7 @@
         (e.url ? '<br><a href="' + e.url + '" target="_blank" rel="noopener">' + T("map.viewusgs") + " →</a>" : "") + '</div>';
     }
     return '<div class="lpop"><span class="m" style="color:' + color + '">' + dg("M " + (e.mag != null ? e.mag.toFixed(1) : "?")) +
-      '</span><br><b>' + esc(e.place || "—") + '</b><br><span class="sub">' + T("map.depth") + ": " +
+      '</span><br><b>' + esc(PL(e.place || "—")) + '</b><br><span class="sub">' + T("map.depth") + ": " +
       dg((e.depth != null ? e.depth.toFixed(0) : "?") + " km") + " · " + fmtLocal(e.time) + '</span>' +
       (e.mmi != null ? '<br><span class="sub">' + T("map.mmi") + ": " + dg(e.mmi.toFixed(1)) + '</span>' : "") +
       (e.felt != null && e.felt > 0 ? '<br><span class="sub">' + T("map.felt") + ": " + dg(e.felt) + (e.cdi != null ? " · " + T("map.cdi") + " " + dg(e.cdi.toFixed(1)) : "") + '</span>' : "") +
@@ -228,7 +229,7 @@
       var sub = e.notable
         ? (dg(e.year) + (e.deaths ? " · " + dg(e.deaths.toLocaleString()) + " " + T("map.deaths") : ""))
         : (T("map.depth") + " " + dg((e.depth != null ? e.depth.toFixed(0) : "?") + " km") + " · " + window.EQ.fmtAgo(e.time));
-      var place = esc(e.notable ? (window.EQ.getLang() === "ne" ? e.name_ne : e.name_en) : (e.place || "—"));
+      var place = esc(e.notable ? (window.EQ.getLang() === "ne" ? e.name_ne : e.name_en) : PL(e.place || "—"));
 
       var item = document.createElement("div");
       item.className = "quake-item";
@@ -363,7 +364,7 @@
       var list = f.parse(data);
       var fresh = list.filter(function (e) { return e.id && !seenLive[e.id]; });
       render(list);
-      if (fresh.length) { var n = fresh[0]; toast("<b>" + T("map.new") + ":</b> " + dg("M" + (n.mag != null ? n.mag.toFixed(1) : "?")) + " — " + esc(n.place)); }
+      if (fresh.length) { var n = fresh[0]; toast("<b>" + T("map.new") + ":</b> " + dg("M" + (n.mag != null ? n.mag.toFixed(1) : "?")) + " — " + esc(PL(n.place))); }
     }).catch(function () {});
   }
   function manageAutoRefresh() {
@@ -399,8 +400,8 @@
 
     var hud = document.createElement("div");
     hud.className = "wave-hud";
-    hud.innerHTML = '<b>' + dg("M " + mag.toFixed(1)) + '</b><span><i class="wd wp"></i>P-wave <u id="wpk">0</u> km</span>' +
-      '<span><i class="wd ws"></i>S-wave <u id="wsk">0</u> km</span><span class="wt"><u id="wts">0</u> s</span>' +
+    hud.innerHTML = '<b>' + dg("M " + mag.toFixed(1)) + '</b><span><i class="wd wp"></i>' + T("map.pwave") + ' <u id="wpk">' + dg("0") + '</u> km</span>' +
+      '<span><i class="wd ws"></i>' + T("map.swave") + ' <u id="wsk">' + dg("0") + '</u> km</span><span class="wt"><u id="wts">' + dg("0") + '</u> s</span>' +
       '<button type="button" class="wave-x" aria-label="' + T("map.stopwave") + '" title="' + T("map.stopwave") + ' (Esc)">✕</button>';
     map.getContainer().appendChild(hud);
     var wpk = hud.querySelector("#wpk"), wsk = hud.querySelector("#wsk"), wts = hud.querySelector("#wts");
@@ -420,7 +421,7 @@
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
       pRing.setRadius(vP * SIM * 1000); sRing.setRadius(vS * SIM * 1000); feltDisk.setRadius(feltKm * 1000);
-      if (wpk) wpk.textContent = Math.round(vP * SIM); if (wsk) wsk.textContent = Math.round(vS * SIM); if (wts) wts.textContent = SIM;
+      if (wpk) wpk.textContent = dg(Math.round(vP * SIM)); if (wsk) wsk.textContent = dg(Math.round(vS * SIM)); if (wts) wts.textContent = dg(SIM);
       return;
     }
 

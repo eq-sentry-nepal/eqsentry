@@ -36,6 +36,7 @@
   (function () {
     var feed = document.getElementById("quakeFeed"); if (!feed) return;
     function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
+  function PL(s) { return (window.EQ && window.EQ.place) ? window.EQ.place(s) : String(s == null ? "" : s); }
     function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
     function magColor(m) { if (m == null) return "#9aa3af"; if (m < 4) return "#34D399"; if (m < 5) return "#FB923C"; if (m < 6) return "#F97316"; if (m < 7) return "#EF4444"; return "#b91c1c"; }
     function catRecent() {
@@ -49,7 +50,7 @@
         var col = magColor(q.mag);
         return '<a class="feed-item" href="map.html">' +
           '<span class="fi-mag" style="background:' + col + '">' + dg(q.mag != null ? q.mag.toFixed(1) : "?") + '</span>' +
-          '<span class="fi-meta"><span class="fi-place">' + esc(q.place || "—") + '</span>' +
+          '<span class="fi-meta"><span class="fi-place">' + esc(PL(q.place || "—")) + '</span>' +
           '<span class="fi-time">' + window.EQ.fmtAgo(q.time) + (q.source ? ' · <b style="color:var(--ink-soft)">' + q.source + '</b>' : '') + '</span></span>' +
           '<span class="fi-arrow">→</span></a>';
       }).join("");

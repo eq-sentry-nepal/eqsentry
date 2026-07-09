@@ -12,6 +12,8 @@
 
   function T(k) { return window.EQ ? window.EQ.t(k) : k; }
   function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
+  function PL(s) { return (window.EQ && window.EQ.place) ? window.EQ.place(s) : String(s == null ? "" : s); }
+
 
   function lang() { return window.EQ ? window.EQ.getLang() : "en"; }
 
@@ -56,7 +58,7 @@
     var span = (maxY - minY + 1);
     set("stTotal", dg(quakes.length.toLocaleString()));
     set("stStrong", dg("M" + strongest.mag.toFixed(1)));
-    set("stStrongP", dg(strongest.year) + " · " + strongest.place);
+    set("stStrongP", dg(strongest.year) + " · " + PL(strongest.place));
     set("stPerYear", dg((quakes.length / span).toFixed(1)));
     set("stM6", dg(m6));
     set("stDeep", dg(Math.round(deepest.depth) + " km"));
@@ -154,7 +156,7 @@
     // nearest catalogue example
     if (quakes.length) {
       var near = quakes.reduce(function (a, b) { return Math.abs(b.mag - m) < Math.abs(a.mag - m) ? b : a; });
-      set("expEg", T("ins.eg") + " " + dg("M" + near.mag.toFixed(1)) + " — " + near.place + " (" + dg(near.year) + ")");
+      set("expEg", T("ins.eg") + " " + dg("M" + near.mag.toFixed(1)) + " — " + PL(near.place) + " (" + dg(near.year) + ")");
     }
     var pos = Math.max(0, Math.min(100, (m - 4) / (9 - 4) * 100));
     var ptr = document.getElementById("expPtr"); if (ptr) ptr.style.left = pos + "%";
@@ -181,7 +183,7 @@
     evs.forEach(function (e) {
       if (e.mag > maxM) maxM = e.mag;
       L.circleMarker([e.lat, e.lon], { radius: Math.max(4, Math.pow(e.mag, 1.5) * 1.2), color: "rgba(255,255,255,.5)", weight: 1, fillColor: magColor(e.mag), fillOpacity: .8 })
-        .bindPopup('<div class="lpop"><span class="m" style="color:' + magColor(e.mag) + '">' + dg("M " + e.mag.toFixed(1)) + '</span><br><b>' + e.place + "</b></div>")
+        .bindPopup('<div class="lpop"><span class="m" style="color:' + magColor(e.mag) + '">' + dg("M " + e.mag.toFixed(1)) + '</span><br><b>' + PL(e.place) + "</b></div>")
         .addTo(tm.layer);
     });
     var txt = evs.length ? (dg(evs.length) + " " + T("ins.quakes") + " · " + T("ins.max") + " " + dg("M" + maxM.toFixed(1))) : T("ins.none");

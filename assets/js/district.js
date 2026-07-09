@@ -21,6 +21,7 @@
     return 2 * R * Math.asin(Math.sqrt(x));
   }
   function yearOf(ms) { return new Date(ms).getUTCFullYear(); }
+  function PL(s) { return (window.EQ && window.EQ.place) ? window.EQ.place(s) : String(s == null ? "" : s); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
   /* ---- magnitude styling (matches the live map) ---- */
@@ -102,7 +103,7 @@
   }
   function popupHTML(q, d) {
     var dist = Math.round(hav(d.lat, d.lon, q.lat, q.lon));
-    var label = esc(q.notable ? q.name : (q.place || ""));
+    var label = esc(q.notable ? q.name : PL(q.place || ""));
     var when = q.notable ? q.year : (q.time != null ? yearOf(q.time) : "");
     return '<b>' + dg("M" + (q.mag != null ? q.mag.toFixed(1) : "?")) + '</b> ' + label +
       '<br>' + (when ? dg(when) + " · " : "") + dg(dist + " km") + (q.depth != null ? " · " + dg(Math.round(q.depth) + " km") : "");

@@ -107,7 +107,7 @@
     var L = model.latest;
     switch (f) {
       case "latest.mag": return L && L.mag != null ? dg("M" + L.mag.toFixed(1)) : "—";
-      case "latest.place": return L ? (L.place || "—") : "—";
+      case "latest.place": return L ? PL(L.place || "—") : "—";
       case "latest.ago": return L ? fmtAgo(L.time) : "—";
       case "latest.source": return L ? L.source : "";
       case "week.count": return dg(model.week.count);
@@ -128,6 +128,7 @@
       if (v !== "") els[i].textContent = v;
     }
   }
+  function PL(s) { return (window.EQ && window.EQ.place) ? window.EQ.place(s) : String(s == null ? "" : s); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function updateBanner(model) {
     var bar = document.getElementById("alertBar"); if (!bar) return;
@@ -136,7 +137,7 @@
       bar.className = "alert-bar"; bar.style.background = ""; bar.style.borderBottom = "";
       bar.innerHTML = '<div class="container"><span class="dot"></span>' +
         '<span><strong>' + tr("banner.latest") + '</strong> ' + dg("M" + (L.mag != null ? L.mag.toFixed(1) : "?")) +
-        ' — ' + esc(L.place || "") + ' · ' + fmtAgo(L.time) + ' · ' + L.source + '</span>' +
+        ' — ' + esc(PL(L.place || "")) + ' · ' + fmtAgo(L.time) + ' · ' + L.source + '</span>' +
         '<a href="map.html" style="margin-left:auto">' + tr("banner.view") + ' →</a></div>';
     } else {
       bar.className = ""; bar.style.background = "rgba(255,255,255,.03)"; bar.style.borderBottom = "1px solid var(--line)";

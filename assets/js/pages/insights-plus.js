@@ -9,6 +9,8 @@
   "use strict";
   function T(k) { return window.EQ ? window.EQ.t(k) : k; }
   function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
+  function PL(s) { return (window.EQ && window.EQ.place) ? window.EQ.place(s) : String(s == null ? "" : s); }
+
 
   function lang() { return window.EQ ? window.EQ.getLang() : "en"; }
   function $(id) { return document.getElementById(id); }
@@ -82,7 +84,7 @@
       else {
         var big = cur.reduce(function (a, b) { return b.mag > a.mag ? b : a; });
         el.textContent = sub(T(cur.length === 1 ? "nt.month.one" : "nt.month.line"),
-          { n: cur.length, m: big.mag.toFixed(1), place: big.place || "—" });
+          { n: cur.length, m: big.mag.toFixed(1), place: PL(big.place || "—") });
       }
     }
     var histCount = Q.filter(function (e) { return e.month === m; }).length;
@@ -95,7 +97,7 @@
       NOTABLE.forEach(function (n) { if (n.month === m) items.push({ year: n.year, mag: n.mag, label: lang() === "ne" ? n.name_ne : n.name_en }); });
       Q.forEach(function (e) {
         if (e.month === m && e.mag >= 6.3 && !items.some(function (i) { return i.year === e.year && Math.abs(i.mag - e.mag) < 0.4; }))
-          items.push({ year: e.year, mag: e.mag, label: e.place });
+          items.push({ year: e.year, mag: e.mag, label: PL(e.place) });
       });
       items.sort(function (a, b) { return b.mag - a.mag; });
       hist.innerHTML = items.length
@@ -220,7 +222,7 @@
     set("asCount", dg(af.length));
     var big = af.length ? af.reduce(function (a, b) { return b.mag > a.mag ? b : a; }) : null;
     set("asBig", big ? dg("M" + big.mag.toFixed(1)) : "—");
-    set("asBigP", big ? (big.place || "") : "");
+    set("asBigP", big ? PL(big.place || "") : "");
     var span = af.length ? Math.ceil((Math.max.apply(null, af.map(function (e) { return e.time; })) - ms.time) / 864e5) : 0;
     set("asSpan", af.length ? dg(span) + " " + T("as.days") : "—");
     var none = $("asNone"); if (none) none.style.display = af.length ? "none" : "block";

@@ -250,6 +250,39 @@
   function neDigits(s) { return String(s).replace(/[0-9]/g, function (d) { return NE_DIGITS[+d]; }); }
   // Localize digits in any display string: Devanagari for Nepali, unchanged otherwise.
   function dgS(s) { return getLang() === "ne" ? neDigits(s) : String(s); }
+
+  // --- Localize feed place strings for Nepali: "12 km E of Kanbe, Burma (Myanmar)" ---
+  var NE_DIR = { N: "उत्तर", S: "दक्षिण", E: "पूर्व", W: "पश्चिम", NE: "उत्तरपूर्व", NW: "उत्तरपश्चिम", SE: "दक्षिणपूर्व", SW: "दक्षिणपश्चिम",
+    NNE: "उत्तर-उत्तरपूर्व", ENE: "पूर्व-उत्तरपूर्व", ESE: "पूर्व-दक्षिणपूर्व", SSE: "दक्षिण-दक्षिणपूर्व",
+    SSW: "दक्षिण-दक्षिणपश्चिम", WSW: "पश्चिम-दक्षिणपश्चिम", WNW: "पश्चिम-उत्तरपश्चिम", NNW: "उत्तर-उत्तरपश्चिम" };
+  var NE_GEO = [
+    ["Burma (Myanmar)", "बर्मा (म्यानमार)"], ["Myanmar", "म्यानमार"], ["Burma", "बर्मा"],
+    ["border region", "सीमा क्षेत्र"], ["western Xizang", "पश्चिमी तिब्बत"], ["eastern Xizang", "पूर्वी तिब्बत"], ["Xizang", "तिब्बत"], ["Tibet", "तिब्बत"],
+    ["Nepal", "नेपाल"], ["India", "भारत"], ["China", "चीन"], ["Bangladesh", "बंगलादेश"], ["Bhutan", "भुटान"], ["Pakistan", "पाकिस्तान"], ["Afghanistan", "अफगानिस्तान"],
+    ["Kathmandu", "काठमाडौं"], ["Pokhara", "पोखरा"], ["Lamjung", "लमजुङ"], ["Gorkha", "गोरखा"], ["Dolakha", "दोलखा"], ["Sindhupalchok", "सिन्धुपाल्चोक"],
+    ["Biratnagar", "विराटनगर"], ["Birgunj", "वीरगन्ज"], ["Dharan", "धरान"], ["Hetauda", "हेटौडा"], ["Butwal", "बुटवल"], ["Nepalgunj", "नेपालगन्ज"], ["Dhangadhi", "धनगढी"], ["Bharatpur", "भरतपुर"],
+    ["New Delhi", "नयाँ दिल्ली"], ["Darjeeling", "दार्जिलिङ"], ["Siliguri", "सिलिगुडी"], ["Gangtok", "गान्तोक"],
+    ["Jajarkot", "जाजरकोट"], ["Jumla", "जुम्ला"], ["Dailekh", "दैलेख"], ["Bajhang", "बझाङ"], ["Bajura", "बाजुरा"], ["Dhading", "धादिङ"],
+    ["Ramechhap", "रामेछाप"], ["Solukhumbu", "सोलुखुम्बु"], ["Taplejung", "ताप्लेजुङ"], ["Okhaldhunga", "ओखलढुंगा"], ["Khotang", "खोटाङ"],
+    ["Sankhuwasabha", "संखुवासभा"], ["Bhojpur", "भोजपुर"], ["Ilam", "इलाम"], ["Dolpa", "डोल्पा"], ["Mugu", "मुगु"], ["Humla", "हुम्ला"],
+    ["Baglung", "बागलुङ"], ["Myagdi", "म्याग्दी"], ["Mustang", "मुस्ताङ"], ["Manang", "मनाङ"], ["Rasuwa", "रसुवा"], ["Nuwakot", "नुवाकोट"],
+    ["Kavrepalanchok", "काभ्रेपलाञ्चोक"], ["Kavre", "काभ्रे"], ["Rukum", "रुकुम"], ["Rolpa", "रोल्पा"], ["Salyan", "सल्यान"], ["Surkhet", "सुर्खेत"],
+    ["Achham", "अछाम"], ["Doti", "डोटी"], ["Darchula", "दार्चुला"], ["Baitadi", "बैतडी"], ["Dadeldhura", "डडेल्धुरा"], ["Kanchanpur", "कञ्चनपुर"],
+    ["Kailali", "कैलाली"], ["Banke", "बाँके"], ["Bardiya", "बर्दिया"], ["Bhaktapur", "भक्तपुर"], ["Lalitpur", "ललितपुर"], ["Panauti", "पनौती"],
+    ["Kirtipur", "कीर्तिपुर"], ["Sindhuli", "सिन्धुली"], ["Makwanpur", "मकवानपुर"], ["Chitwan", "चितवन"], ["Tanahun", "तनहुँ"], ["Syangja", "स्याङ्जा"],
+    ["western", "पश्चिमी"], ["eastern", "पूर्वी"], ["northern", "उत्तरी"], ["southern", "दक्षिणी"], ["central", "मध्य"]
+  ];
+  function geoSwap(t) { for (var i = 0; i < NE_GEO.length; i++) t = t.split(NE_GEO[i][0]).join(NE_GEO[i][1]); return t; }
+  function nePlace(s) {
+    s = String(s == null ? "" : s);
+    var m = s.match(/^(\d+(?:\.\d+)?)\s*km\s+([NSEW]{1,3})\s+of\s+(.+)$/i);
+    if (m) {
+      var dir = NE_DIR[m[2].toUpperCase()] || m[2];
+      return geoSwap(m[3]) + "बाट " + neDigits(m[1]) + " किमी " + dir + "मा";
+    }
+    return geoSwap(s);
+  }
+  function placeS(s) { return getLang() === "ne" ? nePlace(s) : String(s == null ? "" : s); }
   function statVal(key) {
     var sum = window.EQ_DATA && window.EQ_DATA.summary;
     if (!sum) return null;
@@ -320,7 +353,7 @@
   }
 
   /* ---------- Header / Footer markup ---------- */
-  var VERSION = "2.1.2";   // shown in the footer — keep in sync with package.json (smoke test enforces)
+  var VERSION = "2.1.3";   // shown in the footer — keep in sync with package.json (smoke test enforces)
   var LOGO = '<svg class="logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
     '<circle cx="20" cy="20" r="18" stroke="#FF4D2E" stroke-width="2.5"/>' +
     '<path d="M5 21h6l3-9 5 16 4-12 2.5 5H35" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -652,7 +685,7 @@
 
   // expose helpers for other scripts
   window.EQ = {
-    getLang: getLang, setLang: setLang, t: t, dg: dgS,
+    getLang: getLang, setLang: setLang, t: t, dg: dgS, place: placeS,
     NEPAL_BOX: NEPAL_BOX, inNepalRegion: inNepalRegion, fmtAgo: fmtAgo,
     addDict: function (obj) {
       DICT.en = Object.assign(DICT.en, obj.en || {});
