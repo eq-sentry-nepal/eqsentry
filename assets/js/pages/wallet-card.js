@@ -19,7 +19,9 @@
     var p = plan();
     var ice = (p.ice || []).filter(function (r) { return (r.who || r.phone); }).slice(0, 2);
     var rows = "";
-    if (p.blood) rows += line(T("pp.card.blood"), esc(p.blood));
+    var mems = (p.members || []).filter(function (m) { return m.name && m.blood; }).slice(0, 3);
+    if (mems.length) rows += line(T("pp.card.blood"), mems.map(function (m) { return esc(m.name) + " " + esc(m.blood); }).join(" · "));
+    else if (p.blood) rows += line(T("pp.card.blood"), esc(p.blood));
     ice.forEach(function (r) { rows += line(T("pp.card.ice"), esc(r.who) + (r.phone ? " · " + esc(r.phone) : "")); });
     if (p.oacName || p.oacPhone) rows += line(T("pp.card.oac"), esc(p.oacName) + (p.oacPhone ? " · " + esc(p.oacPhone) : ""));
     if (p.meet1) rows += line(T("pp.card.meet"), esc(p.meet1));

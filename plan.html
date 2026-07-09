@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Family Earthquake Plan — EQ Sentry Nepal</title>
-  <meta name="description" content="Build your family's earthquake plan — meeting points, out-of-area contact, emergency contacts, who-does-what roles, and a kit tracker. Saved privately on your device; printable." />
+  <meta name="description" content="Build a complete family earthquake plan — household members with blood groups and medicines, meeting points, communication rules, utility shut-offs, nearby safety points, documents and a kit tracker. Saved privately on your device; printable." />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%230A0C10'/%3E%3Cpath d='M5 21h6l3-9 5 16 4-12 2.5 5H35' stroke='%23FF4D2E' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,7 +13,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="EQ Sentry" />
   <meta property="og:title" content="Family Earthquake Plan — EQ Sentry Nepal" />
-  <meta property="og:description" content="Build, save and print your family's earthquake plan: meeting points, contacts, roles and a kit tracker." />
+  <meta property="og:description" content="Build, save and print a complete family earthquake plan: people, meeting points, contacts, shut-offs, documents and kit." />
   <meta property="og:image" content="https://eqsentry.com/assets/icons/og-image.png" />
   <meta property="og:url" content="https://eqsentry.com/plan.html" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -31,12 +31,22 @@
     .plan-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
     .refresh-due { color:var(--m3); font-size:.82rem; margin-top:8px; display:none; }
     .refresh-due.show { display:block; }
+    .pp-prog-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px; gap:12px; }
+    .pp-prog-head b { font-size:1.02rem; }
+    #progPct { font-weight:800; font-variant-numeric:tabular-nums; color:var(--accent); }
+    .pp-meter { height:10px; border-radius:999px; background:var(--surface-2); border:1px solid var(--line); overflow:hidden; }
+    .pp-meter i { display:block; height:100%; width:0; background:linear-gradient(90deg,#34D399,#10B981); border-radius:999px; transition:width .45s ease; }
+    .pp-rules { margin:12px 0 0; padding-left:18px; color:var(--ink-soft); font-size:.9rem; }
+    .pp-rules li { margin:5px 0; }
+    .field textarea { width:100%; min-height:96px; resize:vertical; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:10px 12px; color:var(--ink); font:inherit; }
+    .field textarea:focus { outline:none; border-color:var(--accent); }
+    .pp-h3 { margin:14px 0 4px; font-size:.98rem; }
     @media (max-width:560px){ .plan-row { grid-template-columns:1fr 1fr; } .plan-row .plan-rm { grid-column:1/-1; width:100%; } }
     @media print {
-      .site-header, .site-footer, #alertBar, .emergency-strip, .to-top, .a11y-fab, .plan-actions, .plan-rm, .plan-add, #planNote { display:none !important; }
+      .site-header, .site-footer, #alertBar, .emergency-strip, .to-top, .a11y-fab, .plan-actions, .plan-rm, .plan-add, #planNote, .pp-prog-card { display:none !important; }
       body { background:#fff; color:#000; }
       .form-card { border:1px solid #ccc !important; box-shadow:none !important; break-inside:avoid; }
-      .kit-item, .field input, .field { border-color:#ccc !important; }
+      .kit-item, .field input, .field textarea, .field { border-color:#ccc !important; }
       a[href]:after { content:""; }
     }
   </style>
@@ -45,28 +55,56 @@
       "en": {
         "pp.eyebrow": "Make a plan",
         "pp.h1": "Your family earthquake plan",
-        "pp.sub": "Decide these things now, while it's calm. Fill it in, and it saves to this device — print a copy for the fridge and your go-bag.",
+        "pp.sub": "One page that answers the questions that matter when shaking stops — who, where, and how you'll reach each other. It saves to this device; print a copy for the fridge and the go-bag.",
         "pp.privacy": "Private to this device. Nothing is uploaded — your plan is saved only in this browser. Use Print to keep a paper copy.",
+        "pp.prog.t": "Plan completeness",
+        "pp.prog.hint": "{n} of {m} sections filled — a complete plan takes about 10 minutes.",
+        "pp.prog.done": "All sections filled — print a copy for the fridge, the go-bag and each school bag.",
+        "pp.mem.t": "Household members",
+        "pp.mem.d": "Everyone in the house — children, elderly, and anyone who needs help. Blood group and regular medicines matter to rescuers and doctors.",
+        "pp.mem.name.ph": "Name", "pp.mem.age.ph": "Age", "pp.mem.blood.ph": "Blood", "pp.mem.meds.ph": "Medicines · allergies · special needs",
         "pp.meet.t": "Meeting points",
-        "pp.meet.d": "Where your family will gather after shaking stops.",
+        "pp.meet.d": "Where your family will gather after shaking stops — agree on all three now.",
         "pp.meet1": "Right outside your home", "pp.meet1.ph": "e.g. the front gate / courtyard",
         "pp.meet2": "Outside your neighbourhood", "pp.meet2.ph": "e.g. a school, temple or open ground",
+        "pp.meet3": "Outside your city / district", "pp.meet3.ph": "e.g. a relative's home in another town + phone",
+        "pp.comm.t": "How we stay in touch",
         "pp.oac.t": "Out-of-area contact",
         "pp.oac.d": "One person (ideally in another town) everyone calls or texts to relay that they're safe — local lines are often jammed.",
         "pp.oac.name": "Name", "pp.oac.phone": "Phone",
+        "pp.chat": "Family group chat", "pp.chat.ph": "e.g. Viber/Messenger group “Hamro Pariwar”",
+        "pp.comm.rules": "<li><b>SMS first, calls last</b> — texts get through jammed networks; keep any call under 10 seconds.</li><li>Everyone texts the out-of-area contact: <b>“SAFE + where you are”</b>.</li><li>Save <b>100</b> (police), <b>102</b> (ambulance) and <b>1149</b> (NEOC) in every phone.</li><li>Keep phones above half charge; a power bank lives in the go-bag.</li>",
         "pp.ice.t": "Emergency contacts (ICE)",
         "pp.ice.d": "Family, neighbours, doctor. Save these in your phone too, starting with “ICE”.",
         "pp.role.who.ph": "Who", "pp.phone.ph": "Phone", "pp.rel.ph": "Relation",
         "pp.roles.t": "Who does what",
-        "pp.roles.d": "Assign jobs for the first minutes — grab the go-bag, get the children, shut off gas/electricity, help elderly neighbours.",
+        "pp.roles.d": "Assign jobs for the first minutes — grab the go-bag, get the children (who picks up from which school?), shut off gas/electricity, help elderly neighbours.",
         "pp.role.task.ph": "Task",
         "pp.add": "+ Add",
+        "pp.home.t": "Home & utility shut-offs",
+        "pp.home.d": "Write where each switch and valve is. Everyone old enough should practise finding them — after a big quake you may have no light.",
+        "pp.home.addr": "Home address / tole", "pp.home.addr.ph": "e.g. Ward 4, Chabahil, Kathmandu",
+        "pp.home.gas": "Gas cylinder / valve", "pp.home.gas.ph": "e.g. kitchen corner — turn regulator clockwise",
+        "pp.home.power": "Main power switch (MCB)", "pp.home.power.ph": "e.g. box above the front door",
+        "pp.home.water": "Water stop-valve / tank", "pp.home.water.ph": "e.g. beside the meter in the courtyard",
+        "pp.near.t": "Nearby safety points",
+        "pp.near.d": "Find these on the <a href='map.html'>live map</a> and your <a href='mydistrict.html'>district page</a>; full contact lists are in <a href='resources.html'>Emergency Resources</a>.",
+        "pp.near.open": "Nearest open ground / evacuation space", "pp.near.open.ph": "e.g. Tundikhel, school playground",
+        "pp.near.hosp": "Nearest hospital (name + phone)", "pp.near.hosp.ph": "e.g. TU Teaching Hospital · 01-4412303",
+        "pp.near.help": "Ward office / nearest police post", "pp.near.help.ph": "Name + phone",
+        "pp.sp.t": "Special needs & pets",
+        "pp.sp.d": "Babies, elderly, disability, chronic illness, pets — plan for them now: spare glasses, walking stick, baby formula, leash and carrier, three days of their food.",
+        "pp.sp.ph": "e.g. Grandmother — BP medicine (Amlodipine) in go-bag; dog Kale — leash by the door, 3 days of food",
+        "pp.docs.t": "Documents & valuables",
+        "pp.docs.d": "Photograph these on your phone and keep photocopies in the go-bag — plus one set with your out-of-area contact.",
+        "pp.docs.tips": "<li>Citizenship cards / passports · birth certificates</li><li>Land & house papers (lalpurja) · insurance policy numbers</li><li>Bank account details · a recent photo of each family member</li><li>List of everyone's medicines with doses</li>",
+        "pp.docs.loc": "Where copies are kept", "pp.docs.loc.ph": "e.g. red folder in the go-bag + photos on both phones",
         "pp.kit.t": "Emergency kit",
         "pp.kit.d": "Tick what you already have. Refresh water, food and batteries every 6 months.",
         "pp.refresh": "Perishables last refreshed",
         "pp.refresh.due": "⚠ It's been over 6 months — check your water, food, batteries and medicines.",
+        "pp.drill.hint": "Practise it: run a 60-second <a href='drill.html'>family drill</a> twice a year, and note the refresh date here.",
         "pp.save": "Save plan", "pp.print": "Print / save as PDF", "pp.clear": "Clear",
-        "pp.blood": "Blood group (optional)", "pp.blood.ph": "e.g. O+",
         "pp.card": "🪪 Print wallet card",
         "pp.dl": "⬇ Printable plan (PDF)",
         "pp.card.t": "EMERGENCY CARD",
@@ -83,28 +121,56 @@
       "ne": {
         "pp.eyebrow": "योजना बनाउनुहोस्",
         "pp.h1": "तपाईंको पारिवारिक भूकम्प योजना",
-        "pp.sub": "शान्त छँदै यी कुरा अहिले नै निर्णय गर्नुहोस्। भर्नुहोस्, यो यन्त्रमा सेभ हुन्छ — फ्रिज र झोलाका लागि एक प्रति प्रिन्ट गर्नुहोस्।",
+        "pp.sub": "हल्लाइ रोकिएपछि चाहिने प्रश्नहरूको उत्तर एकै पृष्ठमा — को, कहाँ, र एकअर्कालाई कसरी सम्पर्क गर्ने। यन्त्रमै सेभ हुन्छ; फ्रिज र झोलाका लागि एक प्रति प्रिन्ट गर्नुहोस्।",
         "pp.privacy": "यस यन्त्रमा मात्र निजी। केही अपलोड हुँदैन — तपाईंको योजना यही ब्राउजरमा मात्र सेभ हुन्छ। कागजी प्रति राख्न प्रिन्ट प्रयोग गर्नुहोस्।",
+        "pp.prog.t": "योजना कति पूरा भयो",
+        "pp.prog.hint": "{m} मध्ये {n} खण्ड भरियो — पूरा योजना बनाउन करिब १० मिनेट लाग्छ।",
+        "pp.prog.done": "सबै खण्ड भरियो — फ्रिज, झोला र हरेक विद्यालय झोलाका लागि प्रति प्रिन्ट गर्नुहोस्।",
+        "pp.mem.t": "घरपरिवारका सदस्य",
+        "pp.mem.d": "घरका सबै जना — बालबालिका, वृद्ध र सहयोग चाहिने सबै। रक्त समूह र नियमित औषधि उद्धारकर्ता र डाक्टरका लागि महत्त्वपूर्ण हुन्छ।",
+        "pp.mem.name.ph": "नाम", "pp.mem.age.ph": "उमेर", "pp.mem.blood.ph": "रक्त", "pp.mem.meds.ph": "औषधि · एलर्जी · विशेष आवश्यकता",
         "pp.meet.t": "भेटघाट स्थान",
-        "pp.meet.d": "हल्लाइ रोकिएपछि तपाईंको परिवार कहाँ भेला हुने।",
+        "pp.meet.d": "हल्लाइ रोकिएपछि परिवार कहाँ भेला हुने — तीनवटै अहिले नै तय गर्नुहोस्।",
         "pp.meet1": "घर अगाडि नै", "pp.meet1.ph": "जस्तै मूल गेट / आँगन",
         "pp.meet2": "टोलबाहिर", "pp.meet2.ph": "जस्तै विद्यालय, मन्दिर वा खुला ठाउँ",
+        "pp.meet3": "सहर/जिल्लाबाहिर", "pp.meet3.ph": "जस्तै अर्को सहरको आफन्तको घर + फोन",
+        "pp.comm.t": "हामी कसरी सम्पर्कमा रहन्छौं",
         "pp.oac.t": "क्षेत्रबाहिरको सम्पर्क",
         "pp.oac.d": "एक जना (अर्कै सहरको भए राम्रो) जसलाई सबैले सुरक्षित छु भनी फोन/म्यासेज गर्ने — स्थानीय लाइन प्रायः व्यस्त हुन्छ।",
         "pp.oac.name": "नाम", "pp.oac.phone": "फोन",
+        "pp.chat": "पारिवारिक समूह च्याट", "pp.chat.ph": "जस्तै Viber/Messenger समूह “हाम्रो परिवार”",
+        "pp.comm.rules": "<li><b>पहिले SMS, फोन अन्तिममा</b> — व्यस्त नेटवर्कमा पनि म्यासेज पुग्छ; फोन गर्नुपरे १० सेकेन्डभित्र सक्नुहोस्।</li><li>सबैले क्षेत्रबाहिरको सम्पर्कलाई म्यासेज गर्ने: <b>“सुरक्षित छु + कहाँ छु”</b>।</li><li>हरेक फोनमा <b>१००</b> (प्रहरी), <b>१०२</b> (एम्बुलेन्स) र <b>११४९</b> (NEOC) सेभ गर्नुहोस्।</li><li>फोन आधाभन्दा बढी चार्ज राख्नुहोस्; पावर बैंक झोलामा राख्नुहोस्।</li>",
         "pp.ice.t": "आपत्कालीन सम्पर्क (ICE)",
         "pp.ice.d": "परिवार, छिमेकी, डाक्टर। आफ्नो फोनमा पनि “ICE” बाट सुरु गरी सेभ गर्नुहोस्।",
         "pp.role.who.ph": "को", "pp.phone.ph": "फोन", "pp.rel.ph": "नाता",
         "pp.roles.t": "कसले के गर्ने",
-        "pp.roles.d": "पहिलो मिनेटका लागि काम बाँड्नुहोस् — झोला लिने, बालबालिका लिने, ग्यास/बिजुली बन्द गर्ने, वृद्ध छिमेकीलाई सघाउने।",
+        "pp.roles.d": "पहिलो मिनेटका लागि काम बाँड्नुहोस् — झोला लिने, बालबालिका लिने (कुन विद्यालयबाट कसले?), ग्यास/बिजुली बन्द गर्ने, वृद्ध छिमेकीलाई सघाउने।",
         "pp.role.task.ph": "काम",
         "pp.add": "+ थप्नुहोस्",
+        "pp.home.t": "घर र मुख्य स्विच/भल्भ",
+        "pp.home.d": "हरेक स्विच र भल्भ कहाँ छ लेख्नुहोस्। ठूलो भूकम्पपछि बत्ती नहुन सक्छ — सबैले भेट्टाउने अभ्यास गर्नुहोस्।",
+        "pp.home.addr": "घरको ठेगाना / टोल", "pp.home.addr.ph": "जस्तै वडा ४, चाबहिल, काठमाडौं",
+        "pp.home.gas": "ग्यास सिलिन्डर / भल्भ", "pp.home.gas.ph": "जस्तै भान्साको कुना — रेगुलेटर घडीको दिशामा बन्द",
+        "pp.home.power": "मुख्य बिजुली स्विच (MCB)", "pp.home.power.ph": "जस्तै मूल ढोकामाथिको बक्स",
+        "pp.home.water": "पानीको स्टप-भल्भ / ट्याङ्की", "pp.home.water.ph": "जस्तै आँगनको मिटर छेउ",
+        "pp.near.t": "नजिकका सुरक्षित स्थान",
+        "pp.near.d": "यी ठाउँ <a href='map.html'>लाइभ नक्सा</a> र आफ्नो <a href='mydistrict.html'>जिल्ला पृष्ठ</a>मा भेट्टाउनुहोस्; पूरा सम्पर्क सूची <a href='resources.html'>आपत्कालीन स्रोत</a>मा छ।",
+        "pp.near.open": "नजिकैको खुला चौर / निकासी स्थल", "pp.near.open.ph": "जस्तै टुँडिखेल, विद्यालयको चौर",
+        "pp.near.hosp": "नजिकैको अस्पताल (नाम + फोन)", "pp.near.hosp.ph": "जस्तै शिक्षण अस्पताल · ०१-४४१२३०३",
+        "pp.near.help": "वडा कार्यालय / नजिकको प्रहरी चौकी", "pp.near.help.ph": "नाम + फोन",
+        "pp.sp.t": "विशेष आवश्यकता र घरपालुवा",
+        "pp.sp.d": "शिशु, वृद्ध, अपाङ्गता, दीर्घरोग, घरपालुवा — अहिल्यै योजना गर्नुहोस्: अतिरिक्त चस्मा, लौरो, शिशु आहार, डोरी र क्यारियर, तिनको ३ दिनको खाना।",
+        "pp.sp.ph": "जस्तै हजुरआमा — प्रेसरको औषधि (Amlodipine) झोलामा; कुकुर काले — ढोका छेउ डोरी, ३ दिनको खाना",
+        "pp.docs.t": "कागजात र बहुमूल्य वस्तु",
+        "pp.docs.d": "यिनको फोटो फोनमा खिच्नुहोस् र फोटोकपी झोलामा राख्नुहोस् — एक सेट क्षेत्रबाहिरको सम्पर्कसँग पनि।",
+        "pp.docs.tips": "<li>नागरिकता / राहदानी · जन्मदर्ता</li><li>जग्गा-घरका कागज (लालपुर्जा) · बीमा पोलिसी नम्बर</li><li>बैंक खाता विवरण · हरेक सदस्यको पछिल्लो फोटो</li><li>सबैको औषधिको सूची (मात्रासहित)</li>",
+        "pp.docs.loc": "प्रतिलिपि कहाँ राखिएको छ", "pp.docs.loc.ph": "जस्तै झोलाको रातो फोल्डर + दुवै फोनमा फोटो",
         "pp.kit.t": "आपत्कालीन झोला",
         "pp.kit.d": "तपाईंसँग भएका कुरामा चिन्ह लगाउनुहोस्। पानी, खाना र ब्याट्री हरेक ६ महिनामा नवीकरण गर्नुहोस्।",
         "pp.refresh": "नष्ट हुने सामान अन्तिम नवीकरण",
         "pp.refresh.due": "⚠ ६ महिनाभन्दा बढी भयो — पानी, खाना, ब्याट्री र औषधि जाँच्नुहोस्।",
+        "pp.drill.hint": "अभ्यास गर्नुहोस्: वर्षमा दुईपटक ६० सेकेन्डको <a href='drill.html'>पारिवारिक ड्रिल</a> चलाउनुहोस्, र नवीकरण मिति यहीं लेख्नुहोस्।",
         "pp.save": "योजना सेभ गर्नुहोस्", "pp.print": "प्रिन्ट / PDF सेभ", "pp.clear": "खाली गर्नुहोस्",
-        "pp.blood": "रक्त समूह (वैकल्पिक)", "pp.blood.ph": "जस्तै O+",
         "pp.card": "🪪 वालेट कार्ड प्रिन्ट",
         "pp.dl": "⬇ छाप्न मिल्ने योजना (PDF)",
         "pp.card.t": "आपत्कालीन कार्ड",
@@ -141,21 +207,37 @@
       </div>
 
       <form id="planForm" autocomplete="off">
+        <div class="form-card pp-prog-card" style="margin-bottom:18px">
+          <div class="pp-prog-head"><b data-i18n="pp.prog.t"></b><span id="progPct">0%</span></div>
+          <div class="pp-meter"><i id="progBar"></i></div>
+          <p class="muted" id="progHint" style="margin:10px 0 0;font-size:.86rem"></p>
+        </div>
+
+        <div class="form-card" style="margin-bottom:18px">
+          <h2 style="margin-top:0" data-i18n="pp.mem.t"></h2>
+          <p class="muted" data-i18n="pp.mem.d"></p>
+          <div id="memList"></div>
+          <button type="button" class="btn btn-ghost plan-add" id="memAdd" data-i18n="pp.add"></button>
+        </div>
+
         <div class="form-card" style="margin-bottom:18px">
           <h2 style="margin-top:0" data-i18n="pp.meet.t"></h2>
           <p class="muted" data-i18n="pp.meet.d"></p>
           <div class="field"><label data-i18n="pp.meet1"></label><input id="meet1" data-i18n-placeholder="pp.meet1.ph" /></div>
           <div class="field"><label data-i18n="pp.meet2"></label><input id="meet2" data-i18n-placeholder="pp.meet2.ph" /></div>
+          <div class="field"><label data-i18n="pp.meet3"></label><input id="meet3" data-i18n-placeholder="pp.meet3.ph" /></div>
         </div>
 
         <div class="form-card" style="margin-bottom:18px">
-          <h2 style="margin-top:0" data-i18n="pp.oac.t"></h2>
+          <h2 style="margin-top:0" data-i18n="pp.comm.t"></h2>
+          <h3 class="pp-h3" data-i18n="pp.oac.t"></h3>
           <p class="muted" data-i18n="pp.oac.d"></p>
           <div class="form-grid">
             <div class="field"><label data-i18n="pp.oac.name"></label><input id="oacName" /></div>
             <div class="field"><label data-i18n="pp.oac.phone"></label><input id="oacPhone" type="tel" /></div>
-            <div class="field"><label data-i18n="pp.blood"></label><input id="bloodGrp" data-i18n-placeholder="pp.blood.ph" maxlength="6" /></div>
           </div>
+          <div class="field"><label data-i18n="pp.chat"></label><input id="famChat" data-i18n-placeholder="pp.chat.ph" /></div>
+          <ul class="pp-rules" data-i18n-html="pp.comm.rules"></ul>
         </div>
 
         <div class="form-card" style="margin-bottom:18px">
@@ -173,11 +255,44 @@
         </div>
 
         <div class="form-card" style="margin-bottom:18px">
+          <h2 style="margin-top:0" data-i18n="pp.home.t"></h2>
+          <p class="muted" data-i18n="pp.home.d"></p>
+          <div class="form-grid">
+            <div class="field"><label data-i18n="pp.home.addr"></label><input id="homeAddr" data-i18n-placeholder="pp.home.addr.ph" /></div>
+            <div class="field"><label data-i18n="pp.home.gas"></label><input id="gasLoc" data-i18n-placeholder="pp.home.gas.ph" /></div>
+            <div class="field"><label data-i18n="pp.home.power"></label><input id="powerLoc" data-i18n-placeholder="pp.home.power.ph" /></div>
+            <div class="field"><label data-i18n="pp.home.water"></label><input id="waterLoc" data-i18n-placeholder="pp.home.water.ph" /></div>
+          </div>
+        </div>
+
+        <div class="form-card" style="margin-bottom:18px">
+          <h2 style="margin-top:0" data-i18n="pp.near.t"></h2>
+          <p class="muted" data-i18n-html="pp.near.d"></p>
+          <div class="field"><label data-i18n="pp.near.open"></label><input id="nearOpen" data-i18n-placeholder="pp.near.open.ph" /></div>
+          <div class="field"><label data-i18n="pp.near.hosp"></label><input id="nearHosp" data-i18n-placeholder="pp.near.hosp.ph" /></div>
+          <div class="field"><label data-i18n="pp.near.help"></label><input id="nearHelp" data-i18n-placeholder="pp.near.help.ph" /></div>
+        </div>
+
+        <div class="form-card" style="margin-bottom:18px">
+          <h2 style="margin-top:0" data-i18n="pp.sp.t"></h2>
+          <p class="muted" data-i18n="pp.sp.d"></p>
+          <div class="field"><textarea id="specialNotes" data-i18n-placeholder="pp.sp.ph"></textarea></div>
+        </div>
+
+        <div class="form-card" style="margin-bottom:18px">
+          <h2 style="margin-top:0" data-i18n="pp.docs.t"></h2>
+          <p class="muted" data-i18n="pp.docs.d"></p>
+          <ul class="pp-rules" style="margin-top:0" data-i18n-html="pp.docs.tips"></ul>
+          <div class="field" style="margin-top:12px"><label data-i18n="pp.docs.loc"></label><input id="docsLoc" data-i18n-placeholder="pp.docs.loc.ph" /></div>
+        </div>
+
+        <div class="form-card" style="margin-bottom:18px">
           <h2 style="margin-top:0" data-i18n="pp.kit.t"></h2>
           <p class="muted" data-i18n="pp.kit.d"></p>
           <div class="kit-list" id="kitList"></div>
           <div class="field" style="margin-top:16px;max-width:280px"><label data-i18n="pp.refresh"></label><input id="kitDate" type="date" /></div>
           <p class="refresh-due" id="refreshDue" data-i18n="pp.refresh.due"></p>
+          <p class="muted" style="font-size:.86rem;margin:10px 0 0" data-i18n-html="pp.drill.hint"></p>
         </div>
 
         <div class="plan-actions">
