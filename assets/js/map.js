@@ -132,10 +132,8 @@
     return notable ? r + 3 : r;
   }
   function fmtLocal(ms) {
-    try {
-      return new Intl.DateTimeFormat(window.EQ.getLang() === "ne" ? "ne-NP" : "en-GB",
-        { timeZone: "Asia/Kathmandu", dateStyle: "medium", timeStyle: "short" }).format(new Date(ms));
-    } catch (e) { return new Date(ms).toLocaleString(); }
+    if (window.EQ && window.EQ.fmtDT) return window.EQ.fmtDT(ms);
+    try { return new Date(ms).toLocaleString(); } catch (e) { return ""; }
   }
 
   function initMap() {
@@ -400,8 +398,8 @@
 
     var hud = document.createElement("div");
     hud.className = "wave-hud";
-    hud.innerHTML = '<b>' + dg("M " + mag.toFixed(1)) + '</b><span><i class="wd wp"></i>' + T("map.pwave") + ' <u id="wpk">' + dg("0") + '</u> km</span>' +
-      '<span><i class="wd ws"></i>' + T("map.swave") + ' <u id="wsk">' + dg("0") + '</u> km</span><span class="wt"><u id="wts">' + dg("0") + '</u> s</span>' +
+    hud.innerHTML = '<b>' + dg("M " + mag.toFixed(1)) + '</b><span><i class="wd wp"></i>' + T("map.pwave") + ' <u id="wpk">' + dg("0") + '</u> ' + T("u.km") + '</span>' +
+      '<span><i class="wd ws"></i>' + T("map.swave") + ' <u id="wsk">' + dg("0") + '</u> ' + T("u.km") + '</span><span class="wt"><u id="wts">' + dg("0") + '</u> ' + T("u.s") + '</span>' +
       '<button type="button" class="wave-x" aria-label="' + T("map.stopwave") + '" title="' + T("map.stopwave") + ' (Esc)">✕</button>';
     map.getContainer().appendChild(hud);
     var wpk = hud.querySelector("#wpk"), wsk = hud.querySelector("#wsk"), wts = hud.querySelector("#wts");

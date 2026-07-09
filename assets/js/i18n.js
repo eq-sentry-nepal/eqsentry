@@ -99,6 +99,7 @@
       "ui.menu.aria": "Menu", "ui.nav.aria": "Primary", "ui.ver.t": "EQ Sentry version",
       "ui.prev": "Scroll left", "ui.next": "Scroll right", "ui.close": "Close",
       "ui.dec": "Decrease text size", "ui.inc": "Increase text size", "ui.remove": "Remove",
+      "u.km": "km", "u.s": "s",
       "es.label": "In an emergency",
       "es.police": "Police", "es.fire": "Fire", "es.amb": "Ambulance", "es.traffic": "Traffic",
       "es.childsearch": "Child Search", "es.childline": "Child Helpline", "es.policehq": "Police HQ",
@@ -177,6 +178,7 @@
       "ui.menu.aria": "मेनु", "ui.nav.aria": "मुख्य नेभिगेसन", "ui.ver.t": "EQ Sentry संस्करण",
       "ui.prev": "बायाँ सार्नुहोस्", "ui.next": "दायाँ सार्नुहोस्", "ui.close": "बन्द गर्नुहोस्",
       "ui.dec": "अक्षर सानो बनाउनुहोस्", "ui.inc": "अक्षर ठूलो बनाउनुहोस्", "ui.remove": "हटाउनुहोस्",
+      "u.km": "किमी", "u.s": "से.",
       "es.label": "आपत्कालमा",
       "es.police": "प्रहरी", "es.fire": "दमकल", "es.amb": "एम्बुलेन्स", "es.traffic": "ट्राफिक",
       "es.childsearch": "बालबालिका खोजी", "es.childline": "बाल हेल्पलाइन", "es.policehq": "प्रहरी प्र.का.",
@@ -249,7 +251,7 @@
   var NE_DIGITS = "०१२३४५६७८९";
   function neDigits(s) { return String(s).replace(/[0-9]/g, function (d) { return NE_DIGITS[+d]; }); }
   // Localize digits in any display string: Devanagari for Nepali, unchanged otherwise.
-  function dgS(s) { return getLang() === "ne" ? neDigits(s) : String(s); }
+  function dgS(s) { return getLang() === "ne" ? neDigits(s).replace(/\bkm\b/g, "किमी") : String(s); }
 
   // --- Localize feed place strings for Nepali: "12 km E of Kanbe, Burma (Myanmar)" ---
   var NE_DIR = { N: "उत्तर", S: "दक्षिण", E: "पूर्व", W: "पश्चिम", NE: "उत्तरपूर्व", NW: "उत्तरपश्चिम", SE: "दक्षिणपूर्व", SW: "दक्षिणपश्चिम",
@@ -261,6 +263,8 @@
     ["Nepal", "नेपाल"], ["India", "भारत"], ["China", "चीन"], ["Bangladesh", "बंगलादेश"], ["Bhutan", "भुटान"], ["Pakistan", "पाकिस्तान"], ["Afghanistan", "अफगानिस्तान"],
     ["Kathmandu", "काठमाडौं"], ["Pokhara", "पोखरा"], ["Lamjung", "लमजुङ"], ["Gorkha", "गोरखा"], ["Dolakha", "दोलखा"], ["Sindhupalchok", "सिन्धुपाल्चोक"],
     ["Biratnagar", "विराटनगर"], ["Birgunj", "वीरगन्ज"], ["Dharan", "धरान"], ["Hetauda", "हेटौडा"], ["Butwal", "बुटवल"], ["Nepalgunj", "नेपालगन्ज"], ["Dhangadhi", "धनगढी"], ["Bharatpur", "भरतपुर"],
+    ["Rikaze", "रिकाजे"], ["Shigatse", "सिगात्से"], ["Xigaze", "सिगात्से"], ["Lhasa", "ल्हासा"], ["Nyalam", "न्यालम"],
+    ["Gyirong", "केरुङ"], ["Kyirong", "केरुङ"], ["Tingri", "तिङ्ग्री"], ["Dingri", "तिङ्ग्री"], ["Qamdo", "चाम्दो"],
     ["New Delhi", "नयाँ दिल्ली"], ["Darjeeling", "दार्जिलिङ"], ["Siliguri", "सिलिगुडी"], ["Gangtok", "गान्तोक"],
     ["Jajarkot", "जाजरकोट"], ["Jumla", "जुम्ला"], ["Dailekh", "दैलेख"], ["Bajhang", "बझाङ"], ["Bajura", "बाजुरा"], ["Dhading", "धादिङ"],
     ["Ramechhap", "रामेछाप"], ["Solukhumbu", "सोलुखुम्बु"], ["Taplejung", "ताप्लेजुङ"], ["Okhaldhunga", "ओखलढुंगा"], ["Khotang", "खोटाङ"],
@@ -283,6 +287,23 @@
     return geoSwap(s);
   }
   function placeS(s) { return getLang() === "ne" ? nePlace(s) : String(s == null ? "" : s); }
+
+  // --- Bilingual absolute date-time. Some browsers ship without the "ne" ICU
+  // locale and silently fall back to English — detect that and format by hand.
+  var NE_MONTHS = ["जनवरी", "फेब्रुअरी", "मार्च", "अप्रिल", "मे", "जुन", "जुलाई", "अगस्ट", "सेप्टेम्बर", "अक्टोबर", "नोभेम्बर", "डिसेम्बर"];
+  function fmtDT(ms) {
+    var d = new Date(ms);
+    try {
+      if (getLang() === "ne") {
+        var f = new Intl.DateTimeFormat("ne-NP", { timeZone: "Asia/Kathmandu", dateStyle: "medium", timeStyle: "short" });
+        if (String(f.resolvedOptions().locale || "").indexOf("ne") === 0) return f.format(d);
+        var parts = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Kathmandu", year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(d);
+        var g = {}; parts.forEach(function (x) { g[x.type] = x.value; });
+        return neDigits(g.year) + " " + NE_MONTHS[+g.month - 1] + " " + neDigits(g.day) + ", " + neDigits(g.hour + ":" + g.minute);
+      }
+      return new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Kathmandu", dateStyle: "medium", timeStyle: "short" }).format(d);
+    } catch (e) { return d.toLocaleString(); }
+  }
   function statVal(key) {
     var sum = window.EQ_DATA && window.EQ_DATA.summary;
     if (!sum) return null;
@@ -353,7 +374,7 @@
   }
 
   /* ---------- Header / Footer markup ---------- */
-  var VERSION = "2.1.3";   // shown in the footer — keep in sync with package.json (smoke test enforces)
+  var VERSION = "2.1.4";   // shown in the footer — keep in sync with package.json (smoke test enforces)
   var LOGO = '<svg class="logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
     '<circle cx="20" cy="20" r="18" stroke="#FF4D2E" stroke-width="2.5"/>' +
     '<path d="M5 21h6l3-9 5 16 4-12 2.5 5H35" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -685,7 +706,7 @@
 
   // expose helpers for other scripts
   window.EQ = {
-    getLang: getLang, setLang: setLang, t: t, dg: dgS, place: placeS,
+    getLang: getLang, setLang: setLang, t: t, dg: dgS, place: placeS, fmtDT: fmtDT,
     NEPAL_BOX: NEPAL_BOX, inNepalRegion: inNepalRegion, fmtAgo: fmtAgo,
     addDict: function (obj) {
       DICT.en = Object.assign(DICT.en, obj.en || {});

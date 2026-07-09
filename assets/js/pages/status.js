@@ -50,7 +50,10 @@
   function stOf(r) { return r.ok ? (r.ms > SLOW ? "slow" : "ok") : "fail"; }
   function bust(u) { return u + (u.indexOf("?") < 0 ? "?" : "&") + "_=" + Date.now(); }
   function fmtT(t, style) {
-    try { return new Intl.DateTimeFormat(lang() === "ne" ? "ne-NP" : "en-GB", style || { timeStyle: "medium" }).format(new Date(t)); }
+    try {
+      var out = new Intl.DateTimeFormat(lang() === "ne" ? "ne-NP" : "en-GB", style || { timeStyle: "medium" }).format(new Date(t));
+      return lang() === "ne" ? dg(out) : out;   // ensure Devanagari even if ICU lacks "ne"
+    }
     catch (e) { return new Date(t).toLocaleTimeString(); }
   }
 
