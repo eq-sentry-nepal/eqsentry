@@ -13,7 +13,8 @@
   function lang() { return window.EQ ? window.EQ.getLang() : "en"; }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function telOf(s) { var d = String(s).replace(/\D/g, ""); if (d.charAt(0) === "0") return "+977" + d.slice(1); if (d.slice(0, 3) === "977") return "+" + d; return "+977" + d; }
-  function phoneLinks(ph) { return (ph || []).map(function (p) { return '<a href="tel:' + telOf(p) + '" class="dir-tel">' + esc(p) + "</a>"; }).join(" "); }
+  function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
+  function phoneLinks(ph) { return (ph || []).map(function (p) { return '<a href="tel:' + telOf(p) + '" class="dir-tel">' + dg(esc(p)) + "</a>"; }).join(" "); }
 
   var PROV = {
     koshi: ["Koshi", "कोशी"], madhesh: ["Madhesh", "मधेश"], bagmati: ["Bagmati", "बागमती"],

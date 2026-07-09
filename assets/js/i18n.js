@@ -294,6 +294,10 @@
       var v = DICT[lang][el.getAttribute("data-i18n-aria")];
       if (v != null) el.setAttribute("aria-label", subTokens(v, lang));
     });
+    // static digit spans: localize numerals per language (e.g. 100 -> \u0967\u0966\u0966)
+    document.querySelectorAll("[data-dg]").forEach(function (el) {
+      el.textContent = lang === "ne" ? neDigits(el.getAttribute("data-dg")) : el.getAttribute("data-dg");
+    });
 
     // toggle button shows the OTHER language
     var tg = document.getElementById("langToggle");
@@ -304,7 +308,7 @@
   }
 
   /* ---------- Header / Footer markup ---------- */
-  var VERSION = "2.1.0";   // shown in the footer — keep in sync with package.json (smoke test enforces)
+  var VERSION = "2.1.1";   // shown in the footer — keep in sync with package.json (smoke test enforces)
   var LOGO = '<svg class="logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
     '<circle cx="20" cy="20" r="18" stroke="#FF4D2E" stroke-width="2.5"/>' +
     '<path d="M5 21h6l3-9 5 16 4-12 2.5 5H35" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -358,7 +362,7 @@
     }
     var ENUMS = [["100","es.police"],["101","es.fire"],["102","es.amb"],["103","es.traffic"],["104","es.childsearch"],["1098","es.childline"],["1113","es.policehq"],["1114","es.apf"],["1115","es.health"],["1130","es.redcross"],["1149","es.disaster"]];
     var seq = ENUMS.map(function (e) {
-      return '<a href="tel:' + e[0] + '"><b>' + e[0] + '</b> <span data-i18n="' + e[1] + '"></span></a>';
+      return '<a href="tel:' + e[0] + '"><b data-dg="' + e[0] + '">' + e[0] + '</b> <span data-i18n="' + e[1] + '"></span></a>';
     }).join("");
     return '' +
       '<div class="emergency-strip">' +
@@ -441,7 +445,7 @@
         '<p class="muted" style="font-size:.82rem;margin-top:22px" data-i18n="foot.disclaimer"></p>' +
         '<div class="foot-bottom">' +
           '<span>© <span id="year"></span> EQ Sentry · eqsentry.com — <a href="https://prashantacharya.com" target="_blank" rel="noopener" data-i18n="foot.rights"></a>' +
-            '<br><span class="foot-ver" title="EQ Sentry version">v' + VERSION + '</span></span>' +
+            '<br><span class="foot-ver" title="EQ Sentry version" data-dg="v' + VERSION + '">v' + VERSION + '</span></span>' +
           '<span><a href="privacy.html" data-i18n="foot.privacy"></a> · Data: USGS Earthquake Hazards Program</span>' +
         '</div>' +
       '</div>';
@@ -520,7 +524,7 @@
     if (footer) footer.innerHTML = footerHTML();
 
     var yr = document.getElementById("year");
-    if (yr) yr.textContent = new Date().getFullYear();
+    if (yr) { var yv = String(new Date().getFullYear()); yr.setAttribute("data-dg", yv); yr.textContent = dgS(yv); }
 
     var tg = document.getElementById("langToggle");
     if (tg) tg.addEventListener("click", function () {
