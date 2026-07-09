@@ -52,20 +52,20 @@
       '<div class="field"><input class="mem-age" inputmode="numeric" value="' + esc(r.age) + '" placeholder="' + esc(T("pp.mem.age.ph")) + '" /></div>' +
       '<div class="field"><input class="mem-blood" value="' + esc(r.blood) + '" placeholder="' + esc(T("pp.mem.blood.ph")) + '" maxlength="6" /></div>' +
       '<div class="field"><input class="mem-meds" value="' + esc(r.meds) + '" placeholder="' + esc(T("pp.mem.meds.ph")) + '" /></div>' +
-      '<button type="button" class="plan-rm" data-rm="mem" data-i="' + i + '" aria-label="remove">×</button></div>';
+      '<button type="button" class="plan-rm" data-rm="mem" data-i="' + i + '" aria-label="' + esc(T("ui.remove")) + '">×</button></div>';
   }
   function iceRow(r, i) {
     return '<div class="plan-row">' +
       '<div class="field"><input class="ice-who" value="' + esc(r.who) + '" placeholder="' + esc(T("pp.role.who.ph")) + '" /></div>' +
       '<div class="field"><input class="ice-phone" type="tel" value="' + esc(r.phone) + '" placeholder="' + esc(T("pp.phone.ph")) + '" /></div>' +
       '<div class="field"><input class="ice-rel" value="' + esc(r.rel) + '" placeholder="' + esc(T("pp.rel.ph")) + '" /></div>' +
-      '<button type="button" class="plan-rm" data-rm="ice" data-i="' + i + '" aria-label="remove">×</button></div>';
+      '<button type="button" class="plan-rm" data-rm="ice" data-i="' + i + '" aria-label="' + esc(T("ui.remove")) + '">×</button></div>';
   }
   function roleRow(r, i) {
     return '<div class="plan-row" style="grid-template-columns:1fr 1fr auto">' +
       '<div class="field"><input class="role-who" value="' + esc(r.who) + '" placeholder="' + esc(T("pp.role.who.ph")) + '" /></div>' +
       '<div class="field"><input class="role-task" value="' + esc(r.task) + '" placeholder="' + esc(T("pp.role.task.ph")) + '" /></div>' +
-      '<button type="button" class="plan-rm" data-rm="role" data-i="' + i + '" aria-label="remove">×</button></div>';
+      '<button type="button" class="plan-rm" data-rm="role" data-i="' + i + '" aria-label="' + esc(T("ui.remove")) + '">×</button></div>';
   }
   function renderMem() { $("memList").innerHTML = state.members.map(memRow).join(""); }
   function renderIce() { $("iceList").innerHTML = state.ice.map(iceRow).join(""); }

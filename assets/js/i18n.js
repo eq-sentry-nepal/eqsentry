@@ -95,6 +95,10 @@
       "a11y.sizeHint": "Make text larger or smaller", "a11y.motion": "Reduce motion", "a11y.motionHint": "Pause animations",
       "a11y.hc": "High contrast", "a11y.hcHint": "Stronger colours", "a11y.dys": "Readable font",
       "a11y.dysHint": "Dyslexia-friendly typeface", "a11y.reset": "Reset all", "a11y.open": "Accessibility options",
+      "ui.theme.t": "Day / night", "ui.theme.aria": "Toggle day or night theme", "ui.lang.aria": "Switch language",
+      "ui.menu.aria": "Menu", "ui.nav.aria": "Primary", "ui.ver.t": "EQ Sentry version",
+      "ui.prev": "Scroll left", "ui.next": "Scroll right", "ui.close": "Close",
+      "ui.dec": "Decrease text size", "ui.inc": "Increase text size", "ui.remove": "Remove",
       "es.label": "In an emergency",
       "es.police": "Police", "es.fire": "Fire", "es.amb": "Ambulance", "es.traffic": "Traffic",
       "es.childsearch": "Child Search", "es.childline": "Child Helpline", "es.policehq": "Police HQ",
@@ -169,6 +173,10 @@
       "a11y.sizeHint": "अक्षर ठूलो वा सानो बनाउनुहोस्", "a11y.motion": "चाल घटाउनुहोस्", "a11y.motionHint": "एनिमेसन रोक्नुहोस्",
       "a11y.hc": "उच्च कन्ट्रास्ट", "a11y.hcHint": "गाढा रङ", "a11y.dys": "सजिलो फन्ट",
       "a11y.dysHint": "डिस्लेक्सिया-मैत्री अक्षर", "a11y.reset": "सबै रिसेट", "a11y.open": "पहुँचयोग्यता विकल्प",
+      "ui.theme.t": "दिन / रात", "ui.theme.aria": "दिन वा रात थिम बदल्नुहोस्", "ui.lang.aria": "भाषा बदल्नुहोस्",
+      "ui.menu.aria": "मेनु", "ui.nav.aria": "मुख्य नेभिगेसन", "ui.ver.t": "EQ Sentry संस्करण",
+      "ui.prev": "बायाँ सार्नुहोस्", "ui.next": "दायाँ सार्नुहोस्", "ui.close": "बन्द गर्नुहोस्",
+      "ui.dec": "अक्षर सानो बनाउनुहोस्", "ui.inc": "अक्षर ठूलो बनाउनुहोस्", "ui.remove": "हटाउनुहोस्",
       "es.label": "आपत्कालमा",
       "es.police": "प्रहरी", "es.fire": "दमकल", "es.amb": "एम्बुलेन्स", "es.traffic": "ट्राफिक",
       "es.childsearch": "बालबालिका खोजी", "es.childline": "बाल हेल्पलाइन", "es.policehq": "प्रहरी प्र.का.",
@@ -294,6 +302,10 @@
       var v = DICT[lang][el.getAttribute("data-i18n-aria")];
       if (v != null) el.setAttribute("aria-label", subTokens(v, lang));
     });
+    document.querySelectorAll("[data-i18n-title]").forEach(function (el) {
+      var v = DICT[lang][el.getAttribute("data-i18n-title")];
+      if (v != null) el.setAttribute("title", subTokens(v, lang));
+    });
     // static digit spans: localize numerals per language (e.g. 100 -> \u0967\u0966\u0966)
     document.querySelectorAll("[data-dg]").forEach(function (el) {
       el.textContent = lang === "ne" ? neDigits(el.getAttribute("data-dg")) : el.getAttribute("data-dg");
@@ -308,7 +320,7 @@
   }
 
   /* ---------- Header / Footer markup ---------- */
-  var VERSION = "2.1.1";   // shown in the footer — keep in sync with package.json (smoke test enforces)
+  var VERSION = "2.1.2";   // shown in the footer — keep in sync with package.json (smoke test enforces)
   var LOGO = '<svg class="logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
     '<circle cx="20" cy="20" r="18" stroke="#FF4D2E" stroke-width="2.5"/>' +
     '<path d="M5 21h6l3-9 5 16 4-12 2.5 5H35" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -373,7 +385,7 @@
         '<a class="brand" href="index.html">' + LOGO +
           '<span>EQ&nbsp;Sentry<small data-i18n="brand.tag"></small></span>' +
         '</a>' +
-        '<nav class="nav-links" id="navLinks" aria-label="Primary">' +
+        '<nav class="nav-links" id="navLinks" aria-label="Primary" data-i18n-aria="ui.nav.aria">' +
           link("index.html", "nav.home", "home") +
           link("map.html", "nav.map", "map") +
           link("insights.html", "nav.insights", "insights") +
@@ -382,18 +394,18 @@
           link("about.html", "nav.about", "about") +
         '</nav>' +
         '<div class="nav-tools">' +
-          '<button class="lang-toggle" id="themeToggle" type="button" aria-label="Toggle day or night theme" title="Day / night">' +
+          '<button class="lang-toggle" id="themeToggle" type="button" aria-label="Toggle day or night theme" data-i18n-aria="ui.theme.aria" title="Day / night" data-i18n-title="ui.theme.t">' +
             '<svg class="ic-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19"/></svg>' +
             '<svg class="ic-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8z"/></svg>' +
           '</button>' +
-          '<button class="lang-toggle" id="a11yToggle" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Accessibility options" title="Accessibility">' +
+          '<button class="lang-toggle" id="a11yToggle" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Accessibility options" data-i18n-aria="a11y.open" title="Accessibility" data-i18n-title="a11y.title">' +
             '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="4" r="1.6"/><path d="M4 8h16M12 8v6m0 0-3 6m3-6 3 6"/></svg>' +
           '</button>' +
-          '<button class="lang-toggle" id="langToggle" type="button" aria-label="Switch language">' +
+          '<button class="lang-toggle" id="langToggle" type="button" aria-label="Switch language" data-i18n-aria="ui.lang.aria">' +
             '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"/></svg>' +
             '<span></span>' +
           '</button>' +
-          '<button class="nav-toggle" id="navToggle" type="button" aria-label="Menu" aria-expanded="false">' +
+          '<button class="nav-toggle" id="navToggle" type="button" aria-label="Menu" data-i18n-aria="ui.menu.aria" aria-expanded="false">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>' +
           '</button>' +
         '</div>' +
@@ -445,7 +457,7 @@
         '<p class="muted" style="font-size:.82rem;margin-top:22px" data-i18n="foot.disclaimer"></p>' +
         '<div class="foot-bottom">' +
           '<span>© <span id="year"></span> EQ Sentry · eqsentry.com — <a href="https://prashantacharya.com" target="_blank" rel="noopener" data-i18n="foot.rights"></a>' +
-            '<br><span class="foot-ver" title="EQ Sentry version" data-dg="v' + VERSION + '">v' + VERSION + '</span></span>' +
+            '<br><span class="foot-ver" title="EQ Sentry version" data-i18n-title="ui.ver.t" data-dg="v' + VERSION + '">v' + VERSION + '</span></span>' +
           '<span><a href="privacy.html" data-i18n="foot.privacy"></a> · Data: USGS Earthquake Hazards Program</span>' +
         '</div>' +
       '</div>';

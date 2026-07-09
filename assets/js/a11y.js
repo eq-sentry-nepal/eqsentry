@@ -17,6 +17,7 @@
 
   function ls(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function save(k, v) { try { localStorage.setItem(k, String(v)); } catch (e) {} }
+  function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
   function T(k, f) { return (window.EQ && window.EQ.t) ? window.EQ.t(k) : (f || k); }
   function mqReduced() { return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); }
 
@@ -52,10 +53,10 @@
     panel.className = "a11y-panel"; panel.id = "a11yPanel";
     panel.setAttribute("role", "dialog"); panel.setAttribute("aria-label", T("a11y.title", "Accessibility"));
     panel.innerHTML =
-      '<button class="a11y-close" type="button" aria-label="Close">×</button>' +
+      '<button class="a11y-close" type="button" aria-label="' + T("ui.close", "Close") + '">×</button>' +
       '<h2><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="4" r="1.7"/><path d="M4 8h16M12 8v6m0 0-3.2 6m3.2-6 3.2 6"/></svg><span data-l="title"></span></h2>' +
       '<div class="a11y-row"><span class="a11y-label"><span data-l="size"></span><small data-l="sizeHint"></small></span>' +
-        '<span class="a11y-size"><button type="button" class="a11y-dec" aria-label="Decrease text size">A−</button><span class="pct" id="a11yPct">100%</span><button type="button" class="a11y-inc" aria-label="Increase text size">A+</button></span></div>' +
+        '<span class="a11y-size"><button type="button" class="a11y-dec" aria-label="' + T("ui.dec", "Decrease text size") + '">A−</button><span class="pct" id="a11yPct">100%</span><button type="button" class="a11y-inc" aria-label="' + T("ui.inc", "Increase text size") + '">A+</button></span></div>' +
       '<div class="a11y-row"><span class="a11y-label"><span data-l="motion"></span><small data-l="motionHint"></small></span>' +
         '<button type="button" class="a11y-switch" id="a11yMotion" aria-pressed="false"><span class="sr-only" data-l="motion"></span></button></div>' +
       '<div class="a11y-row"><span class="a11y-label"><span data-l="hc"></span><small data-l="hcHint"></small></span>' +
@@ -97,10 +98,14 @@
     };
     panel.querySelectorAll("[data-l]").forEach(function (el) { var k = el.getAttribute("data-l"); if (L[k] != null) el.textContent = L[k]; });
     if (trigger) trigger.setAttribute("aria-label", T("a11y.open", "Accessibility options"));
+    var c = panel.querySelector(".a11y-close"); if (c) c.setAttribute("aria-label", T("ui.close", "Close"));
+    var d = panel.querySelector(".a11y-dec"); if (d) d.setAttribute("aria-label", T("ui.dec", "Decrease text size"));
+    var n = panel.querySelector(".a11y-inc"); if (n) n.setAttribute("aria-label", T("ui.inc", "Increase text size"));
+    if (els.pct) refresh();
   }
 
   function refresh() {
-    els.pct.textContent = PCT[sizeIdx()] + "%";
+    els.pct.textContent = dg(PCT[sizeIdx()] + "%");
     els.motion.setAttribute("aria-pressed", motionOn() ? "true" : "false");
     els.hc.setAttribute("aria-pressed", hcOn() ? "true" : "false");
     els.dys.setAttribute("aria-pressed", dysOn() ? "true" : "false");
