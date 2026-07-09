@@ -62,6 +62,32 @@
   function T(k) { return window.EQ ? window.EQ.t(k) : k; }
   function dg(s) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(s) : String(s); }
   function PL(s) { return (window.EQ && window.EQ.place) ? window.EQ.place(s) : String(s == null ? "" : s); }
+  var AC;
+  function sndOn() { try { return localStorage.getItem("eqsentry_snd") === "1"; } catch (e) { return false; } }
+  function chirp() {
+    try {
+      AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+      if (AC.state === "suspended") AC.resume();
+      var t0 = AC.currentTime;
+      [880, 660].forEach(function (f, i) {
+        var o = AC.createOscillator(), g = AC.createGain();
+        o.type = "sine"; o.frequency.value = f;
+        g.gain.setValueAtTime(0.001, t0 + i * 0.28);
+        g.gain.exponentialRampToValueAtTime(0.25, t0 + i * 0.28 + 0.04);
+        g.gain.exponentialRampToValueAtTime(0.001, t0 + i * 0.28 + 0.24);
+        o.connect(g); g.connect(AC.destination);
+        o.start(t0 + i * 0.28); o.stop(t0 + i * 0.28 + 0.26);
+      });
+    } catch (e) {}
+    if (navigator.vibrate) { try { navigator.vibrate([180, 90, 180]); } catch (e) {} }
+  }
+  function updateSnd() {
+    var b = document.getElementById("sndToggle"); if (!b) return;
+    var on = sndOn();
+    b.textContent = T(on ? "map.snd.on" : "map.snd.off");
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+    b.classList.toggle("active", on);
+  }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
   /* ---------- Shareable URLs: filters live in the hash (#src=…&fmag=…) ---------- */
@@ -175,7 +201,7 @@
     if (e.notable) {
       var name = window.EQ.getLang() === "ne" ? e.name_ne : e.name_en;
       var sum = window.EQ.getLang() === "ne" ? e.summary_ne : e.summary_en;
-      return '<div class="lpop"><span class="m" style="color:' + color + '">' + dg("M " + e.mag.toFixed(1)) + '</span> · ' + dg(e.year) +
+      return '<div class="lpop"><span class="m" style="color:' + color + '">' + dg("M " + e.mag.toFixed(1)) + '</span> · ' + dg(e.year) + (e.time ? ' <span class="sub">(' + T("u.bs") + ' ' + dg(window.EQ.bsYear(e.time)) + ')</span>' : '') +
         '<br><b>' + name + '</b><br>' +
         (e.deaths ? '<span class="sub">' + dg(e.deaths.toLocaleString()) + ' ' + T("map.deaths") + '</span><br>' : '') +
         '<span style="font-size:.82rem;color:var(--ink-soft)">' + sum + '</span>' + youLine(e) +
@@ -362,7 +388,7 @@
       var list = f.parse(data);
       var fresh = list.filter(function (e) { return e.id && !seenLive[e.id]; });
       render(list);
-      if (fresh.length) { var n = fresh[0]; toast("<b>" + T("map.new") + ":</b> " + dg("M" + (n.mag != null ? n.mag.toFixed(1) : "?")) + " — " + esc(PL(n.place))); }
+      if (fresh.length) { if (sndOn()) chirp(); var n = fresh[0]; toast("<b>" + T("map.new") + ":</b> " + dg("M" + (n.mag != null ? n.mag.toFixed(1) : "?")) + " — " + esc(PL(n.place))); }
     }).catch(function () {});
   }
   function manageAutoRefresh() {
@@ -652,10 +678,21 @@
     load();
     document.addEventListener("eq:langchange", function () {
       setControls();
+      updateSnd();
       refreshPlates();
       if (current.length) render(current.slice());
     });
     // refresh the source note once the catalogue arrives ({count|…} tokens resolve)
+    var sndBtn = document.getElementById("sndToggle");
+    if (sndBtn) {
+      updateSnd();
+      sndBtn.addEventListener("click", function () {
+        var on = !sndOn();
+        try { localStorage.setItem("eqsentry_snd", on ? "1" : "0"); } catch (e) {}
+        if (on) chirp();                                   // user gesture unlocks audio + preview
+        updateSnd();
+      });
+    }
     document.addEventListener("eq:dataready", setControls);
   }
 

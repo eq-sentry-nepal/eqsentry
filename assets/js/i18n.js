@@ -99,7 +99,7 @@
       "ui.menu.aria": "Menu", "ui.nav.aria": "Primary", "ui.ver.t": "EQ Sentry version",
       "ui.prev": "Scroll left", "ui.next": "Scroll right", "ui.close": "Close",
       "ui.dec": "Decrease text size", "ui.inc": "Increase text size", "ui.remove": "Remove",
-      "u.km": "km", "u.s": "s",
+      "u.km": "km", "u.s": "s", "u.bs": "BS",
       "es.label": "In an emergency",
       "es.police": "Police", "es.fire": "Fire", "es.amb": "Ambulance", "es.traffic": "Traffic",
       "es.childsearch": "Child Search", "es.childline": "Child Helpline", "es.policehq": "Police HQ",
@@ -178,7 +178,7 @@
       "ui.menu.aria": "मेनु", "ui.nav.aria": "मुख्य नेभिगेसन", "ui.ver.t": "EQ Sentry संस्करण",
       "ui.prev": "बायाँ सार्नुहोस्", "ui.next": "दायाँ सार्नुहोस्", "ui.close": "बन्द गर्नुहोस्",
       "ui.dec": "अक्षर सानो बनाउनुहोस्", "ui.inc": "अक्षर ठूलो बनाउनुहोस्", "ui.remove": "हटाउनुहोस्",
-      "u.km": "किमी", "u.s": "से.",
+      "u.km": "किमी", "u.s": "से.", "u.bs": "वि.सं.",
       "es.label": "आपत्कालमा",
       "es.police": "प्रहरी", "es.fire": "दमकल", "es.amb": "एम्बुलेन्स", "es.traffic": "ट्राफिक",
       "es.childsearch": "बालबालिका खोजी", "es.childline": "बाल हेल्पलाइन", "es.policehq": "प्रहरी प्र.का.",
@@ -286,6 +286,13 @@
     }
     return geoSwap(s);
   }
+  // Approximate Bikram Sambat year (Baisakh 1 ~ Apr 13/14). Year-level only.
+  function bsYear(ms) {
+    var d = new Date(+ms + 5.75 * 36e5);                   // shift to Nepal time
+    var y = d.getUTCFullYear();
+    return y + (d.getTime() >= Date.UTC(y, 3, 13) ? 57 : 56);
+  }
+
   function placeS(s) { return getLang() === "ne" ? nePlace(s) : String(s == null ? "" : s); }
 
   // --- Bilingual absolute date-time. Some browsers ship without the "ne" ICU
@@ -374,7 +381,7 @@
   }
 
   /* ---------- Header / Footer markup ---------- */
-  var VERSION = "2.1.4";   // shown in the footer — keep in sync with package.json (smoke test enforces)
+  var VERSION = "2.2.0";   // shown in the footer — keep in sync with package.json (smoke test enforces)
   var LOGO = '<svg class="logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
     '<circle cx="20" cy="20" r="18" stroke="#FF4D2E" stroke-width="2.5"/>' +
     '<path d="M5 21h6l3-9 5 16 4-12 2.5 5H35" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -649,6 +656,25 @@
     initMotion();
     // Shared live-data engine (live banner + [data-eq] elements on every page).
     // The home page loads it explicitly; elsewhere, inject it once.
+    // Runtime config (API base, analytics) + optional privacy-friendly analytics.
+    function initAnalytics() {
+      try {
+        var a = window.EQ_CONFIG && window.EQ_CONFIG.analytics;
+        if (!a || !a.provider || !a.site || document.querySelector("script[data-eqanalytics]")) return;
+        var t = document.createElement("script"); t.defer = true; t.setAttribute("data-eqanalytics", "1");
+        if (a.provider === "plausible") { t.src = "https://plausible.io/js/script.js"; t.setAttribute("data-domain", a.site); }
+        else if (a.provider === "goatcounter") { t.src = "https://gc.zgo.at/count.js"; t.setAttribute("data-goatcounter", "https://" + a.site + ".goatcounter.com/count"); }
+        else return;
+        document.body.appendChild(t);
+      } catch (e) {}
+    }
+    if (window.EQ_CONFIG) { initAnalytics(); }                       // config.js already loaded via a static tag
+    else if (!document.querySelector('script[src*="config.js"]')) {  // inject it everywhere else
+      var cfg = document.createElement("script"); cfg.src = "assets/js/config.js"; cfg.setAttribute("data-eqconfig", "1");
+      cfg.onload = initAnalytics;
+      document.body.appendChild(cfg);
+    }
+
     if (!window.EQEngine && !document.querySelector('script[data-eqengine]')) {
       var eng = document.createElement("script"); eng.src = "assets/js/engine.js"; eng.setAttribute("data-eqengine", "1");
       document.body.appendChild(eng);
@@ -706,7 +732,7 @@
 
   // expose helpers for other scripts
   window.EQ = {
-    getLang: getLang, setLang: setLang, t: t, dg: dgS, place: placeS, fmtDT: fmtDT,
+    getLang: getLang, setLang: setLang, t: t, dg: dgS, place: placeS, fmtDT: fmtDT, bsYear: bsYear,
     NEPAL_BOX: NEPAL_BOX, inNepalRegion: inNepalRegion, fmtAgo: fmtAgo,
     addDict: function (obj) {
       DICT.en = Object.assign(DICT.en, obj.en || {});

@@ -59,4 +59,35 @@
     else render(catRecent());
     document.addEventListener("eq:langchange", function () { var m = window.EQEngine && window.EQEngine.get(); render(m ? m.recent : null); });
   })();
+
+  /* ---------- "Since your last visit" digest ---------- */
+  (function lastVisit() {
+    var KEY = "eqsentry_lastseen";
+    var card = document.getElementById("lvCard");
+    var last = 0;
+    try { last = +localStorage.getItem(KEY) || 0; localStorage.setItem(KEY, String(Date.now())); } catch (e) {}
+    if (!card || !last || Date.now() - last < 6 * 36e5) return;
+    function T(k) { return window.EQ ? window.EQ.t(k) : k; }
+    function dg(x) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(x) : String(x); }
+    function PL(x) { return (window.EQ && window.EQ.place) ? window.EQ.place(x) : String(x == null ? "" : x); }
+    function esc(x) { return String(x == null ? "" : x).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+    var done = false;
+    function paint(model) {
+      if (done || !model || !model.events) return;
+      var evs = model.events.filter(function (q) { return q.time > last && q.mag != null && q.mag >= 2.5; });
+      if (!evs.length) { done = true; return; }
+      var big = evs.reduce(function (a, b) { return b.mag > a.mag ? b : a; });
+      done = true;
+      card.innerHTML = '<div class="callout info" style="margin-bottom:16px;align-items:center">' +
+        '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>' +
+        '<p style="margin:0"><b>' + T("lv.t") + '</b> (' + (window.EQ ? window.EQ.fmtAgo(last) : "") + '): ' +
+        T("lv.line").replace("{n}", dg(evs.length)).replace("{m}", dg("M" + big.mag.toFixed(1))).replace("{p}", esc(PL(big.place || ""))) +
+        '</p><button type="button" class="btn btn-ghost" id="lvOk" style="margin-left:auto;flex:0 0 auto;font-size:.82rem">' + T("lv.ok") + '</button></div>';
+      card.hidden = false;
+      var ok = document.getElementById("lvOk");
+      if (ok) ok.addEventListener("click", function () { card.hidden = true; });
+    }
+    function hook() { if (window.EQEngine) window.EQEngine.onUpdate(paint); else setTimeout(hook, 400); }
+    hook();
+  })();
 })();
