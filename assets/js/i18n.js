@@ -94,7 +94,7 @@
       "a11y.sizeHint": "Make text larger or smaller", "a11y.motion": "Reduce motion", "a11y.motionHint": "Pause animations",
       "a11y.hc": "High contrast", "a11y.hcHint": "Stronger colours", "a11y.dys": "Readable font",
       "a11y.dysHint": "Dyslexia-friendly typeface", "a11y.reset": "Reset all", "a11y.open": "Accessibility options",
-      "ui.theme.t": "Day / night", "ui.theme.aria": "Toggle day or night theme", "ui.lang.aria": "Switch language",
+      "ui.theme.t": "Day / night", "ui.theme.menu": "🌓 Day / night theme", "ui.theme.aria": "Toggle day or night theme", "ui.lang.aria": "Switch language",
       "ui.menu.aria": "Menu", "ui.nav.aria": "Primary", "ui.ver.t": "EQ Sentry version",
       "ui.prev": "Scroll left", "ui.next": "Scroll right", "ui.close": "Close",
       "ui.dec": "Decrease text size", "ui.inc": "Increase text size", "ui.remove": "Remove",
@@ -172,7 +172,7 @@
       "a11y.sizeHint": "अक्षर ठूलो वा सानो बनाउनुहोस्", "a11y.motion": "चाल घटाउनुहोस्", "a11y.motionHint": "एनिमेसन रोक्नुहोस्",
       "a11y.hc": "उच्च कन्ट्रास्ट", "a11y.hcHint": "गाढा रङ", "a11y.dys": "सजिलो फन्ट",
       "a11y.dysHint": "डिस्लेक्सिया-मैत्री अक्षर", "a11y.reset": "सबै रिसेट", "a11y.open": "पहुँचयोग्यता विकल्प",
-      "ui.theme.t": "दिन / रात", "ui.theme.aria": "दिन वा रात थिम बदल्नुहोस्", "ui.lang.aria": "भाषा बदल्नुहोस्",
+      "ui.theme.t": "दिन / रात", "ui.theme.menu": "🌓 दिन / रात थिम", "ui.theme.aria": "दिन वा रात थिम बदल्नुहोस्", "ui.lang.aria": "भाषा बदल्नुहोस्",
       "ui.menu.aria": "मेनु", "ui.nav.aria": "मुख्य नेभिगेसन", "ui.ver.t": "EQ Sentry संस्करण",
       "ui.prev": "बायाँ सार्नुहोस्", "ui.next": "दायाँ सार्नुहोस्", "ui.close": "बन्द गर्नुहोस्",
       "ui.dec": "अक्षर सानो बनाउनुहोस्", "ui.inc": "अक्षर ठूलो बनाउनुहोस्", "ui.remove": "हटाउनुहोस्",
@@ -389,7 +389,7 @@
   }
 
   /* ---------- Header / Footer markup ---------- */
-  var VERSION = "2.2.4";   // shown in the footer — keep in sync with package.json (smoke test enforces)
+  var VERSION = "2.2.5";   // shown in the footer — keep in sync with package.json (smoke test enforces)
   var LOGO = '<svg class="logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
     '<circle cx="20" cy="20" r="18" stroke="#FF4D2E" stroke-width="2.5"/>' +
     '<path d="M5 21h6l3-9 5 16 4-12 2.5 5H35" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -461,6 +461,7 @@
           dropdown() +
           link("alerts.html", "nav.alerts", "alerts") +
           link("about.html", "nav.about", "about") +
+          '<button type="button" class="menu-theme" id="themeToggleMenu" data-i18n="ui.theme.menu"></button>' +
         '</nav>' +
         '<div class="nav-tools">' +
           '<button class="lang-toggle" id="themeToggle" type="button" aria-label="Toggle day or night theme" data-i18n-aria="ui.theme.aria" title="Day / night" data-i18n-title="ui.theme.t">' +
@@ -479,8 +480,7 @@
             '<svg class="ic-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 5l14 14M19 5L5 19"/></svg>' +
           '</button>' +
         '</div>' +
-      '</div>' +
-      '<div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>';
+      '</div>';
   }
 
   function footerHTML() {
@@ -617,6 +617,11 @@
     var nt = document.getElementById("navToggle");
     var navLinks = document.getElementById("navLinks");
     var navBd = document.getElementById("navBackdrop");
+    if (!navBd) {
+      navBd = document.createElement("div");
+      navBd.className = "nav-backdrop"; navBd.id = "navBackdrop"; navBd.setAttribute("aria-hidden", "true");
+      document.body.appendChild(navBd);
+    }
     function closeDrops() {
       document.querySelectorAll(".nav-item.open").forEach(function (i) {
         i.classList.remove("open");
@@ -683,12 +688,15 @@
     // Text size now lives in the accessibility panel (assets/js/a11y.js).
 
     // Day / night theme toggle
-    var tt = document.getElementById("themeToggle");
-    if (tt) tt.addEventListener("click", function () {
+    function flipTheme() {
       var light = document.documentElement.classList.toggle("light");
       try { localStorage.setItem("eqsentry_theme", light ? "light" : "dark"); } catch (e) {}
       document.dispatchEvent(new CustomEvent("eq:themechange", { detail: { light: light } }));
-    });
+    }
+    var tt = document.getElementById("themeToggle");
+    if (tt) tt.addEventListener("click", flipTheme);
+    var ttm = document.getElementById("themeToggleMenu");
+    if (ttm) ttm.addEventListener("click", flipTheme);
 
     // Back-to-top button (appears on scroll)
     if (!document.querySelector(".to-top")) {

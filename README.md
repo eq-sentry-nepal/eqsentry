@@ -1,80 +1,55 @@
-# EQ Sentry — eqsentry.com
+# EQ Sentry — Nepal earthquake monitoring & preparedness
 
-A bilingual (नेपाली / English) earthquake monitoring and preparedness website for Nepal.
-Dark, instrument-style design with live data, an interactive map, preparedness guidance,
-an alert sign-up and local emergency resources.
+A bilingual (नेपाली / English) earthquake monitoring and preparedness site for Nepal.
+Live data, an interactive map with P/S-wave simulation, historical analytics back to 1911,
+step-by-step preparedness guides, printable bilingual kits, and local emergency resources.
 
-## Pages
-| File | Purpose |
-|------|---------|
-| `index.html` | Home — live readout, features, historic record, Drop-Cover-Hold |
-| `map.html` | Interactive map: **Live** USGS feed · **Catalogue** (811 events, 1911–2026) · **Notable** historic quakes · heatmap + plate-boundary layers |
-| `insights.html` | Interactive data: charts (per year / magnitude / depth), a magnitude explorer slider, and an animated quake "time-machine" |
-| `preparedness.html` | Before / during / after, emergency-kit checklist, family plan, **readiness self-assessment quiz** |
-| `resources.html` | Nepal emergency numbers, official agencies, hospitals |
-| `alerts.html` | Alert registration form |
-| `about.html` | Mission, data sources, disclaimer, contact |
+**Live:** https://eq-sentry-nepal.github.io/eqsentry/ — deployed automatically from `main`
+by `.github/workflows/pages.yml`.
 
-## Structure
-```
-index.html, map.html, preparedness.html, resources.html, alerts.html, about.html
-assets/css/style.css        — "Dark Seismograph" design system
-assets/js/i18n.js           — bilingual engine, header/footer, live banner, motion
-assets/js/map.js            — Leaflet map + 3 data sources
-data/
-  nepal_earthquakes.geojson — 811 M4.5+ events, Nepal region, 1911–2026 (USGS)
-  nepal_earthquakes.csv     — same, spreadsheet-friendly
-  notable_earthquakes.geojson — 8 curated historic majors (1934–2025)
-  summary.json              — small stats file used by the home page
-  README.md                 — data documentation
-```
+## Highlights
+- **Live map** (`map.html`) — USGS + EMSC feeds, 1911–present catalogue, notable historic
+  quakes, heatmap/plate layers, wave-arrival HUD, deep links (`#eq=<id>`), new-quake sound alert.
+- **Insights** (`insights.html`) — charts, records, magnitude explorer, time machine, energy compare.
+- **Preparedness** (`preparedness.html`, `building.html`, `aftermath.html`, drill mode,
+  hazard hunt, readiness quiz) — illustrated, fully bilingual.
+- **Family plan** (`plan.html`) — complete household plan saved privately on-device,
+  wallet card + printable PDF kits (`assets/downloads/`, regenerable via `scripts/generate-kits.py`).
+- **Emergency resources** (`resources.html`) — every national number, searchable
+  hospital/embassy directory.
+- **Status** (`status.html`) — real uptime checks with hour/day/month bars and admin history.
+- PWA: offline fallback page, cache-first shell (`service-worker.js`).
 
-## Running it
-Because the pages fetch data (USGS + local `data/` files), open the site over **HTTP**, not `file://`.
+## Language & localisation
+The globe toggle switches नेपाली / English (remembered; `?lang=ne` URLs shareable).
+Everything localises — UI, tooltips, dates (with graceful fallback when the browser lacks
+the `ne` ICU locale), Devanagari numerals, feed place names, Bikram Sambat years.
 
+## Running locally
 ```bash
-# from this folder
-python3 -m http.server 8080
-# then visit http://localhost:8080
+python3 -m http.server 8080   # from this folder → http://localhost:8080
 ```
+Pages fetch data files, so use HTTP, not `file://`.
+
+## Configuration
+`assets/js/config.js` — optional backend URL (`EQ_API`) and privacy-friendly analytics
+(Plausible or GoatCounter; off by default). The optional Node backend in `server/`
+adds push/SMS alerts, felt reports and server-side status history (see `server/.env.example`).
 
 ## Testing & automation
-- `npm test` runs `scripts/smoke-test.mjs` — zero-dependency checks: JS syntax, per-page
-  i18n JSON validity + en/ne parity, broken internal links, sitemap coverage,
-  service-worker shell integrity, and data-file consistency. Runs on every push
-  via GitHub Actions (`.github/workflows/ci.yml`).
-- `npm run update-data` refreshes the USGS catalogue and re-runs the smoke test.
-  A weekly GitHub Action (`.github/workflows/update-catalog.yml`) does this automatically
-  and commits the result.
-- Visible catalogue figures (count, year range) are data-driven: i18n strings embed
-  `{count|811}`-style tokens that resolve from `data/summary.json` at runtime.
-- Client-side errors are captured by `assets/js/monitor.js` (inspect with
-  `EQ_MONITOR.dump()` in the console; reported to the backend when `EQ_API` is set).
-- Security: the CSP (`_headers`) forbids inline scripts — page translations live in
-  non-executable JSON blocks and all logic is in external files under `assets/js/`.
-
-## Deploying to eqsentry.com
-It's a fully static site — upload the whole folder to any static host
-(Netlify, Vercel, GitHub Pages, Cloudflare Pages, or any web server) and point
-`eqsentry.com` at it. No build step or backend required.
-
-## Language
-Click the globe toggle (top right) to switch नेपाली / English. The choice is
-remembered in the browser. Default is English.
-
-## Alerts (note)
-The sign-up form currently stores entries in the visitor's browser as a demonstration.
-To send real SMS/email alerts, connect the form to a delivery service
-(e.g. a form/email service or a small backend) — wire it in `alerts.html`.
+- `npm test` — zero-dependency smoke test: JS syntax, i18n JSON validity + en/ne parity,
+  broken links, sitemap coverage, SW shell integrity, version sync, data consistency.
+  Runs on every push (`.github/workflows/ci.yml`).
+- `npm run update-data` — refreshes the USGS catalogue; a weekly Action
+  (`.github/workflows/update-catalog.yml`) does this and commits the result.
 
 ## Data & credits
-- Live and historical earthquake data: **USGS Earthquake Hazards Program**.
-- Official Nepal seismicity: **National Earthquake Monitoring & Research Center** (seismonepal.gov.np).
-- Map tiles: OpenStreetMap / CARTO. Map library: Leaflet.
+Live/historical data: **USGS Earthquake Hazards Program**; **EMSC**. Official Nepal
+seismicity: **NEMRC** (seismonepal.gov.np). Tiles: OpenStreetMap / CARTO. Maps: Leaflet.
 
 ## Disclaimer
 EQ Sentry is an **informational** service, not an official warning authority, and it
-**does not predict earthquakes**. The map shows events that have already been recorded.
-In an emergency, follow Nepal's official agencies and call the emergency numbers.
+**does not predict earthquakes**. In an emergency follow Nepal's official agencies —
+Police **100**, Ambulance **102**, NEOC **1149**.
 
 A public-safety initiative by Prashant Acharya — [prashantacharya.com](https://prashantacharya.com).

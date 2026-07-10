@@ -280,9 +280,10 @@
     if (state.source === "live" || state.source === "emsc") list.forEach(function (e) { if (e.id) seenLive[e.id] = 1; });
 
     // Deep link from the homepage feed: focus one quake and open its popup.
-    if (pendingFocus && markersById[pendingFocus]) {
+    if (pendingFocus) {
       var fm = markersById[pendingFocus];
-      pendingFocus = null;
+      pendingFocus = null;                 // one attempt only — never hijack a later re-render
+      if (fm) {
       var fll = fm.getLatLng();
       map.setView(fll, Math.max(map.getZoom() || 0, 9), { animate: true });
       setTimeout(function () {
@@ -294,6 +295,7 @@
           try { clusterLayer.zoomToShowLayer(fm, show); } catch (e) { show(); }
         } else { show(); }
       }, 320);
+      }
     }
     stateToHash();
   }
