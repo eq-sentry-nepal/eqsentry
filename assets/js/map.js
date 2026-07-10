@@ -249,6 +249,7 @@
       m.on("click", function () { playWave(e.lat, e.lon, e.mag); });
       m.addTo(target);
       var key = e.id || ("n" + i);
+      m._eq = e;
       markersById[key] = m;
       if (e.mag != null && e.mag > maxMag) maxMag = e.mag;
 
@@ -285,9 +286,13 @@
       var fll = fm.getLatLng();
       map.setView(fll, Math.max(map.getZoom() || 0, 9), { animate: true });
       setTimeout(function () {
+        var show = function () {
+          fm.openPopup();
+          if (fm._eq) playWave(fm._eq.lat, fm._eq.lon, fm._eq.mag);   // same HUD as a direct marker tap
+        };
         if (clusterLayer && state.source === "catalog" && clusterLayer.zoomToShowLayer) {
-          try { clusterLayer.zoomToShowLayer(fm, function () { fm.openPopup(); }); } catch (e) { fm.openPopup(); }
-        } else { fm.openPopup(); }
+          try { clusterLayer.zoomToShowLayer(fm, show); } catch (e) { show(); }
+        } else { show(); }
       }, 320);
     }
     stateToHash();
