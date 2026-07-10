@@ -230,6 +230,12 @@
 
   /* ---------- Language state ---------- */
   var LANG_KEY = "eqsentry_lang";
+  // Shareable language URLs: ?lang=ne / ?lang=en override and persist.
+  try {
+    var qlm = /[?&]lang=(ne|en)\b/.exec(location.search);
+    if (qlm) localStorage.setItem(LANG_KEY, qlm[1]);
+  } catch (e) {}
+
   function getLang() {
     try {
       var s = localStorage.getItem(LANG_KEY);
@@ -367,6 +373,10 @@
       var v = DICT[lang][el.getAttribute("data-i18n-title")];
       if (v != null) el.setAttribute("title", subTokens(v, lang));
     });
+    var mtt = DICT[lang]["meta.title"];
+    if (mtt) { try { document.title = subTokens(mtt, lang); } catch (e) {} }
+    var mdd = DICT[lang]["meta.desc"];
+    if (mdd) { var mde = document.querySelector('meta[name="description"]'); if (mde) mde.setAttribute("content", subTokens(mdd, lang)); }
     // static digit spans: localize numerals per language (e.g. 100 -> \u0967\u0966\u0966)
     document.querySelectorAll("[data-dg]").forEach(function (el) {
       el.textContent = lang === "ne" ? neDigits(el.getAttribute("data-dg")) : el.getAttribute("data-dg");
