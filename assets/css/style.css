@@ -222,8 +222,11 @@ html[lang="ne"] .emergency-strip .es-label { text-transform:none; letter-spacing
 .brand { display:flex; align-items:center; gap:.7rem; color:var(--ink); font-weight:800; font-size:1.12rem; letter-spacing:-.02em; }
 .brand:hover { color:var(--ink); }
 .brand .logo { width:32px; height:32px; flex:0 0 32px; filter: drop-shadow(0 0 8px rgba(255,77,46,.5)); }
-.brand small { display:block; font-family:var(--mono); font-weight:500; font-size:.6rem; color:var(--ink-faint); letter-spacing:.12em; text-transform:uppercase; }
-html[lang="ne"] .brand small { letter-spacing:.02em; text-transform:none; font-family:var(--font); }
+.brand-text { position:relative; display:inline-block; }
+.brand-full, .brand-short { display:inline-block; transition:opacity .25s ease, transform .25s ease; }
+.brand-short { position:absolute; left:0; top:0; opacity:0; transform:translateY(9px); color:var(--accent); letter-spacing:.04em; }
+.site-header.scrolled .brand-full { opacity:0; transform:translateY(-9px); }
+.site-header.scrolled .brand-short { opacity:1; transform:translateY(0); }
 
 .nav-links { display:flex; align-items:center; gap:.1rem; margin-left:auto; }
 .nav-links a { color: var(--ink-soft); font-weight:500; font-size:.93rem; padding:.5rem .85rem; border-radius:8px; transition: color .15s, background .15s; }

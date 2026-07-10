@@ -55,7 +55,6 @@
   /* ---------- Core bilingual dictionary (nav / footer / shared) ---------- */
   var CORE = {
     en: {
-      "brand.tag": "Earthquake Monitoring & Safety",
       "nav.home": "Home",
       "nav.map": "Live Map",
       "nav.insights": "Insights",
@@ -134,7 +133,6 @@
       "time.days": "days"
     },
     ne: {
-      "brand.tag": "भूकम्प निगरानी र सुरक्षा",
       "nav.home": "गृहपृष्ठ",
       "nav.map": "प्रत्यक्ष नक्सा",
       "nav.insights": "तथ्याङ्क",
@@ -391,7 +389,7 @@
   }
 
   /* ---------- Header / Footer markup ---------- */
-  var VERSION = "2.2.1";   // shown in the footer — keep in sync with package.json (smoke test enforces)
+  var VERSION = "2.2.2";   // shown in the footer — keep in sync with package.json (smoke test enforces)
   var LOGO = '<svg class="logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
     '<circle cx="20" cy="20" r="18" stroke="#FF4D2E" stroke-width="2.5"/>' +
     '<path d="M5 21h6l3-9 5 16 4-12 2.5 5H35" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -454,7 +452,7 @@
       '</div>' +
       '<div class="container nav">' +
         '<a class="brand" href="index.html">' + LOGO +
-          '<span>EQ&nbsp;Sentry<small data-i18n="brand.tag"></small></span>' +
+          '<span class="brand-text"><span class="brand-full">EQ&nbsp;Sentry</span><span class="brand-short" aria-hidden="true">ESN</span></span>' +
         '</a>' +
         '<nav class="nav-links" id="navLinks" aria-label="Primary" data-i18n-aria="ui.nav.aria">' +
           link("index.html", "nav.home", "home") +
@@ -645,6 +643,21 @@
     window.addEventListener("resize", function () {
       if (window.innerWidth > 940 && navLinks && navLinks.classList.contains("open")) navSet(false);
     });
+
+    // Compact brand on scroll: EQ Sentry -> ESN
+    var hdrEl = document.getElementById("site-header");
+    if (hdrEl) {
+      var brandTick = false;
+      var brandScr = function () {
+        if (brandTick) return; brandTick = true;
+        requestAnimationFrame(function () {
+          brandTick = false;
+          hdrEl.classList.toggle("scrolled", (window.scrollY || document.documentElement.scrollTop || 0) > 28);
+        });
+      };
+      window.addEventListener("scroll", brandScr, { passive: true });
+      brandScr();
+    }
 
     // Nav dropdown (Safety) — click/touch/keyboard toggle; hover handled by CSS on desktop
     document.querySelectorAll(".dropdown-toggle").forEach(function (b) {
