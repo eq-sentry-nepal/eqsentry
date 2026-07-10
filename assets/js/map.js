@@ -14,6 +14,7 @@
 
   var state = { source: "catalog", period: "week", mag: "2.5", region: "nepal", heat: false, plates: true, dateFrom: null, dateTo: null, fmag: 0 };
   var map, markerLayer, nepalRect, current = [];
+  var pendingFocus = null;              // quake id from a #eq= deep link (home feed)
   var markersById = {};
   var cache = {}; // local files
   var heatLayer = null, platesLayer = null;
@@ -125,6 +126,7 @@
     if (!isNaN(to)) state.dateTo = to;
     if (q.heat === "1") state.heat = true;
     if (q.plates === "0") state.plates = false;
+    if (q.eq) pendingFocus = q.eq;
   }
   function syncSeg(id, value) {
     var seg = document.getElementById(id); if (!seg) return;
@@ -275,6 +277,19 @@
     buildHeat(list);
     if (platesLayer && state.plates) platesLayer.bringToFront();
     if (state.source === "live" || state.source === "emsc") list.forEach(function (e) { if (e.id) seenLive[e.id] = 1; });
+
+    // Deep link from the homepage feed: focus one quake and open its popup.
+    if (pendingFocus && markersById[pendingFocus]) {
+      var fm = markersById[pendingFocus];
+      pendingFocus = null;
+      var fll = fm.getLatLng();
+      map.setView(fll, Math.max(map.getZoom() || 0, 9), { animate: true });
+      setTimeout(function () {
+        if (clusterLayer && state.source === "catalog" && clusterLayer.zoomToShowLayer) {
+          try { clusterLayer.zoomToShowLayer(fm, function () { fm.openPopup(); }); } catch (e) { fm.openPopup(); }
+        } else { fm.openPopup(); }
+      }, 320);
+    }
     stateToHash();
   }
 
