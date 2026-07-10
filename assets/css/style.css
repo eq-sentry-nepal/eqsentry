@@ -239,8 +239,15 @@ html[lang="ne"] .brand small { letter-spacing:.02em; text-transform:none; font-f
   font-family:var(--mono); font-weight:600; font-size:.8rem; cursor:pointer; transition: border-color .15s, background .15s;
 }
 .lang-toggle:hover { border-color: var(--accent); }
-.nav-toggle { display:none; background:none; border:0; color:var(--ink); cursor:pointer; padding:.4rem; }
-.nav-toggle svg { width:26px; height:26px; }
+.nav-toggle { display:none; background:none; border:0; color:var(--ink); cursor:pointer; padding:.55rem; margin:-.15rem; border-radius:10px; }
+.nav-toggle:active { background:rgba(255,255,255,.08); }
+.nav-toggle svg { width:26px; height:26px; display:block; }
+.nav-toggle .ic-x { display:none; }
+.nav-toggle.open .ic-x { display:block; }
+.nav-toggle.open .ic-menu { display:none; }
+.nav-backdrop { position:fixed; inset:0; background:rgba(4,6,10,.55); backdrop-filter:blur(2px); opacity:0; pointer-events:none; transition:opacity .22s ease; z-index:998; }
+.nav-backdrop.open { opacity:1; pointer-events:auto; }
+html.nav-lock, html.nav-lock body { overflow:hidden; }
 
 /* Nav dropdown (desktop) */
 .nav-item { position:relative; display:inline-flex; align-items:center; }
@@ -261,23 +268,37 @@ html[lang="ne"] .brand small { letter-spacing:.02em; text-transform:none; font-f
 .dropdown-menu .dd-item.active .dd-ic { background:var(--accent); color:#fff; border-color:var(--accent); }
 .dropdown-menu .dd-item.active .dd-t { color:var(--accent); }
 .nav-links .dd-item.active::after { display:none; }
-.nav-item:hover > .dropdown-menu, .nav-item:focus-within > .dropdown-menu, .nav-item.open > .dropdown-menu { display:grid; }
+.nav-item.open > .dropdown-menu { display:grid; }
+@media (min-width:941px) and (hover:hover) { .nav-item:hover > .dropdown-menu { display:grid; } }
+@media (min-width:941px) { .nav-item:focus-within > .dropdown-menu { display:grid; } }
 
 @media (max-width: 940px) {
   .nav-toggle { display:inline-flex; }
   .nav-links {
     position:absolute; top:100%; left:0; right:0; flex-direction:column; align-items:stretch;
-    background: var(--bg-2); padding:.5rem 18px 1.1rem; gap:.1rem;
-    border-bottom:1px solid var(--line); display:none; max-height:80vh; overflow-y:auto;
+    background: var(--bg-2); padding:.4rem 14px calc(1rem + env(safe-area-inset-bottom));
+    gap:0; border-bottom:1px solid var(--line); z-index:999;
+    display:flex; visibility:hidden; opacity:0; transform:translateY(-10px); pointer-events:none;
+    transition:opacity .22s ease, transform .22s ease, visibility 0s linear .22s;
+    max-height:min(82vh, calc(100dvh - 64px)); overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch;
+    box-shadow:0 24px 40px -18px rgba(0,0,0,.5);
   }
-  .nav-links.open { display:flex; }
-  .nav-links a { padding:.8rem .6rem; }
+  .nav-links.open { visibility:visible; opacity:1; transform:translateY(0); pointer-events:auto; transition:opacity .22s ease, transform .22s ease; }
+  .nav-links a { padding:.95rem .65rem; font-size:.98rem; border-radius:10px; }
+  .nav-links > a, .nav-links .nav-item { border-bottom:1px solid var(--line); }
+  .nav-links > a:last-child, .nav-links .nav-item:last-child { border-bottom:0; }
+  .nav-links a.active { background:rgba(255,77,46,.08); }
   .nav-links a.active::after { display:none; }
-  .nav-links .nav-item { flex-direction:column; align-items:stretch; width:100%; }
-  .nav-links .dropdown-toggle { justify-content:space-between; width:100%; padding:.8rem .6rem; }
-  .nav-links .dropdown-menu { position:static; display:grid; grid-template-columns:1fr; width:auto; max-width:none; margin:0 0 .3rem; padding:0 0 0 8px; border:0; box-shadow:none; background:transparent; gap:1px; }
-  .nav-links .dropdown-menu .dd-item { padding:.5rem .5rem; }
+  .nav-links .nav-item { flex-direction:column; align-items:stretch; width:100%; position:static; }
+  .nav-links .dropdown-toggle { justify-content:space-between; width:100%; padding:.95rem .65rem; font-size:.98rem; border-radius:10px; }
+  .nav-links .dropdown-toggle svg { width:16px; height:16px; }
+  .nav-links .nav-item.open .dropdown-toggle { color:var(--ink); background:rgba(255,255,255,.04); }
+  .nav-links .dropdown-menu { position:static; grid-template-columns:1fr; width:auto; max-width:none; margin:.15rem 0 .6rem; padding:0 0 0 6px; border:0; box-shadow:none; background:transparent; gap:2px; }
+  .nav-links .nav-item.open .dropdown-menu { animation:ddIn .2s ease; }
+  .nav-links .dropdown-menu .dd-item { padding:.62rem .55rem; }
+  .nav-links .dropdown-menu .dd-ic { width:34px; height:34px; }
   .nav-links .dropdown-menu .dd-d { display:none; }
+  @keyframes ddIn { from { opacity:0; transform:translateY(-5px); } to { opacity:1; transform:none; } }
 }
 
 /* ---------- Alert ticker ---------- */

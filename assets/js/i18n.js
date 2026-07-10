@@ -391,7 +391,7 @@
   }
 
   /* ---------- Header / Footer markup ---------- */
-  var VERSION = "2.2.0";   // shown in the footer — keep in sync with package.json (smoke test enforces)
+  var VERSION = "2.2.1";   // shown in the footer — keep in sync with package.json (smoke test enforces)
   var LOGO = '<svg class="logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
     '<circle cx="20" cy="20" r="18" stroke="#FF4D2E" stroke-width="2.5"/>' +
     '<path d="M5 21h6l3-9 5 16 4-12 2.5 5H35" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -476,11 +476,13 @@
             '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"/></svg>' +
             '<span></span>' +
           '</button>' +
-          '<button class="nav-toggle" id="navToggle" type="button" aria-label="Menu" data-i18n-aria="ui.menu.aria" aria-expanded="false">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>' +
+          '<button class="nav-toggle" id="navToggle" type="button" aria-label="Menu" data-i18n-aria="ui.menu.aria" aria-expanded="false" aria-controls="navLinks">' +
+            '<svg class="ic-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>' +
+            '<svg class="ic-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 5l14 14M19 5L5 19"/></svg>' +
           '</button>' +
         '</div>' +
-      '</div>';
+      '</div>' +
+      '<div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>';
   }
 
   function footerHTML() {
@@ -615,23 +617,46 @@
     });
 
     var nt = document.getElementById("navToggle");
-    if (nt) nt.addEventListener("click", function () {
-      var links = document.getElementById("navLinks");
-      var open = links.classList.toggle("open");
+    var navLinks = document.getElementById("navLinks");
+    var navBd = document.getElementById("navBackdrop");
+    function closeDrops() {
+      document.querySelectorAll(".nav-item.open").forEach(function (i) {
+        i.classList.remove("open");
+        var t = i.querySelector(".dropdown-toggle"); if (t) t.setAttribute("aria-expanded", "false");
+      });
+    }
+    function navSet(open) {
+      if (!navLinks || !nt) return;
+      navLinks.classList.toggle("open", open);
+      nt.classList.toggle("open", open);
+      if (navBd) navBd.classList.toggle("open", open);
       nt.setAttribute("aria-expanded", open ? "true" : "false");
+      document.documentElement.classList.toggle("nav-lock", open);
+      if (!open) closeDrops();
+    }
+    if (nt) nt.addEventListener("click", function () { navSet(!navLinks.classList.contains("open")); });
+    if (navBd) navBd.addEventListener("click", function () { navSet(false); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { navSet(false); closeDrops(); }
+    });
+    if (navLinks) navLinks.addEventListener("click", function (e) {
+      if (e.target.closest("a[href]")) navSet(false);   // tap a link -> menu closes
+    });
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 940 && navLinks && navLinks.classList.contains("open")) navSet(false);
     });
 
-    // Nav dropdown (Safety) — click/touch/keyboard toggle; hover handled by CSS
+    // Nav dropdown (Safety) — click/touch/keyboard toggle; hover handled by CSS on desktop
     document.querySelectorAll(".dropdown-toggle").forEach(function (b) {
       b.addEventListener("click", function () {
-        var item = b.parentNode, open = item.classList.toggle("open");
-        b.setAttribute("aria-expanded", open ? "true" : "false");
+        var item = b.parentNode, willOpen = !item.classList.contains("open");
+        closeDrops();
+        item.classList.toggle("open", willOpen);
+        b.setAttribute("aria-expanded", willOpen ? "true" : "false");
       });
     });
     document.addEventListener("click", function (e) {
-      if (!e.target.closest(".has-dropdown")) {
-        document.querySelectorAll(".nav-item.open").forEach(function (i) { i.classList.remove("open"); });
-      }
+      if (!e.target.closest(".has-dropdown")) closeDrops();
     });
 
     // Accessibility: skip link, main landmark, text-size control
