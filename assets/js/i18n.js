@@ -389,7 +389,7 @@
   }
 
   /* ---------- Header / Footer markup ---------- */
-  var VERSION = "2.2.5";   // shown in the footer — keep in sync with package.json (smoke test enforces)
+  var VERSION = "2.2.6";   // shown in the footer — keep in sync with package.json (smoke test enforces)
   var LOGO = '<svg class="logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
     '<circle cx="20" cy="20" r="18" stroke="#FF4D2E" stroke-width="2.5"/>' +
     '<path d="M5 21h6l3-9 5 16 4-12 2.5 5H35" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -628,15 +628,38 @@
         var t = i.querySelector(".dropdown-toggle"); if (t) t.setAttribute("aria-expanded", "false");
       });
     }
+    var navScrollY = 0;
     function navSet(open) {
       if (!navLinks || !nt) return;
+      var was = navLinks.classList.contains("open");
       navLinks.classList.toggle("open", open);
       nt.classList.toggle("open", open);
       if (navBd) navBd.classList.toggle("open", open);
       nt.setAttribute("aria-expanded", open ? "true" : "false");
       document.documentElement.classList.toggle("nav-lock", open);
+      // iOS-proof scroll lock: pin the body at its current offset while open.
+      if (open && !was) {
+        navScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+        var bs = document.body.style;
+        bs.position = "fixed"; bs.top = (-navScrollY) + "px"; bs.left = "0"; bs.right = "0"; bs.width = "100%";
+      } else if (!open && was) {
+        var bs2 = document.body.style;
+        bs2.position = ""; bs2.top = ""; bs2.left = ""; bs2.right = ""; bs2.width = "";
+        window.scrollTo(0, navScrollY);
+        nt.focus();
+      }
       if (!open) closeDrops();
     }
+    // Keyboard focus stays inside the open menu (toggle button + panel items).
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Tab" || !navLinks || !navLinks.classList.contains("open")) return;
+      var items = [nt].concat([].slice.call(navLinks.querySelectorAll('a[href], button:not([disabled])')));
+      items = items.filter(function (el) { return el && el.offsetParent !== null || el === nt; });
+      if (!items.length) return;
+      var first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
     if (nt) nt.addEventListener("click", function () { navSet(!navLinks.classList.contains("open")); });
     if (navBd) navBd.addEventListener("click", function () { navSet(false); });
     document.addEventListener("keydown", function (e) {

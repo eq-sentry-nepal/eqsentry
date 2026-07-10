@@ -283,6 +283,7 @@
     if (pendingFocus) {
       var fm = markersById[pendingFocus];
       pendingFocus = null;                 // one attempt only — never hijack a later re-render
+      if (!fm) { try { toast(T("map.eqgone")); } catch (e) {} }
       if (fm) {
       var fll = fm.getLatLng();
       map.setView(fll, Math.max(map.getZoom() || 0, 9), { animate: true });

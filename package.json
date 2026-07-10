@@ -1,6 +1,6 @@
 {
   "name": "eqsentry-site",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "private": true,
   "type": "module",
   "description": "EQ Sentry static site — production build (minifies CSS + JS into dist/).",
