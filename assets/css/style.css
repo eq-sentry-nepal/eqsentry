@@ -252,6 +252,10 @@ html[lang="ne"] .emergency-strip .es-label { text-transform:none; letter-spacing
 .nav-backdrop { position:fixed; inset:0; background:rgba(4,6,10,.55); backdrop-filter:blur(2px); opacity:0; pointer-events:none; transition:opacity .22s ease; z-index:998; }
 .nav-backdrop.open { opacity:1; pointer-events:auto; }
 html.nav-lock, html.nav-lock body { overflow:hidden; }
+/* While the menu is open the body is pinned (position:fixed), which disables the
+   header's position:sticky — anchor the header to the viewport instead so the bar
+   and the menu panel inside it stay exactly where they are, at any scroll depth. */
+html.nav-lock .site-header { position:fixed; top:0; left:0; right:0; }
 
 /* Nav dropdown (desktop) */
 .nav-item { position:relative; display:inline-flex; align-items:center; }
