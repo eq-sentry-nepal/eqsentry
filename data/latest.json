@@ -1,306 +1,306 @@
 {
- "generated": "2026-07-02T21:54:03Z",
+ "generated": "2026-07-13T04:08:16.537Z",
  "source": "USGS Earthquake Hazards Program",
  "events": [
   {
-   "id": "iscgem16958167",
-   "mag": 6.5,
-   "place": "88 km ENE of Josh?math, India",
-   "time": -1837125360000,
-   "lat": 30.993,
-   "lon": 80.336,
-   "depth": 20,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem16958167"
-  },
-  {
-   "id": "iscgem914042",
-   "mag": 6.5,
-   "place": "73 km E of Burang, China",
-   "time": -1793192159200,
-   "lat": 30.201,
-   "lon": 81.929,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem914042"
-  },
-  {
-   "id": "iscgem913843",
-   "mag": 7.0,
-   "place": "21 km SE of D\u0101rchul\u0101, Nepal",
-   "time": -1683393618640,
-   "lat": 29.67,
-   "lon": 80.684,
-   "depth": 20,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem913843"
-  },
-  {
-   "id": "iscgem913854",
-   "mag": 5.8,
-   "place": "17 km NNE of Dadeldhur\u0101, Nepal",
-   "time": -1679285558380,
-   "lat": 29.45,
-   "lon": 80.623,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem913854"
-  },
-  {
-   "id": "iscgem913876",
-   "mag": 5.9,
-   "place": "26 km NNE of Dadeldhur\u0101, Nepal",
-   "time": -1673193997580,
-   "lat": 29.527,
-   "lon": 80.671,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem913876"
-  },
-  {
-   "id": "iscgemsup913355",
-   "mag": 6.2,
-   "place": "26 km E of Birendranagar, Nepal",
-   "time": -1612271892410,
-   "lat": 28.558,
-   "lon": 81.883,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgemsup913355"
-  },
-  {
-   "id": "iscgem909958",
-   "mag": 5.7,
-   "place": "37 km SE of D?rchul?, Nepal",
-   "time": -1370622971920,
-   "lat": 29.598,
-   "lon": 80.826,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem909958"
-  },
-  {
-   "id": "iscgem909548",
-   "mag": 5.8,
-   "place": "22 km SE of D?rchul?, Nepal",
-   "time": -1332768323190,
-   "lat": 29.662,
-   "lon": 80.686,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem909548"
-  },
-  {
-   "id": "iscgem906827",
-   "mag": 6.0,
-   "place": "155 km NW of Saga, China",
-   "time": -1216206086630,
-   "lat": 30.166,
-   "lon": 83.942,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem906827"
-  },
-  {
-   "id": "iscgem904745",
-   "mag": 8,
-   "place": "1934 Bihar-Nepal Earthquake",
-   "time": -1134832594180,
-   "lat": 27.275,
-   "lon": 86.941,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem904745"
-  },
-  {
-   "id": "iscgem905306",
-   "mag": 5.7,
-   "place": "168 km N of Rikaze, China",
-   "time": -1106018246790,
-   "lat": 30.76,
-   "lon": 88.713,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem905306"
-  },
-  {
-   "id": "iscgem904016",
-   "mag": 6.5,
-   "place": "176 km NNW of Rikaze, China",
-   "time": -1104358188310,
-   "lat": 30.768,
-   "lon": 88.344,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem904016"
-  },
-  {
-   "id": "iscgem904141",
-   "mag": 6.0,
-   "place": "14 km W of Dh?rchula, India",
-   "time": -1099014243490,
-   "lat": 29.822,
-   "lon": 80.371,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem904141"
-  },
-  {
-   "id": "iscgem904159",
-   "mag": 5.5,
-   "place": "2 km NNE of Almora, India",
-   "time": -1098192364260,
-   "lat": 29.621,
-   "lon": 79.672,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem904159"
-  },
-  {
-   "id": "iscgem903473",
-   "mag": 5.9,
-   "place": "35 km NNW of Lobujya, Nepal",
-   "time": -1069441939380,
-   "lat": 28.263,
-   "lon": 86.73,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem903473"
-  },
-  {
-   "id": "iscgem903481",
-   "mag": 5.7,
-   "place": "183 km N of Rikaze, China",
-   "time": -1068802162580,
-   "lat": 30.899,
-   "lon": 88.982,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem903481"
-  },
-  {
-   "id": "iscgem903650",
-   "mag": 6.9,
-   "place": "28 km WNW of B?glung, Nepal",
-   "time": -1060278045200,
-   "lat": 28.378,
-   "lon": 83.32,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem903650"
-  },
-  {
-   "id": "iscgem903830",
-   "mag": 5.7,
-   "place": "30 km ESE of Kod?ri??, Nepal",
-   "time": -1051392546070,
-   "lat": 27.901,
-   "lon": 86.263,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem903830"
-  },
-  {
-   "id": "iscgem903055",
-   "mag": 6.0,
-   "place": "62 km SSE of Burang, China",
-   "time": -1031027220280,
-   "lat": 29.784,
-   "lon": 81.436,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem903055"
-  },
-  {
-   "id": "iscgem903056",
-   "mag": 5.7,
-   "place": "52 km NNE of Dipayal, Nepal",
-   "time": -1031025389870,
-   "lat": 29.652,
-   "lon": 81.237,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem903056"
-  },
-  {
-   "id": "iscgem9342031",
-   "mag": 5.4,
-   "place": "17 km ENE of Dadeldhur?, Nepal",
-   "time": -1010862018880,
-   "lat": 29.378,
-   "lon": 80.742,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem9342031"
-  },
-  {
-   "id": "iscgem902347",
-   "mag": 5.8,
-   "place": "27 km NNW of Kh??db?ri??, Nepal",
-   "time": -1007408809210,
-   "lat": 27.603,
-   "lon": 87.098,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem902347"
-  },
-  {
-   "id": "iscgem898946",
-   "mag": 6.4,
-   "place": "58 km NE of B?geshwar, India",
-   "time": -775569060020,
-   "lat": 30.271,
-   "lon": 80.118,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem898946"
-  },
-  {
-   "id": "iscgem899103",
-   "mag": 5.8,
-   "place": "94 km E of Jumla, Nepal",
-   "time": -766329537220,
-   "lat": 29.168,
-   "lon": 83.145,
-   "depth": 25,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem899103"
-  },
-  {
-   "id": "iscgem894375",
-   "mag": 6.0,
-   "place": "108 km N of Lobujya, Nepal",
-   "time": -586857636280,
-   "lat": 28.925,
-   "lon": 86.685,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem894375"
-  },
-  {
-   "id": "iscgem893776",
-   "mag": 5.8,
-   "place": "130 km ENE of Saga, China",
-   "time": -540135387990,
-   "lat": 29.682,
-   "lon": 86.506,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem893776"
-  },
-  {
-   "id": "iscgem891513",
-   "mag": 5.8,
-   "place": "52 km NE of Dipayal, Nepal",
-   "time": -531875629160,
-   "lat": 29.529,
-   "lon": 81.382,
+   "id": "us7000s8h7",
+   "mag": 4.5,
+   "place": "13 km W of Naya Bāzār, India",
+   "time": 1774754078812,
+   "lat": 27.1414,
+   "lon": 88.1012,
    "depth": 10,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem891513"
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000s8h7"
   },
   {
-   "id": "iscgem891953",
-   "mag": 5.8,
-   "place": "5 km NE of Tuls?pur, Nepal",
-   "time": -515714490820,
-   "lat": 28.168,
-   "lon": 82.333,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem891953"
+   "id": "us6000sfsn",
+   "mag": 4.5,
+   "place": "111 km N of Lobuche, Nepal",
+   "time": 1773301548786,
+   "lat": 28.9576,
+   "lon": 86.8579,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000sfsn"
   },
   {
-   "id": "iscgem891025",
-   "mag": 5.9,
-   "place": "17 km SW of Pokhara, Nepal",
-   "time": -483642970570,
-   "lat": 28.169,
-   "lon": 83.825,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem891025"
+   "id": "us7000s0ec",
+   "mag": 4.8,
+   "place": "12 km SW of Gyalshing, India",
+   "time": 1772085845847,
+   "lat": 27.2253,
+   "lon": 88.1573,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000s0ec"
   },
   {
-   "id": "iscgem889804",
-   "mag": 5.7,
-   "place": "western Xizang",
-   "time": -454785550490,
-   "lat": 30.675,
-   "lon": 86.43,
-   "depth": 15,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/iscgem889804"
+   "id": "us6000s757",
+   "mag": 4.6,
+   "place": "15 km NW of Gyalshing, India",
+   "time": 1770469524212,
+   "lat": 27.381,
+   "lon": 88.1413,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000s757"
+  },
+  {
+   "id": "us6000s6si",
+   "mag": 4.6,
+   "place": "15 km W of Gyalshing, India",
+   "time": 1770320368253,
+   "lat": 27.2775,
+   "lon": 88.1055,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000s6si"
+  },
+  {
+   "id": "us7000rkd1",
+   "mag": 4.5,
+   "place": "38 km ENE of Dārchulā, Nepal",
+   "time": 1765075387029,
+   "lat": 29.9125,
+   "lon": 80.9401,
+   "depth": 35,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000rkd1"
+  },
+  {
+   "id": "us7000refy",
+   "mag": 4.5,
+   "place": "126 km N of Lobuche, Nepal",
+   "time": 1762814654464,
+   "lat": 29.0846,
+   "lon": 86.7036,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000refy"
+  },
+  {
+   "id": "us6000rl8r",
+   "mag": 4.7,
+   "place": "84 km NE of Lobuche, Nepal",
+   "time": 1762203442312,
+   "lat": 28.5267,
+   "lon": 87.3673,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000rl8r"
+  },
+  {
+   "id": "us6000rh67",
+   "mag": 4.6,
+   "place": "62 km NE of Dipayal, Nepal",
+   "time": 1760469810898,
+   "lat": 29.639,
+   "lon": 81.421,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000rh67"
+  },
+  {
+   "id": "us7000qvtp",
+   "mag": 5,
+   "place": "137 km N of Lobuche, Nepal",
+   "time": 1757713330839,
+   "lat": 29.1796,
+   "lon": 87.0157,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000qvtp"
+  },
+  {
+   "id": "us7000qqxx",
+   "mag": 4.6,
+   "place": "103 km NW of Saga, China",
+   "time": 1756173836690,
+   "lat": 29.9566,
+   "lon": 84.4391,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000qqxx"
+  },
+  {
+   "id": "us7000q0xq",
+   "mag": 4.6,
+   "place": "22 km NNW of Dadeldhurā, Nepal",
+   "time": 1747944230879,
+   "lat": 29.472,
+   "lon": 80.4663,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000q0xq"
+  },
+  {
+   "id": "us7000pyq7",
+   "mag": 5.5,
+   "place": "126 km W of Rikaze, China",
+   "time": 1746997882060,
+   "lat": 29.0536,
+   "lon": 87.6068,
+   "depth": 9,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000pyq7"
+  },
+  {
+   "id": "us6000q66t",
+   "mag": 4.8,
+   "place": "14 km ENE of Dailekh, Nepal",
+   "time": 1743776723708,
+   "lat": 28.9124,
+   "lon": 81.8313,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000q66t"
+  },
+  {
+   "id": "us6000q3xs",
+   "mag": 4.9,
+   "place": "35 km SSW of Jumla, Nepal",
+   "time": 1743776570277,
+   "lat": 28.9769,
+   "lon": 82.0489,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000q3xs"
+  },
+  {
+   "id": "us6000pxlv",
+   "mag": 5,
+   "place": "100 km NE of Lobuche, Nepal",
+   "time": 1741423817952,
+   "lat": 28.5719,
+   "lon": 87.5508,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pxlv"
+  },
+  {
+   "id": "us6000pvwf",
+   "mag": 5,
+   "place": "11 km SSW of Kodāri̇̄, Nepal",
+   "time": 1740690370378,
+   "lat": 27.8626,
+   "lon": 85.9232,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pvwf"
+  },
+  {
+   "id": "us7000pf75",
+   "mag": 4.9,
+   "place": "87 km NE of Lobuche, Nepal",
+   "time": 1740132707229,
+   "lat": 28.4908,
+   "lon": 87.4621,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000pf75"
+  },
+  {
+   "id": "us7000pe20",
+   "mag": 4.8,
+   "place": "130 km NNE of Lobuche, Nepal",
+   "time": 1739676538304,
+   "lat": 28.9741,
+   "lon": 87.4658,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000pe20"
+  },
+  {
+   "id": "us6000pmj5",
+   "mag": 4.8,
+   "place": "97 km NE of Lobuche, Nepal",
+   "time": 1737970417563,
+   "lat": 28.6098,
+   "lon": 87.4588,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pmj5"
+  },
+  {
+   "id": "us6000plzm",
+   "mag": 4.6,
+   "place": "Southern Tibetan Plateau",
+   "time": 1737698357789,
+   "lat": 28.8632,
+   "lon": 87.5218,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000plzm"
+  },
+  {
+   "id": "us6000plca",
+   "mag": 4.8,
+   "place": "Southern Tibetan Plateau",
+   "time": 1737418457923,
+   "lat": 28.3525,
+   "lon": 87.488,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000plca"
+  },
+  {
+   "id": "us6000plbf",
+   "mag": 5,
+   "place": "Southern Tibetan Plateau",
+   "time": 1737406991864,
+   "lat": 28.3855,
+   "lon": 87.5651,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000plbf"
+  },
+  {
+   "id": "us6000pl3u",
+   "mag": 4.5,
+   "place": "Southern Tibetan Plateau",
+   "time": 1737309404997,
+   "lat": 28.3527,
+   "lon": 87.5481,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pl3u"
+  },
+  {
+   "id": "us6000pkyi",
+   "mag": 4.6,
+   "place": "Southern Tibetan Plateau",
+   "time": 1737217591499,
+   "lat": 28.6435,
+   "lon": 87.4691,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pkyi"
+  },
+  {
+   "id": "us6000pky9",
+   "mag": 4.8,
+   "place": "Southern Tibetan Plateau",
+   "time": 1737214614487,
+   "lat": 28.4323,
+   "lon": 87.6046,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pky9"
+  },
+  {
+   "id": "us6000pkc3",
+   "mag": 4.9,
+   "place": "Southern Tibetan Plateau",
+   "time": 1736997602464,
+   "lat": 28.7777,
+   "lon": 87.4095,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pkc3"
+  },
+  {
+   "id": "us6000pjq9",
+   "mag": 4.6,
+   "place": "Southern Tibetan Plateau",
+   "time": 1736783082737,
+   "lat": 28.4247,
+   "lon": 87.169,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pjq9"
+  },
+  {
+   "id": "us6000pjpb",
+   "mag": 5.1,
+   "place": "Southern Tibetan Plateau",
+   "time": 1736773102257,
+   "lat": 28.4815,
+   "lon": 87.4058,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pjpb"
+  },
+  {
+   "id": "us6000pjp9",
+   "mag": 5,
+   "place": "Southern Tibetan Plateau",
+   "time": 1736773057995,
+   "lat": 28.405,
+   "lon": 87.3079,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pjp9"
   }
  ]
 }
