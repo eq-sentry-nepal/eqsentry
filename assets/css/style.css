@@ -285,7 +285,7 @@ html.nav-lock .site-header { position:fixed; top:0; left:0; right:0; }
   .nav { height:58px; gap:.6rem; }
   .brand { font-size:1.05rem; gap:.55rem; }
   .brand .logo { width:28px; height:28px; flex:0 0 28px; }
-  .nav-tools { gap:.3rem; margin-left:.3rem; flex:0 0 auto; }
+  .nav-tools { gap:.3rem; margin-left:auto; flex:0 0 auto; }   /* flush right — nav-links are absolute on mobile, so they can't push us */
   #themeToggle { display:none; }                     /* day/night lives inside the menu on mobile */
   .menu-theme { display:block; width:100%; text-align:left; background:none; border:0; cursor:pointer;
     color:var(--ink-soft); font:inherit; font-size:.98rem; font-weight:500; padding:.95rem .65rem;
