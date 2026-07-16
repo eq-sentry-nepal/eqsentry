@@ -389,7 +389,7 @@
   }
 
   /* ---------- Header / Footer markup ---------- */
-  var VERSION = "2.2.11";   // shown in the footer — keep in sync with package.json (smoke test enforces)
+  var VERSION = "2.2.12";   // shown in the footer — keep in sync with package.json (smoke test enforces)
   var LOGO = '<svg class="logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
     '<circle cx="20" cy="20" r="18" stroke="#FF4D2E" stroke-width="2.5"/>' +
     '<path d="M5 21h6l3-9 5 16 4-12 2.5 5H35" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -638,7 +638,7 @@
       // overflow:hidden lock (html.nav-lock) keeps the scroll position untouched —
       // no pinning, no restore, no jumps. Backdrop blocks stray touch scrolling.
       document.documentElement.classList.toggle("nav-lock", open);
-      if (!open && was) nt.focus();
+      if (!open && was) { try { nt.focus({ preventScroll: true }); } catch (e) { nt.focus(); } }
       if (!open) closeDrops();
     }
     // Keyboard focus stays inside the open menu (toggle button + panel items).
