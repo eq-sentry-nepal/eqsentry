@@ -389,7 +389,7 @@
   }
 
   /* ---------- Header / Footer markup ---------- */
-  var VERSION = "2.2.12";   // shown in the footer — keep in sync with package.json (smoke test enforces)
+  var VERSION = "2.3.0";   // shown in the footer — keep in sync with package.json (smoke test enforces)
   var LOGO = '<svg class="logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
     '<circle cx="20" cy="20" r="18" stroke="#FF4D2E" stroke-width="2.5"/>' +
     '<path d="M5 21h6l3-9 5 16 4-12 2.5 5H35" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -461,7 +461,6 @@
           dropdown() +
           link("alerts.html", "nav.alerts", "alerts") +
           link("about.html", "nav.about", "about") +
-          '<button type="button" class="menu-theme" id="themeToggleMenu" data-i18n="ui.theme.menu"></button>' +
         '</nav>' +
         '<div class="nav-tools">' +
           '<button class="lang-toggle" id="themeToggle" type="button" aria-label="Toggle day or night theme" data-i18n-aria="ui.theme.aria" title="Day / night" data-i18n-title="ui.theme.t">' +
@@ -600,6 +599,43 @@
   }
 
   /* ---------- Init ---------- */
+  function drawerHTML(active) {
+    function row(href, key, id) {
+      var on = id === active;
+      return '<a class="mn-row' + (on ? " active" : "") + '" href="' + href + '"' +
+        (on ? ' aria-current="page"' : "") + ' data-i18n="' + key + '"></a>';
+    }
+    var kids = [
+      ["preparedness.html", "nav.prep", "prep"], ["plan.html", "nav.plan", "plan"],
+      ["building.html", "nav.building", "building"], ["district.html", "nav.district", "district"],
+      ["felt.html", "nav.felt", "felt"], ["aftermath.html", "nav.after", "after"],
+      ["facts.html", "nav.facts", "facts"], ["faq.html", "nav.faq", "faq"],
+      ["resources.html", "nav.resources", "resources"]
+    ];
+    var subOn = kids.some(function (k) { return k[2] === active; });
+    return '<div class="m-drawer" id="mDrawer" role="dialog" aria-modal="true">' +
+      '<div class="m-head">' +
+        '<span class="m-title">' + LOGO + '<span>EQ&nbsp;Sentry</span></span>' +
+        '<button type="button" class="m-close" id="mClose" aria-label="Close" data-i18n-aria="ui.close">✕</button>' +
+      '</div>' +
+      '<nav class="m-nav" aria-label="Primary" data-i18n-aria="ui.nav.aria">' +
+        row("index.html", "nav.home", "home") +
+        row("map.html", "nav.map", "map") +
+        row("insights.html", "nav.insights", "insights") +
+        '<button type="button" class="m-acc' + (subOn ? " active" : "") + '" id="mAcc" aria-expanded="' + (subOn ? "true" : "false") + '" aria-controls="mSub">' +
+          '<span data-i18n="nav.safety"></span>' +
+          '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>' +
+        '</button>' +
+        '<div class="m-sub' + (subOn ? " open" : "") + '" id="mSub">' +
+          kids.map(function (k) { return row(k[0], k[1], k[2]); }).join("") +
+        '</div>' +
+        row("alerts.html", "nav.alerts", "alerts") +
+        row("about.html", "nav.about", "about") +
+        '<button type="button" class="m-theme" id="mTheme" data-i18n="ui.theme.menu"></button>' +
+      '</nav>' +
+    '</div>';
+  }
+
   function init() {
     var header = document.getElementById("site-header");
     if (header) header.innerHTML = headerHTML(document.body.getAttribute("data-page"));
@@ -614,53 +650,60 @@
       setLang(getLang() === "en" ? "ne" : "en");
     });
 
+    // ----- Mobile menu: body-level fullscreen drawer (independent of the header) -----
     var nt = document.getElementById("navToggle");
-    var navLinks = document.getElementById("navLinks");
-    var navBd = document.getElementById("navBackdrop");
-    if (!navBd) {
-      navBd = document.createElement("div");
-      navBd.className = "nav-backdrop"; navBd.id = "navBackdrop"; navBd.setAttribute("aria-hidden", "true");
-      document.body.appendChild(navBd);
+    if (nt && !document.getElementById("mDrawer")) {
+      document.body.insertAdjacentHTML("beforeend", drawerHTML(document.body.getAttribute("data-page") || ""));
     }
+    var mDrawer = document.getElementById("mDrawer");
     function closeDrops() {
       document.querySelectorAll(".nav-item.open").forEach(function (i) {
         i.classList.remove("open");
         var t = i.querySelector(".dropdown-toggle"); if (t) t.setAttribute("aria-expanded", "false");
       });
     }
-    function navSet(open) {
-      if (!navLinks || !nt) return;
-      var was = navLinks.classList.contains("open");
-      navLinks.classList.toggle("open", open);
+    function drawerSet(open) {
+      if (!mDrawer || !nt) return;
+      var was = mDrawer.classList.contains("open");
+      mDrawer.classList.toggle("open", open);
       nt.classList.toggle("open", open);
-      if (navBd) navBd.classList.toggle("open", open);
       nt.setAttribute("aria-expanded", open ? "true" : "false");
-      // overflow:hidden lock (html.nav-lock) keeps the scroll position untouched —
-      // no pinning, no restore, no jumps. Backdrop blocks stray touch scrolling.
-      document.documentElement.classList.toggle("nav-lock", open);
-      if (!open && was) { try { nt.focus({ preventScroll: true }); } catch (e) { nt.focus(); } }
-      if (!open) closeDrops();
+      document.documentElement.classList.toggle("nav-lock", open);   // overflow lock only — scroll never moves
+      if (open && !was) {
+        var c = document.getElementById("mClose");
+        if (c) { try { c.focus({ preventScroll: true }); } catch (e) {} }
+      } else if (!open && was) {
+        try { nt.focus({ preventScroll: true }); } catch (e) {}
+      }
     }
-    // Keyboard focus stays inside the open menu (toggle button + panel items).
+    if (nt) nt.addEventListener("click", function () { drawerSet(!(mDrawer && mDrawer.classList.contains("open"))); });
+    if (mDrawer) {
+      mDrawer.addEventListener("click", function (e) {
+        if (e.target.closest("#mClose") || e.target.closest("a[href]")) drawerSet(false);
+      });
+      var mAcc = document.getElementById("mAcc"), mSub = document.getElementById("mSub");
+      if (mAcc && mSub) mAcc.addEventListener("click", function () {
+        var o = !mSub.classList.contains("open");
+        mSub.classList.toggle("open", o);
+        mAcc.classList.toggle("active", o);
+        mAcc.setAttribute("aria-expanded", o ? "true" : "false");
+      });
+      var mTh = document.getElementById("mTheme");
+      if (mTh) mTh.addEventListener("click", flipTheme);
+    }
     document.addEventListener("keydown", function (e) {
-      if (e.key !== "Tab" || !navLinks || !navLinks.classList.contains("open")) return;
-      var items = [nt].concat([].slice.call(navLinks.querySelectorAll('a[href], button:not([disabled])')));
-      items = items.filter(function (el) { return el && el.offsetParent !== null || el === nt; });
+      if (!mDrawer || !mDrawer.classList.contains("open")) return;
+      if (e.key === "Escape") { drawerSet(false); return; }
+      if (e.key !== "Tab") return;
+      var items = [].slice.call(mDrawer.querySelectorAll('a[href], button:not([disabled])'))
+        .filter(function (el) { return el.offsetParent !== null; });
       if (!items.length) return;
       var first = items[0], last = items[items.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     });
-    if (nt) nt.addEventListener("click", function () { navSet(!navLinks.classList.contains("open")); });
-    if (navBd) navBd.addEventListener("click", function () { navSet(false); });
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") { navSet(false); closeDrops(); }
-    });
-    if (navLinks) navLinks.addEventListener("click", function (e) {
-      if (e.target.closest("a[href]")) navSet(false);   // tap a link -> menu closes
-    });
     window.addEventListener("resize", function () {
-      if (window.innerWidth > 940 && navLinks && navLinks.classList.contains("open")) navSet(false);
+      if (window.innerWidth > 940 && mDrawer && mDrawer.classList.contains("open")) drawerSet(false);
     });
 
     // Compact brand on scroll: EQ Sentry -> ESN
@@ -709,8 +752,6 @@
     }
     var tt = document.getElementById("themeToggle");
     if (tt) tt.addEventListener("click", flipTheme);
-    var ttm = document.getElementById("themeToggleMenu");
-    if (ttm) ttm.addEventListener("click", flipTheme);
 
     // Back-to-top button (appears on scroll)
     if (!document.querySelector(".to-top")) {
