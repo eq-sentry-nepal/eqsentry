@@ -75,6 +75,12 @@ app.get("/api/emsc", async (req, res) => {
 app.get("/api/health", (_req, res) => res.json({ ok: true, sms: smsConfigured(), email: emailConfigured(), push: pushConfigured() }));
 
 /* ── Browser push (Web Push) ── */
+app.get("/api/stats", async (_req, res) => {
+  const subs = await listConfirmed();
+  const reports = await listReports();
+  res.set("Cache-Control", "public, max-age=120").json({ subscribers: subs.length, reports: reports.length });
+});
+
 app.get("/api/push/key", (_req, res) => res.json({ key: vapidPublicKey(), configured: pushConfigured() }));
 app.post("/api/push/subscribe", async (req, res) => {
   const b = req.body || {};

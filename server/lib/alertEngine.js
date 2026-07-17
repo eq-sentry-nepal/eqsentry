@@ -4,6 +4,7 @@ import { listConfirmed, wasSent, markSent, pruneSent, removeByEndpoint } from ".
 import { findDistrict, haversineKm } from "./districts.js";
 import { dispatch } from "./channels.js";
 import { sendPush } from "./push.js";
+import { tgAnnounce } from "./telegram.js";
 
 const env = process.env;
 const num = (k, d) => (env[k] !== undefined && env[k] !== "" ? Number(env[k]) : d);
@@ -66,6 +67,10 @@ export async function runOnce(log = console.log) {
     const c = f.geometry.coordinates, p = f.properties;
     const ev = { id: f.id, mag: p.mag, place: p.place, time: p.time, url: p.url, lon: c[0], lat: c[1] };
     if (ev.mag == null) continue;
+    // Public Telegram channel: one announcement per qualifying event.
+    if (ev.mag >= num("TELEGRAM_MIN_MAG", 4.5) && !(await wasSent(ev.id, "tg-channel"))) {
+      if (await tgAnnounce(ev)) { await markSent(ev.id, "tg-channel"); log(`[engine] telegram announce M${ev.mag}`); }
+    }
     for (const sub of subs) {
       if (ev.mag < (sub.threshold || 4.5)) continue;
       const loc = sub.lat != null && sub.lon != null ? { lat: sub.lat, lon: sub.lon } : findDistrict(sub.district);

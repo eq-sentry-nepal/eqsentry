@@ -103,12 +103,38 @@
     document.addEventListener("eq:themechange", function () { if (tile) tile.setUrl(tileURL()); });
     setTimeout(function () { map.invalidateSize(); }, 200);
   }
+  var ftCutoff = 168, ftTimer = null;
+  function ftVisible() {
+    var lim = Date.now() - ftCutoff * 36e5;
+    return reports.filter(function (r) { return new Date(r.at).getTime() >= lim; });
+  }
+  function ftPaintLabel() {
+    var el = $("ftLabel"); if (!el) return;
+    el.textContent = ftCutoff >= 168 ? T("ft.all") : T("ft.hrs").replace("{n}", (window.EQ && window.EQ.dg) ? window.EQ.dg(ftCutoff) : ftCutoff);
+  }
+  function ftStop() { if (ftTimer) { clearInterval(ftTimer); ftTimer = null; var b = $("ftPlay"); if (b) b.textContent = T("ft.play"); } }
+  function ftWire() {
+    var tl = $("feltTl"), r = $("ftRange"), b = $("ftPlay");
+    if (!tl || !r || !b || tl._wired) return;
+    tl._wired = 1;
+    r.addEventListener("input", function () { ftStop(); ftCutoff = +r.value; ftPaintLabel(); drawMap(); });
+    b.addEventListener("click", function () {
+      if (ftTimer) { ftStop(); return; }
+      b.textContent = T("ft.stop");
+      ftCutoff = 1; r.value = 1;
+      ftTimer = setInterval(function () {
+        ftCutoff = Math.min(168, ftCutoff + 4); r.value = ftCutoff; ftPaintLabel(); drawMap();
+        if (ftCutoff >= 168) ftStop();
+      }, 140);
+    });
+    document.addEventListener("eq:langchange", function () { ftPaintLabel(); if (!ftTimer) { var bb = $("ftPlay"); if (bb) bb.textContent = T("ft.play"); } });
+  }
   function drawMap() {
     if (!layer) return;
     layer.clearLayers();
     // group reports by district (fall back to rounded coords)
     var groups = {};
-    reports.forEach(function (r) {
+    ftVisible().forEach(function (r) {
       if (r.lat == null || r.lon == null) return;
       var key = r.district || (r.lat.toFixed(2) + "," + r.lon.toFixed(2));
       var g = groups[key] || (groups[key] = { lat: 0, lon: 0, n: 0, sum: 0, name: r.district || "" });
@@ -139,7 +165,7 @@
     var a = api();
     if (!a) { drawRecent(); return; }
     fetch(a + "/api/reports").then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
-      if (j && Array.isArray(j.reports)) { reports = j.reports; drawMap(); drawRecent(); }
+      if (j && Array.isArray(j.reports)) { reports = j.reports; var tl = $("feltTl"); if (tl && reports.length >= 4) { tl.hidden = false; ftWire(); ftPaintLabel(); } drawMap(); drawRecent(); }
     }).catch(function () { /* offline — keep whatever we have */ });
   }
 

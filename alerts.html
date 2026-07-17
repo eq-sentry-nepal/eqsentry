@@ -60,7 +60,7 @@
         "push.off": "Browser alerts are off.",
         "push.denied": "Notifications are blocked — allow them in your browser settings, then try again.",
         "push.unsupported": "This browser doesn't support push notifications.",
-        "push.nobackend": "Browser alerts aren't available right now — the alert service is coming online soon. Please check back.",
+        "push.nobackend": "Browser alerts aren't available right now — the alert service is coming online soon. Please check back.", "al.subs": "🔔 {n} people already get alerts from EQ Sentry.",
         "push.err": "Couldn't enable browser alerts — please try again."
       },
       "ne": {
@@ -99,7 +99,7 @@
         "push.off": "ब्राउजर सूचना बन्द छ।",
         "push.denied": "सूचना अवरुद्ध छ — ब्राउजर सेटिङमा अनुमति दिई पुनः प्रयास गर्नुहोस्।",
         "push.unsupported": "यो ब्राउजरले पुश सूचना समर्थन गर्दैन।",
-        "push.nobackend": "ब्राउजर सूचना अहिले उपलब्ध छैन — सूचना सेवा चाँडै सुरु हुँदैछ। पछि फेरि प्रयास गर्नुहोस्।",
+        "push.nobackend": "ब्राउजर सूचना अहिले उपलब्ध छैन — सूचना सेवा चाँडै सुरु हुँदैछ। पछि फेरि प्रयास गर्नुहोस्।", "al.subs": "🔔 {n} जनाले EQ Sentry बाट सूचना पाइरहेका छन्।",
         "push.err": "ब्राउजर सूचना सक्रिय गर्न सकिएन — पुनः प्रयास गर्नुहोस्।"
       }
     }
@@ -135,6 +135,7 @@
         <div class="form-card">
           <h2 style="margin-top:0" data-i18n="al.form.t"></h2>
           <div class="form-success" id="formSuccess" data-i18n="al.success"></div>
+          <p id="subCount" class="muted" hidden style="margin:0 0 14px;font-size:.9rem"></p>
           <form id="alertForm" novalidate>
             <div class="field">
               <label for="f-name" data-i18n="al.name"></label>

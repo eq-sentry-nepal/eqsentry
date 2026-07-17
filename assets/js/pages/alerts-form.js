@@ -55,3 +55,21 @@
     } else { storeLocal(); finish("al.localonly"); }
   });
 })();
+
+/* ---------- live subscriber counter (shows once the backend is deployed) ---------- */
+(function subCount() {
+  var el = document.getElementById("subCount"); if (!el) return;
+  var a = (window.EQ_API || (window.EQ_CONFIG && window.EQ_CONFIG.api) || "").replace(/\/$/, "");
+  if (!a) return;
+  fetch(a + "/api/stats").then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+    if (!j || !j.subscribers || j.subscribers < 3) return;   // no lonely numbers
+    function paint() {
+      var dg = (window.EQ && window.EQ.dg) ? window.EQ.dg : String;
+      var t = (window.EQ && window.EQ.t) ? window.EQ.t : function (k) { return k; };
+      el.textContent = t("al.subs").replace("{n}", dg(j.subscribers));
+      el.hidden = false;
+    }
+    paint();
+    document.addEventListener("eq:langchange", paint);
+  }).catch(function () {});
+})();
