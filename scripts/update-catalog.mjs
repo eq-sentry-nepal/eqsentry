@@ -117,3 +117,15 @@ async function main() {
   console.log(`Updated: ${features.length} events (max M${maxMag.toFixed(1)}), data-layers.js + feeds regenerated.`);
 }
 main().catch((e) => { console.error(e); process.exit(1); });
+
+// --- refresh the downloadable data pack (zip available on CI/most systems) ---
+try {
+  const { execSync } = await import("node:child_process");
+  execSync('zip -j -q assets/downloads/eqsentry-data-pack.zip ' +
+    'data/nepal_earthquakes.geojson data/nepal_earthquakes.csv ' +
+    'data/notable_earthquakes.geojson data/summary.json ' +
+    'assets/downloads/eq-emergency-kit-checklist.pdf ' +
+    'assets/downloads/eq-family-plan.pdf assets/downloads/eq-school-college-plan.pdf',
+    { stdio: "inherit" });
+  console.log("data pack refreshed");
+} catch (e) { console.warn("data pack skipped:", e.message); }

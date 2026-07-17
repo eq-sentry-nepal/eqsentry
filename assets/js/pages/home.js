@@ -93,4 +93,42 @@
     function hook() { if (window.EQEngine) window.EQEngine.onUpdate(paint); else setTimeout(hook, 400); }
     hook();
   })();
+
+  /* ---------- "On this day" in quake history ---------- */
+  (function onThisDay() {
+    var card = document.getElementById("otdCard"); if (!card) return;
+    function T(k) { return window.EQ ? window.EQ.t(k) : k; }
+    function dg(x) { return (window.EQ && window.EQ.dg) ? window.EQ.dg(x) : String(x); }
+    function PL(x) { return (window.EQ && window.EQ.place) ? window.EQ.place(x) : String(x == null ? "" : x); }
+    function esc(x) { return String(x == null ? "" : x).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+    var done = false;
+    function paint() {
+      if (done) return;
+      var cat = window.EQ_DATA && window.EQ_DATA.catalog && window.EQ_DATA.catalog.features;
+      if (!cat || !cat.length) return;
+      done = true;
+      var now = new Date(Date.now() + 5.75 * 36e5);           // Nepal time
+      var mm = now.getUTCMonth(), dd = now.getUTCDate();
+      var best = null;
+      cat.forEach(function (f) {
+        var p = f.properties; if (p.mag == null || p.mag < 5) return;
+        var d = new Date(p.time + 5.75 * 36e5);
+        if (d.getUTCMonth() === mm && d.getUTCDate() === dd && d.getUTCFullYear() !== now.getUTCFullYear()) {
+          if (!best || p.mag > best.mag) best = p;
+        }
+      });
+      if (!best) return;
+      var y = new Date(best.time + 5.75 * 36e5).getUTCFullYear();
+      var bs = window.EQ.bsYear ? T("u.bs") + " " + dg(window.EQ.bsYear(best.time)) : "";
+      card.innerHTML = '<div class="callout info" style="margin-bottom:16px;align-items:center">' +
+        '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/></svg>' +
+        '<p style="margin:0"><b>' + T("otd.t") + '</b>: ' +
+        T("otd.line").replace("{y}", dg(y)).replace("{b}", bs).replace("{m}", dg("M" + best.mag.toFixed(1))).replace("{p}", esc(PL(best.place || ""))) +
+        "</p></div>";
+      card.hidden = false;
+    }
+    document.addEventListener("eq:dataready", paint);
+    var tries = 0, iv = setInterval(function () { paint(); if (done || ++tries > 20) clearInterval(iv); }, 500);
+    document.addEventListener("eq:langchange", function () { done = false; paint(); });
+  })();
 })();

@@ -94,7 +94,7 @@
       "a11y.sizeHint": "Make text larger or smaller", "a11y.motion": "Reduce motion", "a11y.motionHint": "Pause animations",
       "a11y.hc": "High contrast", "a11y.hcHint": "Stronger colours", "a11y.dys": "Readable font",
       "a11y.dysHint": "Dyslexia-friendly typeface", "a11y.reset": "Reset all", "a11y.open": "Accessibility options",
-      "ui.theme.t": "Day / night", "ui.theme.menu": "🌓 Day / night theme", "ui.theme.aria": "Toggle day or night theme", "ui.lang.aria": "Switch language",
+      "ui.theme.t": "Day / night", "ui.theme.menu": "🌓 Day / night theme", "ui.install": "📲 Install the app", "ui.theme.aria": "Toggle day or night theme", "ui.lang.aria": "Switch language",
       "ui.menu.aria": "Menu", "ui.nav.aria": "Primary", "ui.ver.t": "EQ Sentry version",
       "ui.prev": "Scroll left", "ui.next": "Scroll right", "ui.close": "Close",
       "ui.dec": "Decrease text size", "ui.inc": "Increase text size", "ui.remove": "Remove",
@@ -112,7 +112,7 @@
       "foot.resources": "Emergency Numbers",
       "foot.about": "About EQ Sentry",
       "foot.data": "Data & Sources",
-      "foot.datasrc": "Quake data: USGS",
+      "foot.datasrc": "Quake data: USGS", "foot.pack": "⬇ Full data pack (ZIP)",
       "foot.emsc": "EMSC (Euro-Med)",
       "foot.seismo": "Nat'l Seismological Centre",
       "foot.emergency": "In an emergency",
@@ -172,7 +172,7 @@
       "a11y.sizeHint": "अक्षर ठूलो वा सानो बनाउनुहोस्", "a11y.motion": "चाल घटाउनुहोस्", "a11y.motionHint": "एनिमेसन रोक्नुहोस्",
       "a11y.hc": "उच्च कन्ट्रास्ट", "a11y.hcHint": "गाढा रङ", "a11y.dys": "सजिलो फन्ट",
       "a11y.dysHint": "डिस्लेक्सिया-मैत्री अक्षर", "a11y.reset": "सबै रिसेट", "a11y.open": "पहुँचयोग्यता विकल्प",
-      "ui.theme.t": "दिन / रात", "ui.theme.menu": "🌓 दिन / रात थिम", "ui.theme.aria": "दिन वा रात थिम बदल्नुहोस्", "ui.lang.aria": "भाषा बदल्नुहोस्",
+      "ui.theme.t": "दिन / रात", "ui.theme.menu": "🌓 दिन / रात थिम", "ui.install": "📲 एप इन्स्टल गर्नुहोस्", "ui.theme.aria": "दिन वा रात थिम बदल्नुहोस्", "ui.lang.aria": "भाषा बदल्नुहोस्",
       "ui.menu.aria": "मेनु", "ui.nav.aria": "मुख्य नेभिगेसन", "ui.ver.t": "EQ Sentry संस्करण",
       "ui.prev": "बायाँ सार्नुहोस्", "ui.next": "दायाँ सार्नुहोस्", "ui.close": "बन्द गर्नुहोस्",
       "ui.dec": "अक्षर सानो बनाउनुहोस्", "ui.inc": "अक्षर ठूलो बनाउनुहोस्", "ui.remove": "हटाउनुहोस्",
@@ -190,7 +190,7 @@
       "foot.resources": "आपत्कालीन नम्बर",
       "foot.about": "EQ Sentry बारे",
       "foot.data": "तथ्याङ्क र स्रोत",
-      "foot.datasrc": "भूकम्प तथ्याङ्क: USGS",
+      "foot.datasrc": "भूकम्प तथ्याङ्क: USGS", "foot.pack": "⬇ पूरा डेटा प्याक (ZIP)",
       "foot.emsc": "EMSC (युरो-मेड)",
       "foot.seismo": "राष्ट्रिय भूकम्प केन्द्र",
       "foot.emergency": "आपत्कालमा",
@@ -227,6 +227,9 @@
   };
 
   /* ---------- Language state ---------- */
+  // PWA: stash the install prompt so install.html can trigger it on demand.
+  window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); window.EQ_BIP = e; });
+
   var LANG_KEY = "eqsentry_lang";
   // Shareable language URLs: ?lang=ne / ?lang=en override and persist.
   try {
@@ -389,7 +392,7 @@
   }
 
   /* ---------- Header / Footer markup ---------- */
-  var VERSION = "2.3.0";   // shown in the footer — keep in sync with package.json (smoke test enforces)
+  var VERSION = "2.4.0";   // shown in the footer — keep in sync with package.json (smoke test enforces)
   var LOGO = '<svg class="logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
     '<circle cx="20" cy="20" r="18" stroke="#FF4D2E" stroke-width="2.5"/>' +
     '<path d="M5 21h6l3-9 5 16 4-12 2.5 5H35" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -513,6 +516,7 @@
             '<a href="https://earthquake.usgs.gov/earthquakes/feed/" target="_blank" rel="noopener" data-i18n="foot.datasrc"></a>' +
             '<a href="https://www.seismicportal.eu/" target="_blank" rel="noopener" data-i18n="foot.emsc"></a>' +
             '<a href="https://www.seismonepal.gov.np/" target="_blank" rel="noopener" data-i18n="foot.seismo"></a>' +
+            '<a href="assets/downloads/eqsentry-data-pack.zip" download data-i18n="foot.pack"></a>' +
             '<a href="status.html" data-i18n="nav.status"></a>' +
             '<a href="about.html" data-i18n="foot.about"></a>' +
           '</div>' +
@@ -631,6 +635,7 @@
         '</div>' +
         row("alerts.html", "nav.alerts", "alerts") +
         row("about.html", "nav.about", "about") +
+        row("install.html", "ui.install", "install") +
         '<button type="button" class="m-theme" id="mTheme" data-i18n="ui.theme.menu"></button>' +
       '</nav>' +
     '</div>';

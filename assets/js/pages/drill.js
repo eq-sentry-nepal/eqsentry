@@ -38,7 +38,10 @@
     var due = !last || (Date.now() - new Date(last).getTime()) > 180 * 864e5;
     card.innerHTML =
       (justDone ? '<div class="quiz-q" style="color:#34D399;text-align:center">' + T("dm.done") + '</div>' +
-        '<p style="text-align:center;color:var(--ink-soft);max-width:46ch;margin:10px auto 18px">' + T("dm.done.d") + "</p>" : "") +
+        '<p style="text-align:center;color:var(--ink-soft);max-width:46ch;margin:10px auto 18px">' + T("dm.done.d") + "</p>" +
+        '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:0 0 18px">' +
+          '<input id="dcName" style="max-width:230px" placeholder="' + String(T("dm.cname.ph")).replace(/"/g, "&quot;") + '" />' +
+          '<button type="button" class="btn btn-ghost" id="dcertBtn">' + T("dm.cert") + "</button></div>" : "") +
       '<div style="text-align:center">' +
       '<p class="muted" style="margin:0 0 6px">' +
         (last ? T("dm.last") + " <b>" + fmtDate(last) + "</b> · " + dg(l.length) + " " + T("dm.count") : T("dm.never")) + "</p>" +
@@ -88,4 +91,33 @@
 
   renderIdle(false);
   document.addEventListener("eq:langchange", function () { if (!timer) renderIdle(false); });
+
+  /* ---------- Printable participation certificate ---------- */
+  function printCert() {
+    var name = (document.getElementById("dcName") || {}).value || "";
+    name = String(name).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }) || "______________________";
+    var count = log().length;
+    var dt = new Date().toISOString().slice(0, 10);
+    var bs = (window.EQ && window.EQ.bsYear) ? " · BS " + window.EQ.bsYear(Date.now()) : "";
+    var box = document.getElementById("dcertBox");
+    if (!box) { box = document.createElement("div"); box.id = "dcertBox"; box.className = "dcert-wrap"; document.body.appendChild(box); }
+    box.innerHTML = '<div class="dcert">' +
+      '<svg viewBox="0 0 40 40" width="46" height="46" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#111"/><path d="M5 21h6l3-9 5 16 4-12 2.5 5H35" stroke="#FF4D2E" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+      '<h2>CERTIFICATE OF PARTICIPATION</h2>' +
+      '<div class="np">भूकम्प ड्रिल सहभागिता प्रमाणपत्र</div>' +
+      '<p>This certifies that</p><p>यो प्रमाणित गरिन्छ कि</p>' +
+      '<div class="nm">' + name + '</div>' +
+      '<p>completed the 60-second earthquake drill — Drop, Cover, Hold On.</p>' +
+      '<p>६० सेकेन्डको भूकम्प ड्रिल — घोप्टिने, ओत लिने, समाउने — पूरा गर्नुभयो।</p>' +
+      '<div class="meta"><span>' + dt + bs + '</span><span>Drills completed: ' + count + '</span><span class="sig">EQ Sentry · eqsentry.com</span></div>' +
+      '</div>';
+    document.body.classList.add("print-cert");
+    var done = function () { document.body.classList.remove("print-cert"); window.removeEventListener("afterprint", done); };
+    window.addEventListener("afterprint", done);
+    window.print();
+    setTimeout(done, 1500);
+  }
+  card.addEventListener("click", function (e) {
+    if (e.target && e.target.id === "dcertBtn") printCert();
+  });
 })();

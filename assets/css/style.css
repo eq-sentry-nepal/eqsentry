@@ -1017,3 +1017,19 @@ html.reduce-motion .drill-shake { animation:none; }
 .wcard-row span { color:#555; min-width:16mm; }
 .wcard-num { margin-top:auto; border-top:1.2px solid #000; padding-top:1.6mm; font-size:8pt; font-weight:700; }
 .wcard-hint { font-size:8pt; color:#555; margin:3mm 0 0; max-width:86mm; }
+
+/* ---------- Drill certificate (print only) ---------- */
+.dcert-wrap { display:none; }
+@media print {
+  body.print-cert > *:not(.dcert-wrap) { display:none !important; }
+  body.print-cert .dcert-wrap { display:block !important; }
+  body.print-cert { background:#fff; }
+}
+.dcert { max-width:640px; margin:24px auto; padding:36px 40px; border:4px double #333; color:#000; background:#fff;
+  text-align:center; font-family:Georgia, "Noto Sans Devanagari", serif; }
+.dcert h2 { margin:10px 0 2px; letter-spacing:.08em; font-size:1.25rem; color:#000; }
+.dcert .np { font-size:.95rem; color:#444; margin:0 0 16px; }
+.dcert p { margin:.3rem 0; color:#222; font-size:.95rem; }
+.dcert .nm { font-size:1.5rem; font-weight:700; border-bottom:2px solid #333; display:inline-block; min-width:60%; padding:0 14px 5px; margin:12px 0; }
+.dcert .meta { margin-top:26px; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; font-size:.82rem; color:#333; }
+.dcert .sig { border-top:1.5px solid #333; padding-top:4px; }

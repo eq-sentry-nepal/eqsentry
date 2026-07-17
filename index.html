@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="canonical" href="https://eqsentry.com/" />
+  <link rel="preconnect" href="https://earthquake.usgs.gov" crossorigin />
   <link rel="alternate" hreflang="en" href="https://eqsentry.com/" />
   <link rel="alternate" hreflang="ne" href="https://eqsentry.com/?lang=ne" />
   <link rel="alternate" hreflang="x-default" href="https://eqsentry.com/" />
@@ -103,6 +104,7 @@
         "dch.n1": "1", "dch.n2": "2", "dch.n3": "3",
         "hero.plate": "Indian plate ≈2 cm/yr",
         "lv.t": "Since your last visit", "lv.line": "{n} quakes in the region · largest {m} — {p}", "lv.ok": "Got it",
+        "otd.t": "On this day", "otd.line": "{y} ({b}): {m} — {p}",
         "hero.eurasia": "Eurasian plate", "hero.himalaya": "Himalaya", "hero.mht": "MHT fault"
       },
       "ne": {
@@ -162,6 +164,7 @@
         "dch.n1": "१", "dch.n2": "२", "dch.n3": "३",
         "hero.plate": "भारतीय प्लेट ≈२ से.मि./वर्ष",
         "lv.t": "तपाईंको अघिल्लो भ्रमणयता", "lv.line": "क्षेत्रमा {n} भूकम्प · सबैभन्दा ठूलो {m} — {p}", "lv.ok": "बुझेँ",
+        "otd.t": "आजकै दिन", "otd.line": "{y} ({b}): {m} — {p}",
         "hero.eurasia": "युरेसियाली प्लेट", "hero.himalaya": "हिमालय", "hero.mht": "MHT भ्रंश"
       }
     }
@@ -209,6 +212,7 @@
       </div>
       <div class="feed-head reveal"><h3 data-i18n="la.feed"></h3><a href="map.html" class="feed-link" data-i18n="la.more"></a></div>
       <div id="lvCard" hidden></div>
+      <div id="otdCard" hidden></div>
       <div class="quake-feed reveal" id="quakeFeed"><div class="feed-empty"><span class="spinner"></span></div></div>
       <p class="feed-sources reveal" data-i18n-html="la.sources"></p>
     </div>
