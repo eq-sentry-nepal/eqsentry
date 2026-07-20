@@ -14,7 +14,7 @@
     "cors": "^2.8.5",
     "express-rate-limit": "^8.0.0",
     "helmet": "^8.0.0",
-    "dotenv": "^16.4.5",
+    "dotenv": "^17.4.2",
     "express": "^4.19.2",
     "nodemailer": "^6.9.13",
     "web-push": "^3.6.7"
