@@ -1,0 +1,10 @@
+{
+  "generated": "2026-07-20T15:00:29+00:00",
+  "files": {
+    "data/nepal_earthquakes.geojson": "sha256-N5DpSjodPVUl9oXzU1M2hIYRZZRtGXEYSSV2m5g7sls=",
+    "data/nepal_earthquakes.csv": "sha256-NHHkf1OqvDOmifeHmc+sGpVoedVdwvEp+0kmFlKMcrU=",
+    "data/notable_earthquakes.geojson": "sha256-yadvhmppoT6r0ZEYwyiYVjBexY/dyAQQ4C7uHPw3D50=",
+    "data/summary.json": "sha256-xgXom9QVCb3Z9St94ZzPKAqnaziRZPhmIL6Lp44V6fs=",
+    "assets/js/data-layers.js": "sha256-qagoUw5LYgvepXJWz+Ya0Rfg3cfaTrIQNc2MCAgXF4E="
+  }
+}

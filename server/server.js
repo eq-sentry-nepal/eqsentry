@@ -1,6 +1,8 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
+import { rateLimit } from "express-rate-limit";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { addPending, confirm, removeByUnsub, addReport, listReports, addPush, removeByEndpoint, listConfirmed, appendStatusSample, listStatusSamples, appendClientError, listClientErrors } from "./lib/db.js";
@@ -19,8 +21,17 @@ const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g,
   (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
 const app = express();
-app.use(express.json());
-app.use(cors({ origin: env.ALLOW_ORIGIN || "*" }));
+app.disable("x-powered-by");
+app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));   // site ships its own meta CSP
+app.use(express.json({ limit: "20kb" }));
+const ORIGINS = (env.ALLOW_ORIGIN ||
+  "https://eqsentry.com,https://eq-sentry-nepal.github.io,http://localhost:8080,http://localhost:8787")
+  .split(",").map((x) => x.trim());
+app.use(cors({ origin: ORIGINS }));
+const apiLimiter = rateLimit({ windowMs: 60_000, limit: 120, standardHeaders: "draft-8", legacyHeaders: false });
+const writeLimiter = rateLimit({ windowMs: 60_000, limit: 12, standardHeaders: "draft-8", legacyHeaders: false });
+app.use("/api/", apiLimiter);
+app.use(["/api/report", "/api/subscribe", "/api/push/subscribe", "/api/client-log"], writeLimiter);
 
 /* ── USGS proxy + 60s cache (avoids browser CORS / rate limits) ── */
 const cache = new Map();
@@ -113,6 +124,11 @@ app.post("/api/subscribe", async (req, res) => {
   const b = req.body || {};
   if (!b.consent) return res.status(400).json({ error: "consent required" });
   if (!b.mobile && !b.email) return res.status(400).json({ error: "mobile or email required" });
+  if (b.email && !/^[^\s@]{1,64}@[^\s@]{1,255}$/.test(String(b.email))) return res.status(400).json({ error: "bad email" });
+  if (b.mobile && !/^\+?[0-9\- ]{7,20}$/.test(String(b.mobile))) return res.status(400).json({ error: "bad mobile" });
+  const th = Number(b.threshold);
+  if (b.threshold != null && b.threshold !== "" && (!Number.isFinite(th) || th < 4 || th > 7)) return res.status(400).json({ error: "bad threshold" });
+  b.district = String(b.district || "").slice(0, 60);
   const loc = findDistrict(b.district) || {};
   const sub = await addPending({ ...b, lat: loc.lat ?? null, lon: loc.lon ?? null });
   const link = `${BASE}/api/confirm?token=${sub.confirmToken}`;
@@ -227,7 +243,18 @@ setInterval(() => sampleStatus().catch(() => {}), STATUS_POLL_S * 1000);
 
 /* ── Community "Did you feel it?" reports ── */
 app.post("/api/report", async (req, res) => {
-  const rec = await addReport(req.body || {});
+  const b = req.body || {};
+  const intensity = Math.round(Number(b.intensity));
+  if (!Number.isFinite(intensity) || intensity < 1 || intensity > 9) return res.status(400).json({ error: "bad intensity" });
+  const lat = b.lat == null ? null : Number(b.lat), lon = b.lon == null ? null : Number(b.lon);
+  if (lat != null && (!Number.isFinite(lat) || lat < 20 || lat > 36)) return res.status(400).json({ error: "bad lat" });
+  if (lon != null && (!Number.isFinite(lon) || lon < 74 || lon > 94)) return res.status(400).json({ error: "bad lon" });
+  const rec = await addReport({
+    intensity, lat, lon,
+    district: String(b.district || "").slice(0, 60),
+    name: String(b.name || "").slice(0, 80),
+    message: String(b.message || "").slice(0, 1000)
+  });
   res.json({ ok: true, id: rec.id, intensity: rec.intensity });
 });
 app.get("/api/reports", async (_req, res) => {

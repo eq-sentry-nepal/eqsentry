@@ -1,7 +1,7 @@
 /* EQ Sentry service worker — offline app shell.
    Preparedness guidance and emergency numbers stay available even with no
    network (critical right after a quake). Live USGS data is never cached. */
-const VERSION = "eqsentry-v31";
+const VERSION = "eqsentry-v32";
 const SHELL = [
   "./", "index.html", "map.html", "insights.html", "preparedness.html",
   "resources.html", "alerts.html", "plan.html", "felt.html", "about.html", "privacy.html", "offline.html", "assets/js/config.js", "install.html", "assets/js/pages/install.js",
@@ -47,6 +47,20 @@ self.addEventListener("fetch", (e) => {
   // Never cache live data / map tiles / API — always go to network, fail soft.
   const isLive = /earthquake\.usgs\.gov|seismicportal\.eu|basemaps\.cartocdn\.com|\/api\//.test(url.href);
   if (isLive) { e.respondWith(fetch(req).catch(() => caches.match(req))); return; }
+
+  // Data files: stale-while-revalidate — serve the cached copy instantly and
+  // refresh it in the background so the next view is current.
+  if (url.origin === location.origin && (/\/data\/[^?]*\.(json|geojson|csv|xml)$/.test(url.pathname) || /assets\/js\/data-layers\.js$/.test(url.pathname))) {
+    e.respondWith(
+      caches.open(VERSION).then((c) =>
+        c.match(req).then((hit) => {
+          const net = fetch(req).then((res) => { if (res.ok) c.put(req, res.clone()); return res; }).catch(() => hit);
+          return hit || net;
+        })
+      )
+    );
+    return;
+  }
 
   // App shell + assets: cache-first, then network (and cache a copy).
   e.respondWith(

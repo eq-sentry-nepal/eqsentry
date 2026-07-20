@@ -21,11 +21,31 @@ const QUERY = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson"
 
 const read = async (p, d) => { try { return JSON.parse(await fs.readFile(path.join(ROOT, p), "utf8")); } catch { return d; } };
 
+async function fetchRetry(url, tries = 3) {
+  for (let i = 1; i <= tries; i++) {
+    try {
+      const r = await fetch(url, { signal: AbortSignal.timeout(60000) });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r;
+    } catch (e) {
+      if (i === tries) throw e;
+      const wait = 2000 * Math.pow(4, i - 1);
+      console.warn(`fetch attempt ${i} failed (${e.message}) — retrying in ${wait / 1000}s`);
+      await new Promise((res) => setTimeout(res, wait));
+    }
+  }
+}
+
 async function main() {
   console.log("Fetching USGS catalogue…");
-  const res = await fetch(QUERY);
-  if (!res.ok) throw new Error("USGS query failed: " + res.status);
+  const res = await fetchRetry(QUERY);
   const raw = await res.json();
+  if (!raw || !Array.isArray(raw.features)) throw new Error("USGS payload: features missing");
+  for (const f of raw.features.slice(0, 50)) {
+    const c = f && f.geometry && f.geometry.coordinates;
+    if (!Array.isArray(c) || typeof c[0] !== "number" || typeof c[1] !== "number" || typeof (f.properties || {}).time !== "number")
+      throw new Error("USGS payload: malformed feature " + (f && f.id));
+  }
 
   const features = (raw.features || []).map((f) => {
     const c = f.geometry.coordinates, p = f.properties;
@@ -117,6 +137,18 @@ async function main() {
   console.log(`Updated: ${features.length} events (max M${maxMag.toFixed(1)}), data-layers.js + feeds regenerated.`);
 }
 main().catch((e) => { console.error(e); process.exit(1); });
+
+// --- integrity manifest for data consumers ---
+try {
+  const crypto = await import("node:crypto");
+  const files = ["data/nepal_earthquakes.geojson", "data/nepal_earthquakes.csv",
+    "data/notable_earthquakes.geojson", "data/summary.json", "assets/js/data-layers.js"];
+  const sums = {};
+  for (const f of files) sums[f] = "sha256-" + crypto.createHash("sha256").update(await fs.readFile(path.join(ROOT, f))).digest("base64");
+  await fs.writeFile(path.join(ROOT, "data/checksums.json"),
+    JSON.stringify({ generated: new Date().toISOString(), files: sums }, null, 2) + "\n");
+  console.log("checksums.json written");
+} catch (e) { console.warn("checksums skipped:", e.message); }
 
 // --- refresh the downloadable data pack (zip available on CI/most systems) ---
 try {
