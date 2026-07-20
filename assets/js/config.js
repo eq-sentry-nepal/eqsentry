@@ -10,6 +10,9 @@
    Pages with backend features include this file BEFORE assets/js/i18n.js;
    everywhere else i18n.js injects it automatically.
    ========================================================================== */
+/* NOTE: the site ships a Content-Security-Policy. If you point EQ_API at a custom
+   domain other than api.eqsentry.com / *.onrender.com, add that origin to the
+   connect-src list in every page's CSP meta tag. */
 window.EQ_API =
   (location.hostname === "localhost" || location.hostname === "127.0.0.1")
     ? "http://localhost:8787"
