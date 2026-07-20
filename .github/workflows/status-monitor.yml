@@ -1,0 +1,44 @@
+# 24/7 uptime monitor — probes the live site + upstream feeds every 15 minutes
+# and appends the result to the lightweight `status` branch, which status.html
+# reads. Failures land in errors.json (the public incident log).
+name: Status monitor
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: status-monitor
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+      - name: Probe
+        run: node scripts/status-probe.mjs > /tmp/sample.json && cat /tmp/sample.json
+      - name: Append to status branch
+        run: |
+          git config user.name "eqsentry-status[bot]"
+          git config user.email "status@eqsentry.com"
+          git fetch origin status:refs/heads/status || true
+          if git rev-parse --verify status >/dev/null 2>&1; then
+            git show status:status.json > status.json 2>/dev/null || true
+            git show status:errors.json > errors.json 2>/dev/null || true
+          fi
+          node scripts/status-merge.mjs /tmp/sample.json
+          H1=$(git hash-object -w status.json)
+          H2=$(git hash-object -w errors.json)
+          TREE=$(printf '100644 blob %s\tstatus.json\n100644 blob %s\terrors.json\n' "$H1" "$H2" | git mktree)
+          PARENT=$(git rev-parse --verify status 2>/dev/null || true)
+          C=$(git commit-tree "$TREE" ${PARENT:+-p "$PARENT"} -m "status sample $(date -u +%FT%TZ)")
+          git update-ref refs/heads/status "$C"
+          git push origin status

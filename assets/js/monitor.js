@@ -58,4 +58,51 @@
     dump: function () { try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { return []; } },
     clear: function () { try { localStorage.removeItem(KEY); } catch (e) {} }
   };
+
+  /* ---------- background health sampling (any open page) ----------
+     Keeps the device-local status history warm and logs failures, so the
+     status page reflects reality even if it is rarely opened. Light probes,
+     every 5 minutes, only when visible/online and not on the status page
+     (which runs its own richer checks). Respects Save-Data. */
+  (function bgHealth() {
+    if ((document.body && document.body.getAttribute("data-page")) === "status") return;
+    var conn = navigator.connection || {};
+    if (conn.saveData) return;
+    var RKEY = "eqsentry_statusruns", DKEY = "eqsentry_statusdaily";
+    function ls(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } }
+    function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+    function probe(url) {
+      var t0 = Date.now();
+      return fetch(url, { cache: "no-store", signal: AbortSignal.timeout(10000) })
+        .then(function (r) { var ms = Date.now() - t0; return r.ok ? { state: ms > 4000 ? "slow" : "ok", ms: ms } : { state: "fail", ms: ms, err: "HTTP " + r.status }; })
+        .catch(function (e) { return { state: "fail", ms: Date.now() - t0, err: String(e && e.message || e).slice(0, 80) }; });
+    }
+    function sample() {
+      if (document.visibilityState !== "visible" || !navigator.onLine) return;
+      Promise.all([
+        probe("assets/js/config.js?bg=" + Date.now()),
+        probe("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"),
+        probe("https://www.seismicportal.eu/fdsnws/event/1/query?format=json&limit=1")
+      ]).then(function (r) {
+        var run = { t: Date.now(), c: { site: r[0].state, usgs: r[1].state, emsc: r[2].state, tiles: "na", cat: "na", sw: "na", api: "na", net: navigator.onLine ? "ok" : "fail" },
+                    ms: { site: r[0].ms, usgs: r[1].ms, emsc: r[2].ms } };
+        var runs = ls(RKEY, []); runs.push(run); lsSet(RKEY, runs.slice(-400));
+        var daily = ls(DKEY, {}); var dk = new Date(run.t).toISOString().slice(0, 10);
+        var day = daily[dk] || (daily[dk] = {});
+        Object.keys(run.c).forEach(function (id) {
+          var st = run.c[id]; if (st === "na") return;
+          var slot = day[id] || (day[id] = { ok: 0, slow: 0, fail: 0 });
+          slot[st]++;
+        });
+        var keys = Object.keys(daily).sort();
+        while (keys.length > 60) { delete daily[keys.shift()]; }
+        lsSet(DKEY, daily);
+        ["site", "usgs", "emsc"].forEach(function (id, i) {
+          if (r[i].state === "fail") push({ t: run.t, type: "bgcheck", msg: id + " check failed: " + (r[i].err || "error") });
+        });
+      });
+    }
+    setTimeout(sample, 45000);
+    setInterval(sample, 5 * 60 * 1000);
+  })();
 })();

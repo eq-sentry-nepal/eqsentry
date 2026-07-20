@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com https://plausible.io https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://unpkg.com https://*.basemaps.cartocdn.com; connect-src 'self' https://earthquake.usgs.gov https://www.seismicportal.eu https://api.eqsentry.com https://*.onrender.com http://localhost:8787 https://plausible.io https://*.goatcounter.com; worker-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com https://plausible.io https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://unpkg.com https://*.basemaps.cartocdn.com; connect-src 'self' https://earthquake.usgs.gov https://www.seismicportal.eu https://api.eqsentry.com https://*.onrender.com http://localhost:8787 https://plausible.io https://*.goatcounter.com https://raw.githubusercontent.com; worker-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>Site Health & Status — EQ Sentry Nepal</title>
   <meta name="description" content="Uptime bars and live operational status of EQ Sentry: website, USGS and EMSC data feeds, map tiles, offline mode — by hour, day and month." />
@@ -69,6 +69,9 @@
         "lg.t": "This device — full logs",
         "lg.sub": "Everything recorded locally in your browser: every status run and every captured error, with timestamps.",
         "lg.hist.t": "Check runs",
+        "cm.t": "🌐 24/7 cloud monitor", "cm.checked": "checked", "cm.h24": "Last 24 hours (15-min samples)", "cm.d30": "Last 30 days",
+        "cm.pending": "The cloud monitor probes the site, USGS, EMSC and map tiles every 15 minutes from GitHub's servers — even when nobody has the site open. First samples appear within ~20 minutes of this deploy.",
+        "cm.incidents": "Incident log", "cm.none": "No incidents recorded.", "cm.check": "Check", "cm.detail": "Detail",
         "lg.time": "Time", "lg.overall": "Overall", "lg.lat": "Site / USGS / EMSC (ms)", "lg.issues": "Issues",
         "lg.none": "Nothing recorded yet — it fills in as checks run.",
         "lg.err.t": "Error log",
@@ -123,6 +126,9 @@
         "lg.t": "यो यन्त्र — पूर्ण लग",
         "lg.sub": "तपाईंको ब्राउजरमा स्थानीय रूपमा रेकर्ड भएका सबै: हरेक स्थिति जाँच र हरेक समातिएको त्रुटि, समयसहित।",
         "lg.hist.t": "जाँचहरू",
+        "cm.t": "🌐 २४/७ क्लाउड मनिटर", "cm.checked": "जाँचिएको", "cm.h24": "पछिल्लो २४ घण्टा (१५-मिनेट नमुना)", "cm.d30": "पछिल्लो ३० दिन",
+        "cm.pending": "क्लाउड मनिटरले हरेक १५ मिनेटमा GitHub का सर्भरबाट साइट, USGS, EMSC र नक्सा टाइल जाँच्छ — कसैले साइट नखोले पनि। पहिलो नमुना डिप्लोयको ~२० मिनेटभित्र देखिन्छ।",
+        "cm.incidents": "घटना लग", "cm.none": "कुनै घटना रेकर्ड छैन।", "cm.check": "जाँच", "cm.detail": "विवरण",
         "lg.time": "समय", "lg.overall": "समग्र", "lg.lat": "साइट / USGS / EMSC (ms)", "lg.issues": "समस्या",
         "lg.none": "अझै केही रेकर्ड छैन — जाँच चल्दै जाँदा भरिन्छ।",
         "lg.err.t": "त्रुटि लग",
@@ -155,6 +161,31 @@
           <div class="up-big"><b id="upPct">—</b><span class="up-lbl" data-i18n="st.up.t"></span></div>
           <div class="up-big"><b id="upNow" class="wait" data-i18n="st.ov.wait"></b><span class="up-lbl"><span data-i18n="st.up.now"></span> · <span data-i18n="st.last"></span> <span id="stWhen">—</span></span></div>
           <button type="button" class="btn btn-outline" id="stRecheck" style="font-size:.82rem;padding:.5rem .9rem" data-i18n="st.recheck"></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 24/7 cloud monitor -->
+  <section class="section" style="padding-top:6px">
+    <div class="container">
+      <div class="card" style="padding:18px 22px" id="cmCard">
+        <div class="up-rowhead" style="margin-bottom:10px">
+          <b data-i18n="cm.t"></b>
+          <span class="up-detail" id="cmWhen"></span>
+          <span class="up-pct" id="cmState"></span>
+        </div>
+        <div id="cmBars"></div>
+        <p class="muted" id="cmNote" style="font-size:.82rem;margin:8px 0 0" data-i18n="cm.pending"></p>
+        <div style="margin-top:14px">
+          <b style="font-size:.92rem" data-i18n="cm.incidents"></b>
+          <p class="muted" id="cmErrNone" style="font-size:.85rem;margin:6px 0 0" data-i18n="cm.none"></p>
+          <div class="table-wrap st-scroll" style="margin-top:8px" id="cmErrWrap" hidden>
+            <table class="st-log">
+              <thead><tr><th data-i18n="lg.time"></th><th data-i18n="cm.check"></th><th data-i18n="cm.detail"></th></tr></thead>
+              <tbody id="cmErrBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

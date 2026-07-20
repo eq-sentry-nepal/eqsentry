@@ -369,4 +369,57 @@
   setInterval(runAll, 60000);
   initAdmin();
   runAll();
+
+  /* ---------- 24/7 cloud monitor (GitHub Actions -> status branch) ---------- */
+  var CM_BASE = "https://raw.githubusercontent.com/eq-sentry-nepal/eqsentry/status/";
+  function cmWorst(sm) {
+    var w = "na";
+    Object.keys(sm.c || {}).forEach(function (k) { var st = sm.c[k]; if (RANK[st] > RANK[w]) w = st; });
+    return w;
+  }
+  function cmBars(samples, buckets, msPer, big) {
+    var now = Date.now(), out = [];
+    for (var i = buckets - 1; i >= 0; i--) {
+      var t0 = now - (i + 1) * msPer, t1 = now - i * msPer, worst = "na";
+      for (var j = samples.length - 1; j >= 0; j--) {
+        var sm = samples[j];
+        if (sm.t < t0) break;
+        if (sm.t < t1) { var st = cmWorst(sm); if (RANK[st] > RANK[worst]) worst = st; }
+      }
+      out.push('<i class="' + worst + '" title="' + esc(new Date(t1).toISOString().slice(0, 16).replace("T", " ")) + ' UTC"></i>');
+    }
+    return '<div class="up-bars' + (big ? " big" : "") + '">' + out.join("") + "</div>";
+  }
+  function loadCloud() {
+    if (!document.getElementById("cmCard")) return;
+    Promise.all([
+      fetch(CM_BASE + "status.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
+      fetch(CM_BASE + "errors.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+    ]).then(function (rr) {
+      var hist = rr[0], elog = rr[1], note = document.getElementById("cmNote");
+      if (!hist || !hist.samples || !hist.samples.length) { if (note) note.style.display = ""; return; }
+      if (note) note.style.display = "none";
+      var samples = hist.samples, last = samples[samples.length - 1];
+      var state = cmWorst(last), fresh = Date.now() - last.t < 40 * 60 * 1000;
+      var stEl = document.getElementById("cmState");
+      if (stEl) stEl.innerHTML = '<span class="up-word ' + (fresh ? (state === "na" ? "ok" : state) : "na") + '">' +
+        T(fresh ? "st." + (state === "na" ? "ok" : state) : "st.na") + "</span>";
+      var when = document.getElementById("cmWhen");
+      if (when && window.EQ) when.textContent = T("cm.checked") + " " + window.EQ.fmtAgo(last.t);
+      var bars = document.getElementById("cmBars");
+      if (bars) bars.innerHTML =
+        '<div class="up-sub">' + T("cm.h24") + "</div>" + cmBars(samples, 96, 15 * 60 * 1000, true) +
+        '<div class="up-sub" style="margin-top:10px">' + T("cm.d30") + "</div>" + cmBars(samples, 30, 864e5, false);
+      var wrap = document.getElementById("cmErrWrap"), body = document.getElementById("cmErrBody"), none = document.getElementById("cmErrNone");
+      var errs = ((elog && elog.errors) || []).slice(-40).reverse();
+      if (body) body.innerHTML = errs.map(function (e) {
+        return '<tr><td class="mono">' + esc(new Date(e.t).toISOString().slice(0, 16).replace("T", " ")) + '</td><td>' +
+          esc(e.check || "") + '</td><td>' + esc((e.err || "") + (e.ms ? " · " + e.ms + "ms" : "")) + "</td></tr>";
+      }).join("");
+      if (wrap) wrap.hidden = !errs.length;
+      if (none) none.hidden = !!errs.length;
+    });
+  }
+  loadCloud();
+  setInterval(loadCloud, 60000);
 })();
