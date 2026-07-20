@@ -4,7 +4,14 @@
   <link>https://eqsentry.com/map.html</link>
   <description>Recent significant earthquakes in the Nepal region, from the USGS catalogue. Not a prediction or warning service.</description>
   <language>en</language>
-  <lastBuildDate>Mon, 13 Jul 2026 04:08:16 GMT</lastBuildDate>
+  <lastBuildDate>Mon, 20 Jul 2026 04:12:24 GMT</lastBuildDate>
+    <item>
+      <title>M4.5 — 46 km NE of Tulsīpur, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/us7000t1s3</link>
+      <guid isPermaLink="false">us7000t1s3</guid>
+      <pubDate>Sun, 19 Jul 2026 10:45:30 GMT</pubDate>
+      <description>Magnitude 4.5, depth 10 km, at 28.46N 82.60E.</description>
+    </item>
     <item>
       <title>M4.5 — 13 km W of Naya Bāzār, India</title>
       <link>https://earthquake.usgs.gov/earthquakes/eventpage/us7000s8h7</link>
@@ -207,12 +214,5 @@
       <guid isPermaLink="false">us6000pjpb</guid>
       <pubDate>Mon, 13 Jan 2025 12:58:22 GMT</pubDate>
       <description>Magnitude 5.1, depth 10 km, at 28.48N 87.41E.</description>
-    </item>
-    <item>
-      <title>M5.0 — Southern Tibetan Plateau</title>
-      <link>https://earthquake.usgs.gov/earthquakes/eventpage/us6000pjp9</link>
-      <guid isPermaLink="false">us6000pjp9</guid>
-      <pubDate>Mon, 13 Jan 2025 12:57:37 GMT</pubDate>
-      <description>Magnitude 5.0, depth 10 km, at 28.41N 87.31E.</description>
     </item>
 </channel></rss>

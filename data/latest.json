@@ -1,7 +1,17 @@
 {
- "generated": "2026-07-13T04:08:16.537Z",
+ "generated": "2026-07-20T04:12:24.007Z",
  "source": "USGS Earthquake Hazards Program",
  "events": [
+  {
+   "id": "us7000t1s3",
+   "mag": 4.5,
+   "place": "46 km NE of Tulsīpur, Nepal",
+   "time": 1784457930968,
+   "lat": 28.4577,
+   "lon": 82.6023,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000t1s3"
+  },
   {
    "id": "us7000s8h7",
    "mag": 4.5,
@@ -291,16 +301,6 @@
    "lon": 87.4058,
    "depth": 10,
    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pjpb"
-  },
-  {
-   "id": "us6000pjp9",
-   "mag": 5,
-   "place": "Southern Tibetan Plateau",
-   "time": 1736773057995,
-   "lat": 28.405,
-   "lon": 87.3079,
-   "depth": 10,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pjp9"
   }
  ]
 }
