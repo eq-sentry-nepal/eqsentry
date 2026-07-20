@@ -1,1 +1,1 @@
-{"samples":[{"t":1784586623169,"c":{"site":"ok","data":"ok","usgs":"ok","emsc":"ok","tiles":"ok"},"ms":{"site":405,"data":230,"usgs":100,"emsc":1593,"tiles":101}}],"updated":"2026-07-20T22:30:23.873Z"}
+{"samples":[{"t":1784586623169,"c":{"site":"ok","data":"ok","usgs":"ok","emsc":"ok","tiles":"ok"},"ms":{"site":405,"data":230,"usgs":100,"emsc":1593,"tiles":101}},{"t":1784590812064,"c":{"site":"ok","data":"ok","usgs":"ok","emsc":"ok","tiles":"ok"},"ms":{"site":246,"data":98,"usgs":127,"emsc":1256,"tiles":159}}],"updated":"2026-07-20T23:40:12.380Z"}
