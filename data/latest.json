@@ -1,7 +1,17 @@
 {
- "generated": "2026-08-24T02:06:03.385Z",
+ "generated": "2026-08-31T05:52:52.833Z",
  "source": "USGS Earthquake Hazards Program",
  "events": [
+  {
+   "id": "us7000tbwb",
+   "mag": 5.2,
+   "place": "55 km NW of Kodāri̇̄, Nepal",
+   "time": 1787712730000,
+   "lat": 28.271,
+   "lon": 85.515,
+   "depth": 0,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tbwb"
+  },
   {
    "id": "us7000t1s3",
    "mag": 4.5,
@@ -291,16 +301,6 @@
    "lon": 87.169,
    "depth": 10,
    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pjq9"
-  },
-  {
-   "id": "us6000pjpb",
-   "mag": 5.1,
-   "place": "Southern Tibetan Plateau",
-   "time": 1736773102257,
-   "lat": 28.4815,
-   "lon": 87.4058,
-   "depth": 10,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pjpb"
   }
  ]
 }
