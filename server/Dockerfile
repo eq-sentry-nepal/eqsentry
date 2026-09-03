@@ -1,9 +1,9 @@
-FROM node:20-alpine
+FROM node:22-alpine
 WORKDIR /app
 
-# Install backend dependencies
-COPY package.json ./
-RUN npm install --omit=dev
+# Install backend dependencies from the reviewed lockfile.
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
 
 # Backend code
 COPY . ./
