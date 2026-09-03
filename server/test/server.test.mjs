@@ -57,6 +57,12 @@ test("health endpoint starts under Express 5 with security and CORS headers", as
   assert.equal(response.headers.get("access-control-allow-origin"), "https://eqsentry.com");
   assert.equal(response.headers.get("x-content-type-options"), "nosniff");
   assert.equal(response.headers.has("x-powered-by"), false);
+
+  const denied = await fetch(baseUrl + "/api/health", {
+    headers: { Origin: "https://untrusted.example" }
+  });
+  assert.equal(denied.status, 200);
+  assert.equal(denied.headers.get("access-control-allow-origin"), null);
 });
 
 test("read-only API endpoints return JSON", async () => {
@@ -160,7 +166,7 @@ test("the direct entrypoint reports success and serves health", async () => {
       PORT: String(port),
       ALERT_POLL: "false",
       STATUS_POLL_SECONDS: "0",
-      ALLOW_ORIGIN: "*",
+      ALLOW_ORIGIN: "https://local.example",
       STATIC_SITE_ROOT: path.parse(SERVER_ROOT).root
     },
     stdio: ["ignore", "pipe", "pipe"]
@@ -208,7 +214,7 @@ test("the direct entrypoint reports success and serves health", async () => {
   }
 
   assert.equal(health && health.ok, true, stderr || "health endpoint never became ready");
-  assert.equal(corsOrigin, "*");
+  assert.equal(corsOrigin, "https://local.example");
   assert.match(stdout, new RegExp(`EQ Sentry server on :${port}`));
   assert.equal(exposed && exposed.status, 404, "filesystem root became web-accessible");
 });
