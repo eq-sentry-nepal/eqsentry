@@ -5,17 +5,23 @@ A small Node/Express service that powers the parts of EQ Sentry that need a serv
 - **USGS proxy + cache** — `GET /api/usgs/:feed` (e.g. `/api/usgs/2.5_week`), cached 60s, serves stale if USGS is down. Avoids browser CORS and rate limits.
 - **Alert subscriptions with double opt-in** — `POST /api/subscribe`, `GET /api/confirm`, `GET /api/unsubscribe` (one-click).
 - **Automated alert engine** — polls USGS, matches each event to subscribers by district + magnitude, de-duplicates, and sends via SMS / email (Viber & WhatsApp stubs included).
-- Can also serve the static website, so one process runs everything.
+- Can also serve a sanitized production bundle when `STATIC_SITE_ROOT` is explicitly configured.
 
 ## Quick start
 ```bash
 cd server
 cp .env.example .env        # then fill in values
-npm install
-npm start                   # http://localhost:8787  (serves API + website)
+npm ci
+npm start                   # http://localhost:8787  (API only by default)
 ```
 No database server needed — subscribers are stored in `server/data/*.json` (atomic writes).
 For production scale, swap `lib/db.js` for Postgres.
+
+To serve the site and API from one process, first run `npm ci && npm run build`
+in the repository root, then set `STATIC_SITE_ROOT=../dist` in `server/.env`.
+Only generated bundles carrying the build marker are accepted; the repository
+root and backend directory are deliberately rejected to keep source and runtime
+subscriber data private.
 
 ## Delivery channels
 - **SMS (Nepal): Sparrow SMS** — set `SPARROW_TOKEN` and `SPARROW_FROM`. See https://sparrowsms.com.
