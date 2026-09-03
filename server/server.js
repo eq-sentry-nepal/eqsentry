@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
+import { existsSync, realpathSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { addPending, confirm, removeByUnsub, addReport, listReports, addPush, removeByEndpoint, listConfirmed, appendStatusSample, listStatusSamples, appendClientError, listClientErrors } from "./lib/db.js";
@@ -12,22 +13,46 @@ import { runOnce } from "./lib/alertEngine.js";
 import { pushConfigured, vapidPublicKey, sendPush } from "./lib/push.js";
 
 const env = process.env;
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const SITE_ROOT = path.join(__dirname, "..");           // serve the static website too
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const BASE = env.PUBLIC_BASE_URL || `http://localhost:${env.PORT || 8787}`;
+
+function containsPath(parent, child) {
+  const relative = path.relative(parent, child);
+  return relative === "" || (relative !== ".." && !relative.startsWith(".." + path.sep) && !path.isAbsolute(relative));
+}
+
+// Static serving is opt-in and accepts only a generated site bundle. This keeps
+// server source/data private and prevents Docker's /app parent (/) being served.
+export function resolveStaticRoot(candidate) {
+  if (!candidate) return null;
+  try {
+    const requested = path.isAbsolute(candidate) ? candidate : path.resolve(__dirname, candidate);
+    const resolved = realpathSync(requested);
+    if (resolved === path.parse(resolved).root) return null;
+    if (containsPath(resolved, __dirname) || containsPath(__dirname, resolved)) return null;
+    if (!existsSync(path.join(resolved, "index.html"))) return null;
+    if (!existsSync(path.join(resolved, ".eqsentry-static-root"))) return null;
+    return resolved;
+  } catch {
+    return null;
+  }
+}
+
+const SITE_ROOT = resolveStaticRoot(env.STATIC_SITE_ROOT);
 
 // Escape user-supplied values before interpolating them into HTML (emails / pages).
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g,
   (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-const app = express();
+export const app = express();
 app.disable("x-powered-by");
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));   // site ships its own meta CSP
 app.use(express.json({ limit: "20kb" }));
 const ORIGINS = (env.ALLOW_ORIGIN ||
   "https://eqsentry.com,https://eq-sentry-nepal.github.io,http://localhost:8080,http://localhost:8787")
-  .split(",").map((x) => x.trim());
-app.use(cors({ origin: ORIGINS }));
+  .split(",").map((x) => x.trim()).filter(Boolean);
+app.use(cors({ origin: ORIGINS.includes("*") ? "*" : ORIGINS }));
 const apiLimiter = rateLimit({ windowMs: 60_000, limit: 120, standardHeaders: "draft-8", legacyHeaders: false });
 const writeLimiter = rateLimit({ windowMs: 60_000, limit: 12, standardHeaders: "draft-8", legacyHeaders: false });
 app.use("/api/", apiLimiter);
@@ -237,9 +262,10 @@ async function sampleStatus() {
   ]);
   await appendStatusSample({ t: Date.now(), usgs, emsc });
 }
-const STATUS_POLL_S = Number(env.STATUS_POLL_SECONDS) || 300;
-sampleStatus().catch(() => {});
-setInterval(() => sampleStatus().catch(() => {}), STATUS_POLL_S * 1000);
+const statusPollRaw = String(env.STATUS_POLL_SECONDS ?? "").trim();
+const statusPollParsed = Number(statusPollRaw);
+const STATUS_POLL_S = !statusPollRaw || !Number.isFinite(statusPollParsed) || statusPollParsed < 0
+  ? 300 : statusPollParsed === 0 ? 0 : Math.max(10, statusPollParsed);
 
 /* ── Community "Did you feel it?" reports ── */
 app.post("/api/report", async (req, res) => {
@@ -268,16 +294,55 @@ app.get("/api/reports", async (_req, res) => {
   res.set("Cache-Control", "public, max-age=30").json({ reports: out });
 });
 
-/* ── Static website (optional: run site + API from one process) ── */
-app.use(express.static(SITE_ROOT, { extensions: ["html"] }));
+// Keep parser failures and rejected async handlers on API routes machine-readable.
+app.use("/api", (error, _req, res, next) => {
+  if (res.headersSent) return next(error);
+  const candidate = Number(error.status || error.statusCode) || 500;
+  const status = candidate >= 400 && candidate < 600 ? candidate : 500;
+  if (status >= 500) console.error("[api]", error);
+  const message = status === 400 ? "invalid request"
+    : status === 413 ? "request too large"
+      : status === 415 ? "unsupported content encoding"
+        : status < 500 ? "request rejected" : "internal server error";
+  res.status(status).json({ error: message });
+});
+
+/* ── Static website (optional: point STATIC_SITE_ROOT at a generated dist/) ── */
+if (SITE_ROOT) app.use(express.static(SITE_ROOT, { extensions: ["html"] }));
 
 const PORT = Number(env.PORT) || 8787;
-app.listen(PORT, () => {
-  console.log(`EQ Sentry server on :${PORT}  (SMS:${smsConfigured()} email:${emailConfigured()})`);
+function startBackgroundJobs() {
+  if (STATUS_POLL_S > 0) {
+    sampleStatus().catch(() => {});
+    setInterval(() => sampleStatus().catch(() => {}), STATUS_POLL_S * 1000);
+  }
+
   if (String(env.ALERT_POLL).toLowerCase() === "true") {
-    const every = (Number(env.ALERT_POLL_SECONDS) || 120) * 1000;
+    const alertPollParsed = Number(String(env.ALERT_POLL_SECONDS ?? "").trim());
+    const alertPollSeconds = Number.isFinite(alertPollParsed) && alertPollParsed > 0
+      ? Math.max(10, alertPollParsed) : 120;
+    const every = alertPollSeconds * 1000;
     console.log(`[engine] polling every ${every / 1000}s`);
     runOnce().then((r) => console.log("[engine] initial", r)).catch(() => {});
     setInterval(() => runOnce().then((r) => r.sent && console.log("[engine]", r)).catch(() => {}), every);
   }
-});
+}
+
+export function startServer(port = PORT) {
+  const server = app.listen(port, (error) => {
+    // Express 5 passes bind errors to this callback instead of throwing them.
+    // Never log a successful startup or begin background polling in that case.
+    if (error) {
+      console.error(`[startup] unable to listen on :${port}:`, error.message);
+      process.exitCode = 1;
+      return;
+    }
+    const address = server.address();
+    const boundPort = address && typeof address === "object" ? address.port : port;
+    console.log(`EQ Sentry server on :${boundPort}  (SMS:${smsConfigured()} email:${emailConfigured()})`);
+    startBackgroundJobs();
+  });
+  return server;
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === __filename) startServer();
