@@ -6,6 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "test": "node --test test/server.test.mjs",
     "alerts:once": "node lib/alertEngine.js --once",
     "dev": "node --watch server.js"
   },
@@ -14,8 +15,8 @@
     "cors": "^2.8.5",
     "express-rate-limit": "^8.0.0",
     "helmet": "^8.0.0",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "nodemailer": "^9.0.6",
     "web-push": "^3.6.7"
   }

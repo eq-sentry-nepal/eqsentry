@@ -21,9 +21,10 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const argRoot = process.argv.indexOf("--root");
+const SOURCE_ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ROOT = argRoot > -1
   ? path.resolve(process.argv[argRoot + 1])
-  : path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
+  : SOURCE_ROOT;
 
 const failures = [];
 const fail = (msg) => failures.push(msg);
@@ -44,12 +45,10 @@ const allFiles = walk(".").map((p) => p.replace(/^\.\//, ""));
 const htmlPages = allFiles.filter((p) => p.endsWith(".html") && !p.includes("/"));
 const jsFiles = allFiles.filter((p) => (p.endsWith(".js") || p.endsWith(".mjs")) && !p.startsWith("server/node_modules"));
 
-/* 1 ── JS syntax. Node <22 can't `--check` ESM .js files (server/ uses import),
-   so on older Nodes those are checked with module detection enabled. */
-const nodeMajor = Number(process.versions.node.split(".")[0]);
+/* 1 ── JS syntax. Both package manifests declare type:module, so Node 18+
+   resolves the server's .js files as ESM without an experimental flag. */
 for (const f of jsFiles) {
   const args = ["--check", path.join(ROOT, f)];
-  if (nodeMajor < 22 && f.startsWith("server/") && f.endsWith(".js")) args.unshift("--experimental-detect-module");
   try { execFileSync(process.execPath, args, { stdio: "pipe" }); }
   catch (e) { fail(`JS syntax: ${f} — ${String(e.stderr || e.message).split("\n").slice(0, 2).join(" ")}`); }
 }
@@ -129,13 +128,14 @@ try {
   const shell = [...sw.matchAll(/"([^"]+)"/g)].map((m) => m[1])
     .filter((s) => /\.(html|css|js|json|webmanifest|svg|png|pdf)$/.test(s));
   for (const s of shell) if (!exists(s)) fail(`sw shell: ${s} not found on disk`);
-  if (!/const VERSION = "eqsentry-v\d+"/.test(sw)) fail("sw: VERSION constant malformed");
+  if (!/const\s+VERSION\s*=\s*["']eqsentry-v\d+["']/.test(sw)) fail("sw: VERSION constant malformed");
 } catch (e) { fail("service-worker.js unreadable: " + e.message); }
 
 /* 8b ── site version shown in the footer must match package.json */
 try {
-  const pkgVer = JSON.parse(read("package.json")).version;
-  const i18nVer = (read("assets/js/i18n.js").match(/var VERSION = "([^"]+)"/) || [])[1];
+  const pkgFile = exists("package.json") ? path.join(ROOT, "package.json") : path.join(SOURCE_ROOT, "package.json");
+  const pkgVer = JSON.parse(readFileSync(pkgFile, "utf8")).version;
+  const i18nVer = (read("assets/js/i18n.js").match(/var\s+VERSION\s*=\s*["']([^"']+)["']/) || [])[1];
   if (!i18nVer) fail("version: VERSION constant missing in assets/js/i18n.js");
   else if (i18nVer !== pkgVer) fail(`version: footer shows v${i18nVer} but package.json says ${pkgVer}`);
 } catch (e) { fail("version check error: " + e.message); }
