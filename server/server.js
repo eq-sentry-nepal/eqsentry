@@ -52,7 +52,7 @@ app.use(express.json({ limit: "20kb" }));
 const ORIGINS = (env.ALLOW_ORIGIN ||
   "https://eqsentry.com,https://eq-sentry-nepal.github.io,http://localhost:8080,http://localhost:8787")
   .split(",").map((x) => x.trim()).filter(Boolean);
-app.use(cors({ origin: ORIGINS.includes("*") ? "*" : ORIGINS }));
+app.use(cors({ origin: ORIGINS }));
 const apiLimiter = rateLimit({ windowMs: 60_000, limit: 120, standardHeaders: "draft-8", legacyHeaders: false });
 const writeLimiter = rateLimit({ windowMs: 60_000, limit: 12, standardHeaders: "draft-8", legacyHeaders: false });
 app.use("/api/", apiLimiter);
