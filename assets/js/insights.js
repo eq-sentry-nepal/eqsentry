@@ -192,7 +192,8 @@
   function initTimeMachine() {
     if (typeof L === "undefined") return;
     tm.map = L.map("tmMap", { scrollWheelZoom: false, zoomControl: true }).setView([28.3, 84.0], 6);
-    var tlURL = function () { return document.documentElement.classList.contains("light") ? "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" : "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"; };
+    // Tile template lives in config.js (window.EQ_BASEMAP); overridable at build time.
+    var tlURL = function () { return window.EQ_BASEMAP ? window.EQ_BASEMAP() : "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"; };
     tm.tiles = L.tileLayer(tlURL(), { subdomains: "abcd", maxZoom: 12, attribution: '&copy; OpenStreetMap &copy; CARTO' }).addTo(tm.map);
     document.addEventListener("eq:themechange", function () { if (tm.tiles) tm.tiles.setUrl(tlURL()); });
     tm.layer = L.layerGroup().addTo(tm.map);

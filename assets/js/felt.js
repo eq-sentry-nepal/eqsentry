@@ -88,9 +88,10 @@
   }
 
   /* ---- map ---- */
+  // Tile template lives in config.js (window.EQ_BASEMAP) so every map shares one
+  // source; the build can override it from CARTO_BASEMAP_DARK / _LIGHT.
   function tileURL() {
-    return document.documentElement.classList.contains("light")
-      ? "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+    return window.EQ_BASEMAP ? window.EQ_BASEMAP()
       : "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
   }
   function initMap() {
