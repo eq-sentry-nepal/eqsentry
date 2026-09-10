@@ -41,16 +41,19 @@
     function magColor(m) { if (m == null) return "#9aa3af"; if (m < 4) return "#34D399"; if (m < 5) return "#FB923C"; if (m < 6) return "#F97316"; if (m < 7) return "#EF4444"; return "#b91c1c"; }
     function catRecent() {
       var cat = (window.EQ_DATA && window.EQ_DATA.catalog && window.EQ_DATA.catalog.features) || [];
-      return cat.map(function (f) { var p = f.properties; return { id: f.id, mag: p.mag, place: p.place, time: p.time, source: "USGS", src: "catalog" }; }).sort(function (a, b) { return b.time - a.time; });
+      // NOTE: catalogue features carry their id on properties, not on the feature
+      // itself (f.id is undefined for every stored quake) — read both.
+      return cat.map(function (f) { var p = f.properties; return { id: f.id || p.id, mag: p.mag, place: p.place, time: p.time, source: "USGS", src: "catalog" }; }).sort(function (a, b) { return b.time - a.time; });
     }
     function render(list) {
       if (!list || !list.length) list = catRecent();
       if (!list.length) { feed.innerHTML = '<div class="feed-empty">' + window.EQ.t("la.empty") + '</div>'; return; }
       feed.innerHTML = list.slice(0, 6).map(function (q) {
         var col = magColor(q.mag);
-        var deep = q.id
-          ? 'map.html#src=' + (q.src || (q.source === "EMSC" ? "emsc" : "live")) + '&eq=' + encodeURIComponent(q.id)
-          : 'map.html';
+        // Always carry the source, even when there's no id: a bare "map.html" makes
+        // the map fall back to its default (catalogue) view instead of this quake's.
+        var src = q.src || (q.source === "EMSC" ? "emsc" : "live");
+        var deep = 'map.html#src=' + src + (q.id ? '&eq=' + encodeURIComponent(q.id) : '');
         return '<a class="feed-item" href="' + deep + '">' +
           '<span class="fi-mag" style="background:' + col + '">' + dg(q.mag != null ? q.mag.toFixed(1) : "?") + '</span>' +
           '<span class="fi-meta"><span class="fi-place">' + esc(PL(q.place || "—")) + '</span>' +

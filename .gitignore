@@ -18,3 +18,8 @@ dist/
 # Local backups (daily scheduled task)
 server/backups/
 _backups/
+_pre-pull-backup/
+
+# Locally generated dependency-audit reports (weekly scheduled task, not CI).
+# Delete this line if you'd rather keep the audit history in the repo.
+docs/dep-audit-*.md

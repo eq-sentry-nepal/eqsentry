@@ -15,6 +15,7 @@
   var state = { source: "catalog", period: "week", mag: "2.5", region: "nepal", heat: false, plates: true, dateFrom: null, dateTo: null, fmag: 0 };
   var map, markerLayer, nepalRect, current = [];
   var pendingFocus = null;              // quake id from a #eq= deep link (home feed)
+  var focusWidened = false;             // did we already retry that deep link on the 30-day feed?
   var markersById = {};
   var cache = {}; // local files
   var heatLayer = null, platesLayer = null;
@@ -281,9 +282,19 @@
 
     // Deep link from the homepage feed: focus one quake and open its popup.
     if (pendingFocus) {
-      var fm = markersById[pendingFocus];
+      var fid = pendingFocus;
+      var fm = markersById[fid];
       pendingFocus = null;                 // one attempt only — never hijack a later re-render
-      if (!fm) { try { toast(T("map.eqgone")); } catch (e) {} }
+      if (!fm) {
+        // Not in the 7-day live feed? The home feed spans 30 days — widen once.
+        if (!focusWidened && (state.source === "live" || state.source === "emsc")) {
+          focusWidened = true;
+          pendingFocus = fid;
+          widenForFocus();
+          return;                          // the retry render will do the focusing
+        }
+        try { toast(T("map.eqgone")); } catch (e) {}
+      }
       if (fm) {
       var fll = fm.getLatLng();
       map.setView(fll, Math.max(map.getZoom() || 0, 9), { animate: true });
@@ -339,16 +350,27 @@
     }).filter(function (e) { return e.lat != null && e.lon != null && !isNaN(e.time) && inRegion(e.lon, e.lat); })
       .sort(function (a, b) { return b.time - a.time; });
   }
-  function sourceFeed() {
+  // wide=true widens the window to 30 days, to match the home feed (2.5_month)
+  // when resolving a deep-linked quake that has aged out of the 7-day view.
+  function sourceFeed(wide) {
     if (state.source === "emsc") {
-      var R = REGIONS[state.region], days = state.period === "day" ? 1 : 7;
+      var R = REGIONS[state.region], days = wide ? 30 : (state.period === "day" ? 1 : 7);
       var start = new Date(Date.now() - days * 86400000).toISOString().slice(0, 19);
       var params = "format=json&orderby=time&limit=900&minmagnitude=" + state.mag + "&starttime=" + start
         + (state.region === "world" ? "" : "&minlatitude=" + R.minLat + "&maxlatitude=" + R.maxLat + "&minlongitude=" + R.minLon + "&maxlongitude=" + R.maxLon);
       var url = window.EQ_EMSC_URL ? window.EQ_EMSC_URL(params) : "https://www.seismicportal.eu/fdsnws/event/1/query?" + params;
       return { url: url, parse: parseEMSC };
     }
-    return { url: window.EQ_FEED_URL(state.mag + "_" + state.period), parse: parseUSGS };
+    return { url: window.EQ_FEED_URL(state.mag + "_" + (wide ? "month" : state.period)), parse: parseUSGS };
+  }
+
+  // A deep-linked quake missing from the 7-day feed isn't necessarily gone — the
+  // home feed spans 30 days. Retry once on the wider feed before giving up.
+  function widenForFocus() {
+    var f = sourceFeed(true);
+    fetch(f.url).then(function (r) { if (!r.ok) throw new Error("http"); return r.json(); })
+      .then(function (data) { flyAndRender(f.parse(data)); })
+      .catch(function () { pendingFocus = null; try { toast(T("map.eqgone")); } catch (e) {} });
   }
 
   function load() {
@@ -367,7 +389,7 @@
           var c = f.geometry.coordinates; return inRegion(c[0], c[1]);
         }).map(function (f) {
           var c = f.geometry.coordinates, p = f.properties;
-          return { id: p.id, lat: c[1], lon: c[0], depth: c[2], mag: p.mag, place: p.place, time: p.time, url: p.url };
+          return { id: f.id || p.id, lat: c[1], lon: c[0], depth: c[2], mag: p.mag, place: p.place, time: p.time, url: p.url };
         }).sort(function (a, b) { return b.time - a.time; });
         flyAndRender(applyFilters(list));
       }).catch(fail);
