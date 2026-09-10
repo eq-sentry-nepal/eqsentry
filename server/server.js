@@ -50,7 +50,9 @@ app.disable("x-powered-by");
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));   // site ships its own meta CSP
 app.use(express.json({ limit: "20kb" }));
 const ORIGINS = (env.ALLOW_ORIGIN ||
-  "https://eqsentry.com,https://eq-sentry-nepal.github.io,http://localhost:8080,http://localhost:8787")
+  // www is the host that actually serves the site; the apex is kept so an
+  // apex->www redirect (or anyone reaching it directly) still passes CORS.
+  "https://www.eqsentry.com,https://eqsentry.com,https://eq-sentry-nepal.github.io,http://localhost:8080,http://localhost:8787")
   .split(",").map((x) => x.trim()).filter(Boolean);
 app.use(cors({ origin: ORIGINS }));
 const apiLimiter = rateLimit({ windowMs: 60_000, limit: 120, standardHeaders: "draft-8", legacyHeaders: false });
@@ -92,7 +94,7 @@ app.get("/api/emsc", async (req, res) => {
   if (hit && Date.now() - hit.t < 60000) return res.json(hit.data);
   try {
     const r = await fetch(`https://www.seismicportal.eu/fdsnws/event/1/query?${key}`,
-      { headers: { "User-Agent": "EQSentry/1.0 (+https://eqsentry.com)", "Accept": "application/json" } });
+      { headers: { "User-Agent": "EQSentry/1.0 (+https://www.eqsentry.com)", "Accept": "application/json" } });
     if (r.status === 204) {                               // FDSN returns 204 when nothing matches
       const empty = { type: "FeatureCollection", features: [] };
       emscCache.set(key, { t: Date.now(), data: empty });

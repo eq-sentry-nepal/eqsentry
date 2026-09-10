@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /server/
 
-Sitemap: https://eqsentry.com/sitemap.xml
+Sitemap: https://www.eqsentry.com/sitemap.xml

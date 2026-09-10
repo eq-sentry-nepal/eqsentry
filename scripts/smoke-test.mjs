@@ -113,7 +113,8 @@ for (const page of htmlPages) {
 /* 7 ── sitemap coverage (noindex pages — search, 404 — are exempt) */
 try {
   const sm = read("sitemap.xml");
-  const inMap = [...sm.matchAll(/<loc>https:\/\/eqsentry\.com\/([^<]*)<\/loc>/g)]
+  // Accept apex or www so switching the canonical host doesn't break this check.
+  const inMap = [...sm.matchAll(/<loc>https:\/\/(?:www\.)?eqsentry\.com\/([^<]*)<\/loc>/g)]
     .map((m) => m[1] === "" ? "index.html" : m[1]);
   for (const p of htmlPages) {
     if (/name="robots"[^>]*noindex/.test(read(p))) continue;

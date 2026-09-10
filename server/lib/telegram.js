@@ -11,7 +11,7 @@ export function tgAnnounce(ev) {
   const when = new Date(ev.time).toISOString().replace("T", " ").slice(0, 16) + " UTC";
   const text =
     `🔴 M${m} earthquake — ${ev.place}\n${when}\n` +
-    `${ev.url || "https://eqsentry.com/map.html"}\n\n` +
+    `${ev.url || "https://www.eqsentry.com/map.html"}\n\n` +
     `भूकम्प गएको छ। हल्लाइ महसुस भए: घोप्टिनुहोस्, ओत लिनुहोस्, समाउनुहोस्।`;
   const body = JSON.stringify({ chat_id: env.TELEGRAM_CHAT_ID, text, disable_web_page_preview: true });
   return new Promise((resolve) => {
