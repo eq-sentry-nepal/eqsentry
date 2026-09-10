@@ -86,6 +86,56 @@ if (basemapOverrides.length) {
   await writeFile(CONFIG_JS, cfg);
 }
 
+/* ── Pre-render the English i18n strings into the markup ───────────────────
+   Every page ships its copy inside <script id="page-i18n"> and its elements
+   empty (<h1 data-i18n="pp.h1"></h1>), with i18n.js filling them in at runtime.
+   That means a crawler with no JS sees a blank page — index.html had an empty
+   <h1> and ~85 characters of body text. Google renders JS, but on a deferred
+   pass, and pages with no static content routinely fail to get indexed.
+
+   So bake the English strings into the markup here. The JSON block stays put,
+   so i18n.js still works exactly as before and the Nepali switch is unaffected
+   — it just overwrites identical English text on load instead of empty nodes.
+   Only elements that are empty are touched; anything with content is left be. */
+const escHTML = (s) => String(s)
+  .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+function prerenderI18n(html) {
+  const block = html.match(
+    /<script[^>]*id="page-i18n"[^>]*>([\s\S]*?)<\/script>/i
+  );
+  if (!block) return { html, filled: 0 };
+  let dict;
+  try { dict = (JSON.parse(block[1]) || {}).en; } catch { return { html, filled: 0 }; }
+  if (!dict) return { html, filled: 0 };
+
+  let filled = 0;
+  // Empty element carrying data-i18n / data-i18n-html -> insert the string.
+  const fill = (raw, attr) => raw.replace(
+    new RegExp(`(<(\\w+)\\b[^>]*\\b${attr}="([^"]+)"[^>]*>)\\s*(</\\2>)`, "g"),
+    (m, open, _tag, key, close) => {
+      const val = dict[key];
+      if (val == null) return m;
+      filled++;
+      return open + (attr === "data-i18n" ? escHTML(val) : val) + close;
+    }
+  );
+  let out = fill(html, "data-i18n");
+  out = fill(out, "data-i18n-html");
+  return { html: out, filled };
+}
+
+let prerendered = 0, prerenderedPages = 0;
+for (const file of await walk(DIST)) {
+  if (!file.endsWith(".html")) continue;
+  const src = await readFile(file, "utf8");
+  const { html, filled } = prerenderI18n(src);
+  if (!filled) continue;
+  await writeFile(file, html);
+  prerendered += filled; prerenderedPages++;
+}
+console.log(`Pre-rendered ${prerendered} i18n strings across ${prerenderedPages} pages`);
+
 let css = 0, js = 0, before = 0, after = 0;
 for (const file of await walk(DIST)) {
   if (file.endsWith(".css")) {
