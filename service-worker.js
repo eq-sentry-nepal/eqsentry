@@ -1,7 +1,7 @@
 /* EQ Sentry service worker — offline app shell.
    Preparedness guidance and emergency numbers stay available even with no
    network (critical right after a quake). Live USGS data is never cached. */
-const VERSION = "eqsentry-v34";
+const VERSION = "eqsentry-v35";
 const SHELL = [
   "./", "index.html", "map.html", "insights.html", "preparedness.html",
   "resources.html", "alerts.html", "plan.html", "felt.html", "about.html", "privacy.html", "offline.html", "assets/js/config.js",
@@ -50,7 +50,10 @@ self.addEventListener("fetch", (e) => {
 
   // Data files: stale-while-revalidate — serve the cached copy instantly and
   // refresh it in the background so the next view is current.
-  if (url.origin === location.origin && (/\/data\/[^?]*\.(json|geojson|csv|xml)$/.test(url.pathname) || /assets\/js\/data-layers\.js$/.test(url.pathname))) {
+  // config.js is here too, deliberately: it carries build-time injected values
+  // (CARTO key, EQ_API), so a cache-first copy silently reverts them for every
+  // returning visitor until VERSION changes. This way a missed bump self-heals.
+  if (url.origin === location.origin && (/\/data\/[^?]*\.(json|geojson|csv|xml)$/.test(url.pathname) || /assets\/js\/(data-layers|config)\.js$/.test(url.pathname))) {
     e.respondWith(
       caches.open(VERSION).then((c) =>
         c.match(req).then((hit) => {
