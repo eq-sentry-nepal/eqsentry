@@ -125,16 +125,73 @@ function prerenderI18n(html) {
   return { html: out, filled };
 }
 
-let prerendered = 0, prerenderedPages = 0;
+/* ── Crawlable nav + footer ────────────────────────────────────────────────
+   i18n.js builds the header and footer in JS, so #site-header / #site-footer
+   ship as empty shells: the static HTML has no internal links at all and no
+   anchor text for a crawler to follow. Emit a real link list into them here.
+   i18n.js replaces it with the interactive header on load — this is the same
+   content rendered twice, not hidden text. Labels are read from i18n.js's own
+   CORE.en dictionary so they can never drift out of sync with the real nav. */
+function coreEn(src) {
+  const c = src.indexOf("var CORE = {");
+  if (c < 0) return null;
+  const e = src.indexOf("en: {", c);
+  if (e < 0) return null;
+  const start = src.indexOf("{", e + 4);
+  let depth = 0, i = start;
+  for (; i < src.length; i++) {
+    if (src[i] === "{") depth++;
+    else if (src[i] === "}" && --depth === 0) break;
+  }
+  try { return new Function("return " + src.slice(start, i + 1))(); } catch { return null; }
+}
+
+const NAV = [
+  ["index.html", "nav.home"], ["map.html", "nav.map"], ["insights.html", "nav.insights"],
+  ["preparedness.html", "nav.prep"], ["plan.html", "nav.plan"], ["felt.html", "nav.felt"],
+  ["building.html", "nav.building"], ["district.html", "nav.district"],
+  ["aftermath.html", "nav.after"], ["facts.html", "nav.facts"], ["faq.html", "nav.faq"],
+  ["resources.html", "nav.resources"], ["directory.html", "nav.directory"],
+  ["alerts.html", "nav.alerts"], ["about.html", "nav.about"]
+];
+
+const core = coreEn(await readFile(path.join(DIST, "assets", "js", "i18n.js"), "utf8"));
+let navHTML = "", footHTML = "";
+if (core && core["nav.home"]) {
+  const links = NAV.filter(([, k]) => core[k])
+    .map(([href, k]) => `<a href="${href}">${escHTML(core[k])}</a>`).join("\n      ");
+  navHTML = `\n    <nav aria-label="Primary">\n      ${links}\n    </nav>\n  `;
+  footHTML = "\n    " + ["foot.tagline", "foot.police", "foot.disclaimer"]
+    .filter((k) => core[k]).map((k) => `<p>${escHTML(core[k])}</p>`).join("\n    ") + "\n  ";
+} else {
+  console.warn("build: could not read CORE.en — skipping nav/footer pre-render");
+}
+
+function injectShell(html) {
+  let n = 0;
+  if (navHTML) {
+    html = html.replace(/(<header[^>]*id="site-header"[^>]*>)\s*(<\/header>)/i,
+      (m, a, b) => { n++; return a + navHTML + b; });
+  }
+  if (footHTML) {
+    html = html.replace(/(<footer[^>]*id="site-footer"[^>]*>)\s*(<\/footer>)/i,
+      (m, a, b) => { n++; return a + footHTML + b; });
+  }
+  return { html, n };
+}
+
+let prerendered = 0, prerenderedPages = 0, shells = 0;
 for (const file of await walk(DIST)) {
   if (!file.endsWith(".html")) continue;
   const src = await readFile(file, "utf8");
-  const { html, filled } = prerenderI18n(src);
-  if (!filled) continue;
-  await writeFile(file, html);
-  prerendered += filled; prerenderedPages++;
+  const step1 = prerenderI18n(src);
+  const step2 = injectShell(step1.html);
+  if (!step1.filled && !step2.n) continue;
+  await writeFile(file, step2.html);
+  prerendered += step1.filled; shells += step2.n;
+  if (step1.filled) prerenderedPages++;
 }
-console.log(`Pre-rendered ${prerendered} i18n strings across ${prerenderedPages} pages`);
+console.log(`Pre-rendered ${prerendered} i18n strings across ${prerenderedPages} pages; filled ${shells} nav/footer shells`);
 
 let css = 0, js = 0, before = 0, after = 0;
 for (const file of await walk(DIST)) {
