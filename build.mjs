@@ -17,6 +17,7 @@
    ========================================================================== */
 import { cp, mkdir, rm, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { execFileSync } from "node:child_process";
 import CleanCSS from "clean-css";
 import { minify as terser } from "terser";
 
@@ -192,6 +193,37 @@ for (const file of await walk(DIST)) {
   if (step1.filled) prerenderedPages++;
 }
 console.log(`Pre-rendered ${prerendered} i18n strings across ${prerenderedPages} pages; filled ${shells} nav/footer shells`);
+
+/* ── Sitemap freshness ─────────────────────────────────────────────────────
+   The sitemap ships <changefreq> and <priority> — both of which Google states
+   it ignores — and no <lastmod> at all, so it carries no signal that anything
+   ever changed. Stamp each URL with its file's last commit date so a recrawl
+   can be prioritised. If git isn't available we omit lastmod rather than
+   invent a date: a wrong freshness claim is worse than none. */
+try {
+  const smPath = path.join(DIST, "sitemap.xml");
+  let sm = await readFile(smPath, "utf8");
+  const gitDate = (file) => {
+    try {
+      return execFileSync("git", ["log", "-1", "--format=%cI", "--", file],
+        { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim() || null;
+    } catch { return null; }
+  };
+  let stamped = 0;
+  sm = sm.replace(/<loc>([^<]+)<\/loc>(?!\s*<lastmod>)/g, (m, loc) => {
+    const rel = loc.replace(/^https?:\/\/[^/]+\/?/, "") || "index.html";
+    const d = gitDate(rel);
+    if (!d) return m;
+    stamped++;
+    return `${m}<lastmod>${d.slice(0, 10)}</lastmod>`;
+  });
+  if (stamped) {
+    await writeFile(smPath, sm);
+    console.log(`Sitemap: stamped ${stamped} <lastmod> dates`);
+  } else {
+    console.warn("Sitemap: no <lastmod> stamped (git unavailable?)");
+  }
+} catch { /* the sitemap is optional — never fail a build over it */ }
 
 let css = 0, js = 0, before = 0, after = 0;
 for (const file of await walk(DIST)) {
