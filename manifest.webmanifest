@@ -1,6 +1,6 @@
 {
   "name": "EQ Sentry — Earthquake Safety Nepal",
-  "short_name": "EQ Sentry",
+  "short_name": "EQ Sentry Nepal",
   "description": "Real-time earthquake monitoring, preparedness and emergency resources for Nepal.",
   "start_url": "./index.html",
   "scope": "./",
