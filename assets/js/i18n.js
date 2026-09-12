@@ -488,10 +488,12 @@
         '<div class="foot-grid">' +
           '<div>' +
             '<div class="brand">' + LOGO + '<span>EQ&nbsp;Sentry</span></div>' +
-            '<p data-i18n="foot.tagline" style="color:#94a3b8;max-width:34ch"></p>' +
+            // #94a3b8 was hardcoded: fine on the dark footer (7.4:1) but only
+            // 2.2:1 on the light one, which is the theme Lighthouse audits.
+            '<p data-i18n="foot.tagline" style="color:var(--ink-soft);max-width:34ch"></p>' +
           '</div>' +
           '<div>' +
-            '<h4 data-i18n="foot.explore"></h4>' +
+            '<h3 data-i18n="foot.explore"></h3>' +
             '<a href="map.html" data-i18n="nav.map"></a>' +
             '<a href="insights.html" data-i18n="nav.insights"></a>' +
             '<a href="history.html" data-i18n="nav.history"></a>' +
@@ -500,7 +502,7 @@
             '<a href="search.html" data-i18n="nav.search"></a>' +
           '</div>' +
           '<div>' +
-            '<h4 data-i18n="foot.safety"></h4>' +
+            '<h3 data-i18n="foot.safety"></h3>' +
             '<a href="preparedness.html" data-i18n="foot.prep"></a>' +
             '<a href="plan.html" data-i18n="nav.plan"></a>' +
             '<a href="building.html" data-i18n="nav.building"></a>' +
@@ -509,7 +511,7 @@
             '<a href="resources.html" data-i18n="foot.resources"></a>' +
           '</div>' +
           '<div>' +
-            '<h4 data-i18n="foot.data"></h4>' +
+            '<h3 data-i18n="foot.data"></h3>' +
             '<a href="https://earthquake.usgs.gov/earthquakes/feed/" target="_blank" rel="noopener" data-i18n="foot.datasrc"></a>' +
             '<a href="https://www.seismicportal.eu/" target="_blank" rel="noopener" data-i18n="foot.emsc"></a>' +
             '<a href="https://www.seismonepal.gov.np/" target="_blank" rel="noopener" data-i18n="foot.seismo"></a>' +
@@ -518,7 +520,7 @@
             '<a href="about.html" data-i18n="foot.about"></a>' +
           '</div>' +
           '<div>' +
-            '<h4 data-i18n="foot.emergency"></h4>' +
+            '<h3 data-i18n="foot.emergency"></h3>' +
             '<div class="foot-emergency">' +
               '<div class="big" data-i18n="foot.bignum"></div>' +
               '<div data-i18n="foot.police" style="font-size:.82rem"></div>' +
