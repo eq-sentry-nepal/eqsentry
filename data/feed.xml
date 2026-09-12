@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"><channel>
   <title>EQ Sentry — earthquakes (M4.5+) near Nepal</title>
-  <link>https://www.eqsentry.com/map.html</link>
+  <link>https://eqsentry.com/map.html</link>
   <description>Recent significant earthquakes in the Nepal region, from the USGS catalogue. Not a prediction or warning service.</description>
   <language>en</language>
-  <lastBuildDate>Mon, 07 Sep 2026 05:00:18 GMT</lastBuildDate>
+  <lastBuildDate>Sat, 12 Sep 2026 01:02:50 GMT</lastBuildDate>
+    <item>
+      <title>M4.9 — 90 km NNE of Chitre, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/us7000tfur</link>
+      <guid isPermaLink="false">us7000tfur</guid>
+      <pubDate>Tue, 08 Sep 2026 16:08:34 GMT</pubDate>
+      <description>Magnitude 4.9, depth 10 km, at 29.21N 83.96E.</description>
+    </item>
     <item>
       <title>M5.2 — 55 km NW of Kodāri̇̄, Nepal</title>
       <link>https://earthquake.usgs.gov/earthquakes/eventpage/us7000tbwb</link>
@@ -207,12 +214,5 @@
       <guid isPermaLink="false">us6000pkc3</guid>
       <pubDate>Thu, 16 Jan 2025 03:20:02 GMT</pubDate>
       <description>Magnitude 4.9, depth 10 km, at 28.78N 87.41E.</description>
-    </item>
-    <item>
-      <title>M4.6 — Southern Tibetan Plateau</title>
-      <link>https://earthquake.usgs.gov/earthquakes/eventpage/us6000pjq9</link>
-      <guid isPermaLink="false">us6000pjq9</guid>
-      <pubDate>Mon, 13 Jan 2025 15:44:42 GMT</pubDate>
-      <description>Magnitude 4.6, depth 10 km, at 28.42N 87.17E.</description>
     </item>
 </channel></rss>

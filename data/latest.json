@@ -1,7 +1,17 @@
 {
- "generated": "2026-09-07T05:00:18.076Z",
+ "generated": "2026-09-12T01:02:50.369Z",
  "source": "USGS Earthquake Hazards Program",
  "events": [
+  {
+   "id": "us7000tfur",
+   "mag": 4.9,
+   "place": "90 km NNE of Chitre, Nepal",
+   "time": 1788883714843,
+   "lat": 29.2076,
+   "lon": 83.9584,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tfur"
+  },
   {
    "id": "us7000tbwb",
    "mag": 5.2,
@@ -291,16 +301,6 @@
    "lon": 87.4095,
    "depth": 10,
    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pkc3"
-  },
-  {
-   "id": "us6000pjq9",
-   "mag": 4.6,
-   "place": "Southern Tibetan Plateau",
-   "time": 1736783082737,
-   "lat": 28.4247,
-   "lon": 87.169,
-   "depth": 10,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pjq9"
   }
  ]
 }
