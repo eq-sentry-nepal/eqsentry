@@ -12,5 +12,8 @@
   "devDependencies": {
     "clean-css": "^5.3.3",
     "terser": "^5.31.6"
+  },
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
   }
 }
