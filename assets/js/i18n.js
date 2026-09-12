@@ -743,6 +743,13 @@
     }
     var mainEl = document.querySelector("section");
     if (mainEl && !mainEl.id) { mainEl.id = "main"; mainEl.setAttribute("tabindex", "-1"); }
+    // The skip link needs a real landmark to land in, and Lighthouse flags the
+    // page as having no main landmark without it. A <main> element would be
+    // better, but that means restructuring 24 pages; role="main" is equivalent
+    // to assistive tech. Only set it if the page has no <main> of its own.
+    if (mainEl && !document.querySelector("main, [role='main']")) {
+      mainEl.setAttribute("role", "main");
+    }
     // Text size now lives in the accessibility panel (assets/js/a11y.js).
 
     // Day / night theme toggle
