@@ -126,13 +126,21 @@ function prerenderI18n(html) {
   return { html: out, filled };
 }
 
-/* ── Crawlable nav + footer ────────────────────────────────────────────────
-   i18n.js builds the header and footer in JS, so #site-header / #site-footer
-   ship as empty shells: the static HTML has no internal links at all and no
-   anchor text for a crawler to follow. Emit a real link list into them here.
-   i18n.js replaces it with the interactive header on load — this is the same
-   content rendered twice, not hidden text. Labels are read from i18n.js's own
-   CORE.en dictionary so they can never drift out of sync with the real nav. */
+/* ── Crawlable internal links (footer only) ────────────────────────────────
+   i18n.js builds the header and footer in JS, so both ship as empty shells and
+   the static HTML has no internal links or anchor text for a crawler to follow.
+   We emit a real link list — but into the FOOTER only, never #site-header.
+
+   Why not the header: .site-header is position:sticky/top:0/z-index:1000, and
+   nothing in the CSS styles a bare <nav>/<a> inside it (only .nav-links a). A
+   pre-rendered list there paints as an unstyled band pinned to the top of the
+   viewport until i18n.js swaps in the real header — a visible flash on every
+   single page load. The footer is below the fold and .site-footer a is already
+   styled, so the same links cost nothing visually.
+
+   i18n.js replaces the footer on load, so this is the same content rendered
+   twice, not hidden text. Labels come from i18n.js's own CORE.en dictionary so
+   they cannot drift out of sync with the real navigation. */
 function coreEn(src) {
   const c = src.indexOf("var CORE = {");
   if (c < 0) return null;
@@ -157,23 +165,20 @@ const NAV = [
 ];
 
 const core = coreEn(await readFile(path.join(DIST, "assets", "js", "i18n.js"), "utf8"));
-let navHTML = "", footHTML = "";
+let footHTML = "";
 if (core && core["nav.home"]) {
   const links = NAV.filter(([, k]) => core[k])
     .map(([href, k]) => `<a href="${href}">${escHTML(core[k])}</a>`).join("\n      ");
-  navHTML = `\n    <nav aria-label="Primary">\n      ${links}\n    </nav>\n  `;
-  footHTML = "\n    " + ["foot.tagline", "foot.police", "foot.disclaimer"]
-    .filter((k) => core[k]).map((k) => `<p>${escHTML(core[k])}</p>`).join("\n    ") + "\n  ";
+  const p = (k) => (core[k] ? `<p>${escHTML(core[k])}</p>\n    ` : "");
+  footHTML = `\n    ${p("foot.tagline")}<nav aria-label="Site">\n      ${links}\n    </nav>\n    ` +
+    `${p("foot.police")}${p("foot.disclaimer")}`;
 } else {
-  console.warn("build: could not read CORE.en — skipping nav/footer pre-render");
+  console.warn("build: could not read CORE.en — skipping footer pre-render");
 }
 
+// Footer only — see the note above on why #site-header is left alone.
 function injectShell(html) {
   let n = 0;
-  if (navHTML) {
-    html = html.replace(/(<header[^>]*id="site-header"[^>]*>)\s*(<\/header>)/i,
-      (m, a, b) => { n++; return a + navHTML + b; });
-  }
   if (footHTML) {
     html = html.replace(/(<footer[^>]*id="site-footer"[^>]*>)\s*(<\/footer>)/i,
       (m, a, b) => { n++; return a + footHTML + b; });
