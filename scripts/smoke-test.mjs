@@ -110,18 +110,28 @@ for (const page of htmlPages) {
   }
 }
 
-/* 7 ── sitemap coverage (noindex pages — search, 404 — are exempt) */
+/* 7 ── sitemap coverage (noindex pages — search, 404 — are exempt).
+   sitemap.xml is an index; the page URLs live in its children. */
+const SITEMAP_CHILDREN = ["sitemap-core.xml", "sitemap-safety.xml", "sitemap-data.xml"];
 try {
-  const sm = read("sitemap.xml");
+  const idx = read("sitemap.xml");
+  for (const c of SITEMAP_CHILDREN) {
+    if (!idx.includes(c)) fail(`sitemap index: does not list ${c}`);
+  }
   // Accept apex or www so switching the canonical host doesn't break this check.
-  const inMap = [...sm.matchAll(/<loc>https:\/\/(?:www\.)?eqsentry\.com\/([^<]*)<\/loc>/g)]
-    .map((m) => m[1] === "" ? "index.html" : m[1]);
+  const inMap = SITEMAP_CHILDREN.flatMap((c) =>
+    [...read(c).matchAll(/<loc>https:\/\/(?:www\.)?eqsentry\.com\/([^<]*)<\/loc>/g)]
+      .map((m) => (m[1] === "" ? "index.html" : m[1]))
+  );
+  // A URL listed twice is a real defect — it went unnoticed for 9 entries once.
+  const dupes = [...new Set(inMap.filter((p, i) => inMap.indexOf(p) !== i))];
+  if (dupes.length) fail(`sitemap: duplicate entries — ${dupes.join(", ")}`);
   for (const p of htmlPages) {
     if (/name="robots"[^>]*noindex/.test(read(p))) continue;
     if (!inMap.includes(p)) fail(`sitemap: missing ${p}`);
   }
   for (const p of inMap) if (!htmlPages.includes(p)) fail(`sitemap: lists non-existent ${p}`);
-} catch (e) { fail("sitemap.xml unreadable: " + e.message); }
+} catch (e) { fail("sitemap unreadable: " + e.message); }
 
 /* 8 ── service-worker shell */
 try {

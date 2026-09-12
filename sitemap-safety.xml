@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Preparedness & response cluster: the pages that answer "what do I do?".
+     These carry the most search value, so they get their own sitemap to make
+     their indexing status readable on its own in Search Console.
+     <lastmod> is injected per-URL at build time (see build.mjs). -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://www.eqsentry.com/preparedness.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/preparedness.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/preparedness.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/preparedness.html"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/plan.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/plan.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/plan.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/plan.html"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/school-plan.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/school-plan.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/school-plan.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/school-plan.html"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/building.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/building.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/building.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/building.html"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/aftermath.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/aftermath.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/aftermath.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/aftermath.html"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/felt.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/felt.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/felt.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/felt.html"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/resources.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/resources.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/resources.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/resources.html"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/directory.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/directory.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/directory.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/directory.html"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/faq.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/faq.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/faq.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/faq.html"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/facts.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/facts.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/facts.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/facts.html"/>
+  </url>
+</urlset>

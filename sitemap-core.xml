@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Site core: homepage and the service/trust pages. The homepage lives here
+     alone-ish so its indexing status is unmistakable in Search Console rather
+     than being averaged into a pile of 20 URLs.
+     <lastmod> is injected per-URL at build time (see build.mjs). -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://www.eqsentry.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/alerts.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/alerts.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/alerts.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/alerts.html"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/about.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/about.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/about.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/about.html"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/status.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/status.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/status.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/status.html"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/privacy.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/privacy.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/privacy.html"/>
+  </url>
+</urlset>

@@ -29,7 +29,9 @@ const DIST = path.join(ROOT, "dist");
 const SITE_DIRS = new Set(["assets", "data"]);
 const SITE_FILES = new Set([
   "_headers", "_redirects", ".nojekyll", "CNAME",
-  "manifest.webmanifest", "netlify.toml", "robots.txt", "service-worker.js", "sitemap.xml"
+  "manifest.webmanifest", "netlify.toml", "robots.txt", "service-worker.js",
+  // sitemap.xml is an index; the children must ship too or it points at 404s.
+  "sitemap.xml", "sitemap-core.xml", "sitemap-safety.xml", "sitemap-data.xml"
 ]);
 
 function shouldShip(entry) {
@@ -205,30 +207,31 @@ console.log(`Pre-rendered ${prerendered} i18n strings across ${prerenderedPages}
    ever changed. Stamp each URL with its file's last commit date so a recrawl
    can be prioritised. If git isn't available we omit lastmod rather than
    invent a date: a wrong freshness claim is worse than none. */
-try {
-  const smPath = path.join(DIST, "sitemap.xml");
-  let sm = await readFile(smPath, "utf8");
-  const gitDate = (file) => {
-    try {
-      return execFileSync("git", ["log", "-1", "--format=%cI", "--", file],
-        { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim() || null;
-    } catch { return null; }
-  };
-  let stamped = 0;
-  sm = sm.replace(/<loc>([^<]+)<\/loc>(?!\s*<lastmod>)/g, (m, loc) => {
-    const rel = loc.replace(/^https?:\/\/[^/]+\/?/, "") || "index.html";
-    const d = gitDate(rel);
-    if (!d) return m;
-    stamped++;
-    return `${m}<lastmod>${d.slice(0, 10)}</lastmod>`;
-  });
-  if (stamped) {
-    await writeFile(smPath, sm);
-    console.log(`Sitemap: stamped ${stamped} <lastmod> dates`);
-  } else {
-    console.warn("Sitemap: no <lastmod> stamped (git unavailable?)");
-  }
-} catch { /* the sitemap is optional — never fail a build over it */ }
+const gitDate = (file) => {
+  try {
+    return execFileSync("git", ["log", "-1", "--format=%cI", "--", file],
+      { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim() || null;
+  } catch { return null; }
+};
+let stampedTotal = 0;
+for (const name of ["sitemap.xml", "sitemap-core.xml", "sitemap-safety.xml", "sitemap-data.xml"]) {
+  try {
+    const smPath = path.join(DIST, name);
+    let sm = await readFile(smPath, "utf8");
+    let stamped = 0;
+    // Works for both <url><loc> (page sitemaps) and <sitemap><loc> (the index).
+    sm = sm.replace(/<loc>([^<]+)<\/loc>(?!\s*<lastmod>)/g, (m, loc) => {
+      const rel = loc.replace(/^https?:\/\/[^/]+\/?/, "") || "index.html";
+      const d = gitDate(rel);
+      if (!d) return m;
+      stamped++;
+      return `${m}<lastmod>${d.slice(0, 10)}</lastmod>`;
+    });
+    if (stamped) { await writeFile(smPath, sm); stampedTotal += stamped; }
+  } catch { /* sitemaps are optional — never fail a build over one */ }
+}
+if (stampedTotal) console.log(`Sitemaps: stamped ${stampedTotal} <lastmod> dates`);
+else console.warn("Sitemaps: no <lastmod> stamped (git unavailable?)");
 
 let css = 0, js = 0, before = 0, after = 0;
 for (const file of await walk(DIST)) {

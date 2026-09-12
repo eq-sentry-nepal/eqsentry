@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Live data & reference cluster: the map, statistics and historical record.
+     Separated so Search Console shows whether the data-driven pages index
+     differently from the preparedness guides — they often do, because these
+     lean more on JavaScript.
+     <lastmod> is injected per-URL at build time (see build.mjs). -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://www.eqsentry.com/map.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/map.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/map.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/map.html"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/insights.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/insights.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/insights.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/insights.html"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/district.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/district.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/district.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/district.html"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/history.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/history.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/history.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/history.html"/>
+  </url>
+  <url>
+    <loc>https://www.eqsentry.com/glossary.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.eqsentry.com/glossary.html"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="https://www.eqsentry.com/glossary.html?lang=ne"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.eqsentry.com/glossary.html"/>
+  </url>
+</urlset>
