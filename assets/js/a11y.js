@@ -52,6 +52,9 @@
     panel = document.createElement("div");
     panel.className = "a11y-panel"; panel.id = "a11yPanel";
     panel.setAttribute("role", "dialog"); panel.setAttribute("aria-label", T("a11y.title", "Accessibility"));
+    // A backdrop makes this modal visually; aria-modal makes it modal to AT too,
+    // so screen readers don't wander into the page behind it.
+    panel.setAttribute("aria-modal", "true");
     panel.innerHTML =
       '<button class="a11y-close" type="button" aria-label="' + T("ui.close", "Close") + '">×</button>' +
       '<h2><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="4" r="1.7"/><path d="M4 8h16M12 8v6m0 0-3.2 6m3.2-6 3.2 6"/></svg><span data-l="title"></span></h2>' +
@@ -83,7 +86,19 @@
     });
     panel.querySelector(".a11y-close").addEventListener("click", close);
     backdrop.addEventListener("click", close);
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && panel.classList.contains("open")) close(); });
+    document.addEventListener("keydown", function (e) {
+      if (!panel.classList.contains("open")) return;
+      if (e.key === "Escape") { close(); return; }
+      // Same Tab trap the mobile drawer uses: without it, Tab walks out of the
+      // dialog and onto the page hidden behind the backdrop.
+      if (e.key !== "Tab") return;
+      var items = [].slice.call(panel.querySelectorAll('a[href], button:not([disabled]), input, select, textarea'))
+        .filter(function (el) { return el.offsetParent !== null; });
+      if (!items.length) return;
+      var first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
     document.addEventListener("eq:langchange", relabel);
   }
 

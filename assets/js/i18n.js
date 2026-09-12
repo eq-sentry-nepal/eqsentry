@@ -442,13 +442,23 @@
         '<div class="dropdown-menu">' + items + '</div></div>';
     }
     var ENUMS = [["100","es.police"],["101","es.fire"],["102","es.amb"],["103","es.traffic"],["104","es.childsearch"],["1098","es.childline"],["1113","es.policehq"],["1114","es.apf"],["1115","es.health"],["1130","es.redcross"],["1149","es.disaster"]];
-    var seq = ENUMS.map(function (e) {
-      return '<a href="tel:' + e[0] + '"><b data-dg="' + e[0] + '">' + e[0] + '</b> <span data-i18n="' + e[1] + '"></span></a>';
-    }).join("");
+    // The marquee needs two copies of the list to loop seamlessly, but the
+    // second copy is purely decorative. Without aria-hidden a screen reader
+    // announces all 11 emergency numbers twice; without tabindex="-1" a
+    // keyboard user has to Tab through 22 links to get past the header.
+    // Both are needed together — aria-hidden on a focusable element is its own
+    // bug (reachable by Tab, invisible to AT).
+    function esSeq(clone) {
+      var deco = clone ? ' aria-hidden="true" tabindex="-1"' : '';
+      return ENUMS.map(function (e) {
+        return '<a href="tel:' + e[0] + '"' + deco + '><b data-dg="' + e[0] + '">' + e[0] + '</b> <span data-i18n="' + e[1] + '"></span></a>';
+      }).join("");
+    }
+    var seq = esSeq(false);
     return '' +
       '<div class="emergency-strip">' +
         '<span class="es-label" data-i18n="es.label"></span>' +
-        '<div class="es-marquee"><div class="es-track">' + seq + seq + '</div></div>' +
+        '<div class="es-marquee"><div class="es-track">' + seq + esSeq(true) + '</div></div>' +
       '</div>' +
       '<div class="container nav">' +
         '<a class="brand" href="index.html">' + LOGO +
