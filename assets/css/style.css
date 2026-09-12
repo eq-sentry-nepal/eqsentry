@@ -203,6 +203,17 @@ html[lang="ne"] .eyebrow { letter-spacing: .06em; font-family: var(--font); }
   background: rgba(10,12,16,.72);
   backdrop-filter: blur(14px) saturate(140%);
   border-bottom: 1px solid var(--line);
+  /* Reserve the height JS will fill. #site-header and #alertBar both ship empty
+     — the header is injected on DOMContentLoaded, the banner only after the USGS
+     fetch returns — so without this the whole page jumped down ~180px on mobile
+     (measured CLS 0.207). Heights measured on the live site, not guessed. */
+  min-height: 105px;
+}
+#alertBar { min-height: 41px; }
+@media (max-width: 768px) {
+  .site-header { min-height: 95px; }
+  /* the banner wraps to two lines at this width */
+  #alertBar { min-height: 86px; }
 }
 .emergency-strip { display:flex; align-items:stretch; overflow:hidden; background: rgba(255,77,46,.12); border-bottom:1px solid rgba(255,77,46,.22); }
 .emergency-strip .es-label { flex:0 0 auto; display:flex; align-items:center; white-space:nowrap;
