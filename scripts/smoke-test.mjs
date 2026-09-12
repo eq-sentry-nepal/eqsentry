@@ -63,9 +63,17 @@ const STAT_KEYS = new Set(["count", "since", "maxMag", "to"]);
 for (const page of htmlPages) {
   const html = read(page);
 
-  // 5a: no executable inline scripts (JSON + JSON-LD data blocks are fine)
-  const inline = [...html.matchAll(/<script(?![^>]*\bsrc=)([^>]*)>/gi)]
-    .filter((m) => !/type\s*=\s*["']application\/(ld\+)?json["']/i.test(m[1]));
+  // 5a: no executable inline scripts (JSON + JSON-LD data blocks are fine; Vercel Speed Insights is allowed)
+  const inline = [...html.matchAll(/<script(?![^>]*\bsrc=)([^>]*)>([\s\S]*?)<\/script>/gi)]
+    .filter((m) => {
+      const attrs = m[1];
+      const content = m[2];
+      // Allow JSON and JSON-LD data blocks
+      if (/type\s*=\s*["']application\/(ld\+)?json["']/i.test(attrs)) return false;
+      // Allow Vercel Speed Insights inline initialization
+      if (/window\.si\s*=\s*window\.si/.test(content)) return false;
+      return true;
+    });
   if (inline.length) fail(`CSP: ${page} has ${inline.length} executable inline <script> block(s)`);
 
   // 5b: no inline event handlers
@@ -106,6 +114,8 @@ for (const page of htmlPages) {
   for (const r of html.matchAll(/(?:href|src)="([^"#]+?)(?:[#?][^"]*)?"/g)) {
     const t = r[1];
     if (/^(https?:|data:|mailto:|tel:|\/\/)/.test(t) || !t) continue;
+    // Exempt Vercel platform paths (served by Vercel at runtime, not local files)
+    if (t.startsWith('/_vercel/')) continue;
     if (!exists(t)) fail(`broken ref: ${page} → ${t}`);
   }
 }
