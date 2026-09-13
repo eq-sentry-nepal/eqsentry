@@ -44,6 +44,7 @@ function walk(dir, out = []) {
 const allFiles = walk(".").map((p) => p.replace(/^\.\//, ""));
 const htmlPages = allFiles.filter((p) => p.endsWith(".html") && !p.includes("/"));
 const jsFiles = allFiles.filter((p) => (p.endsWith(".js") || p.endsWith(".mjs")) && !p.startsWith("server/node_modules"));
+const carouselImages = new Set();
 
 /* 1 ── JS syntax. Both package manifests declare type:module, so Node 18+
    resolves the server's .js files as ESM without an experimental flag. */
@@ -82,12 +83,14 @@ for (const page of htmlPages) {
 
   // 2: page dict block
   const dictKeys = new Set();
+  let pageDict = null;
   const m = html.match(/<script type="application\/json" id="page-i18n">([\s\S]*?)<\/script>/);
   if (m) {
     let dict = null;
     try { dict = JSON.parse(m[1]); }
     catch (e) { fail(`i18n JSON: ${page} — ${e.message.slice(0, 120)}`); }
     if (dict) {
+      pageDict = dict;
       const en = Object.keys(dict.en || {}), ne = Object.keys(dict.ne || {});
       for (const k of en) if (!ne.includes(k)) fail(`i18n parity: ${page} — "${k}" missing in ne`);
       for (const k of ne) if (!en.includes(k)) fail(`i18n parity: ${page} — "${k}" missing in en`);
@@ -118,6 +121,26 @@ for (const page of htmlPages) {
     if (t.startsWith('/_vercel/')) continue;
     if (!exists(t)) fail(`broken ref: ${page} → ${t}`);
   }
+
+  // 6b: carousel images live in data-imgs, so ordinary src checks cannot see
+  // missing files or a translated list that has more cards than illustrations.
+  for (const list of html.matchAll(/<ul\b([^>]*\bclass="[^"]*\bphase-src\b[^"]*"[^>]*)>([\s\S]*?)<\/ul>/g)) {
+    const attr = (name) => (list[1].match(new RegExp(`\\b${name}="([^"]*)"`)) || [])[1] || "";
+    const phase = attr("data-phase");
+    const images = attr("data-imgs").split("|").map((s) => s.trim());
+    const key = attr("data-i18n-html");
+    for (const lang of ["en", "ne"]) {
+      const content = key ? pageDict?.[lang]?.[key] || "" : list[2];
+      const count = [...content.matchAll(/<li\b/g)].length;
+      if (!count || images.length !== count || images.some((s) => !s))
+        fail(`carousel: ${page} ${phase} (${lang}) has ${count} cards but incomplete images`);
+    }
+    for (const img of images) {
+      if (!img) continue;
+      carouselImages.add(img);
+      if (!exists(img)) fail(`carousel image: ${page} → ${img} not found`);
+    }
+  }
 }
 
 /* 7 ── sitemap coverage (noindex pages — search, 404 — are exempt).
@@ -147,8 +170,9 @@ try {
 try {
   const sw = read("service-worker.js");
   const shell = [...sw.matchAll(/"([^"]+)"/g)].map((m) => m[1])
-    .filter((s) => /\.(html|css|js|json|webmanifest|svg|png|pdf)$/.test(s));
+    .filter((s) => /\.(html|css|js|json|webmanifest|svg|png|webp|pdf)$/.test(s));
   for (const s of shell) if (!exists(s)) fail(`sw shell: ${s} not found on disk`);
+  for (const img of carouselImages) if (!shell.includes(img)) fail(`sw shell: carousel image ${img} is unavailable before its first view offline`);
   if (!/const\s+VERSION\s*=\s*["']eqsentry-v\d+["']/.test(sw)) fail("sw: VERSION constant malformed");
 } catch (e) { fail("service-worker.js unreadable: " + e.message); }
 

@@ -1,7 +1,7 @@
 /* EQ Sentry service worker — offline app shell.
    Preparedness guidance and emergency numbers stay available even with no
    network (critical right after a quake). Live USGS data is never cached. */
-const VERSION = "eqsentry-v37";
+const VERSION = "eqsentry-v39";
 const SHELL = [
   "./", "index.html", "map.html", "insights.html", "preparedness.html",
   "resources.html", "alerts.html", "plan.html", "felt.html", "about.html", "privacy.html", "offline.html", "assets/js/config.js",
@@ -20,14 +20,52 @@ const SHELL = [
   "assets/js/pages/print-btn.js", "assets/js/pages/related.js", "assets/js/pages/status.js",
   "assets/downloads/eq-emergency-kit-checklist.pdf", "assets/downloads/eq-family-plan.pdf",
   "assets/downloads/eq-school-college-plan.pdf",
-  "manifest.webmanifest", "assets/icons/icon.svg", "assets/icons/icon-192.png"
+  "manifest.webmanifest", "assets/icons/icon.svg", "assets/icons/icon-192.png",
+  // Pre-cache safety illustrations so off-screen cards also work offline.
+  "assets/img/safety/anchor.webp",
+  "assets/img/safety/safespot.webp",
+  "assets/img/safety/gobag.webp",
+  "assets/img/safety/familyplan.webp",
+  "assets/img/safety/utilities.webp",
+  "assets/img/safety/inspection.webp",
+  "assets/img/safety/dropcover.webp",
+  "assets/img/safety/window.webp",
+  "assets/img/safety/outdoor.webp",
+  "assets/img/safety/vehicle.webp",
+  "assets/img/safety/bed.webp",
+  "assets/img/safety/nolift.webp",
+  "assets/img/safety/aftershock.webp",
+  "assets/img/safety/firstaid.webp",
+  "assets/img/safety/gasleak.webp",
+  "assets/img/safety/evacstairs.webp",
+  "assets/img/safety/radio.webp",
+  "assets/img/safety/sms.webp",
+  "assets/img/safety/shoes.webp",
+  "assets/img/safety/gasoff.webp",
+  "assets/img/safety/dangerwall.webp",
+  "assets/img/safety/openground.webp",
+  "assets/img/safety/softstory.webp",
+  "assets/img/safety/brickwall.webp",
+  "assets/img/safety/addedfloor.webp",
+  "assets/img/safety/heavyroof.webp",
+  "assets/img/safety/xcrack.webp",
+  "assets/img/safety/weakcol.webp",
+  "assets/img/safety/badground.webp",
+  "assets/img/safety/lshape.webp",
+  "assets/img/safety/frame.webp",
+  "assets/img/safety/bands.webp",
+  "assets/img/safety/cornersteel.webp",
+  "assets/img/safety/symmetric.webp",
+  "assets/img/safety/code.webp",
+  "assets/img/safety/securedtank.webp"
 ];
 
 self.addEventListener("install", (e) => {
   // Cache each entry individually so one missing file doesn't void the whole shell.
   e.waitUntil(
     caches.open(VERSION)
-      .then((c) => Promise.all(SHELL.map((u) => c.add(u).catch(() => {}))))
+      // A new shell version must bypass the host's one-day asset HTTP cache.
+      .then((c) => Promise.all(SHELL.map((u) => c.add(new Request(u, { cache: "reload" })).catch(() => {}))))
       .then(() => self.skipWaiting())
   );
 });

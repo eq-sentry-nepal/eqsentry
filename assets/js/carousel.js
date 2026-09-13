@@ -25,7 +25,7 @@
      </div>
 
    REAL IMAGES: add data-imgs to the .phase-src with one URL per card, in order,
-   separated by "|".  Missing/blank entries fall back to the labelled placeholder.
+   separated by "|". Missing or failed images fall back to the matching pictogram.
      <ul class="phase-src" data-phase="before"
          data-imgs="assets/img/before-1.jpg | assets/img/before-2.jpg | …" …></ul>
 
@@ -45,8 +45,10 @@
 
   function media(url, n, art) {
     if (url) {
-      return '<img src="' + url + '" alt="" loading="lazy" decoding="async">' +
-        '<span class="phase-card-num">' + n + '</span>';
+      // Keep the pictogram underneath while loading and if the image fails.
+      // Adjacent translated captions describe the illustration in both languages.
+      return (art ? artCard(art, n) : placeholder(n)) +
+        '<img src="' + url.replace(/&/g, "&amp;").replace(/"/g, "&quot;") + '" alt="" width="768" height="432" loading="lazy" decoding="async">';
     }
     if (art) return artCard(art, n);
     return placeholder(n);
@@ -118,13 +120,23 @@
       var lis = src.querySelectorAll("li");
       var out = "";
       for (var i = 0; i < lis.length; i++) {
-        var label = "image placeholder: " + phase + " step " + (i + 1);
+        var number = window.EQ ? window.EQ.dg(i + 1) : i + 1;
         out += '<article class="phase-card">' +
-          '<div class="phase-card-img" title="' + label + '">' + media(imgs[i], i + 1, arts[i]) + '</div>' +
+          '<div class="phase-card-img">' + media(imgs[i], number, arts[i]) + '</div>' +
           '<div class="phase-card-body">' + lis[i].innerHTML + '</div>' +
           '</article>';
       }
       track.innerHTML = out;
+      track.querySelectorAll(".phase-card-img img").forEach(function (img) {
+        function loaded() { img.classList.add("is-loaded"); }
+        img.addEventListener("load", loaded, { once: true });
+        img.addEventListener("error", function () { img.remove(); }, { once: true });
+        // A memory-cached image may finish before its listeners are attached.
+        if (img.complete) {
+          if (img.naturalWidth) loaded();
+          else img.remove();
+        }
+      });
     }
   }
 
