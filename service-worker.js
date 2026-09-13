@@ -1,7 +1,7 @@
 /* EQ Sentry service worker — offline app shell.
    Preparedness guidance and emergency numbers stay available even with no
    network (critical right after a quake). Live USGS data is never cached. */
-const VERSION = "eqsentry-v39";
+const VERSION = "eqsentry-v40";
 const SHELL = [
   "./", "index.html", "map.html", "insights.html", "preparedness.html",
   "resources.html", "alerts.html", "plan.html", "felt.html", "about.html", "privacy.html", "offline.html", "assets/js/config.js",
@@ -29,6 +29,7 @@ const SHELL = [
   "assets/img/safety/utilities.webp",
   "assets/img/safety/inspection.webp",
   "assets/img/safety/dropcover.webp",
+  "assets/img/safety/drop.webp", "assets/img/safety/cover.webp",
   "assets/img/safety/window.webp",
   "assets/img/safety/outdoor.webp",
   "assets/img/safety/vehicle.webp",

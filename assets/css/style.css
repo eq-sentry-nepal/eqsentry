@@ -553,9 +553,9 @@ html[lang="ne"] .phase .tag { letter-spacing:0; text-transform:none; font-family
 .dch-num { position:absolute; top:14px; right:16px; width:27px; height:27px; display:flex; align-items:center; justify-content:center;
   font-family:var(--mono); font-weight:700; font-size:.82rem; color:var(--accent-text);
   background:var(--surface); border:1px solid var(--line-2); border-radius:50%; z-index:2; }
-.dch-illus { width:100%; height:150px; margin-bottom:16px; display:flex; align-items:center; justify-content:center;
-  background:var(--surface-2); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
-.dch-illus svg { width:90%; height:90%; display:block; }
+.dch-illus { width:100%; aspect-ratio:16 / 9; margin-bottom:16px; display:flex; align-items:center; justify-content:center;
+  background:#171C27; border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+.dch-illus img { width:100%; height:100%; object-fit:contain; display:block; }
 
 /* Before / During / After — phase image carousels */
 .phase-row { margin-bottom:38px; }

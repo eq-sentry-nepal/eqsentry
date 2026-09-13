@@ -4,6 +4,12 @@ The six carousels on `preparedness.html`, `aftermath.html`, and `building.html`
 use 36 original illustrations across 38 cards. First aid and stairs evacuation
 are shared between pages. Every card has a local image in `assets/img/safety/`.
 
+The three Drop, Cover, Hold On cards on both the homepage and preparedness page
+also use matching illustrations. The Drop and Cover poses were made from the
+existing Hold On illustration to keep the person, clothing, table, and palette
+consistent. The shared Hold On image is `dropcover.webp`; the other steps are
+`drop.webp` and `cover.webp`. This brings the set to 38 images across 44 placements.
+
 ## Design and language
 
 Artwork follows the site's charcoal, slate, and vermilion palette. Text stays in
@@ -12,8 +18,8 @@ same picture works in English and Nepali. The adjacent caption describes the
 image; empty image alt text avoids reading that description twice.
 
 Image panels preserve a 16:9 ratio and contain the entire illustration at every
-breakpoint. The original themed pictograms remain underneath as a loading and
-network-failure fallback. Step numbers follow the selected language.
+breakpoint. Carousel images retain their original themed pictograms underneath
+as a loading and network-failure fallback. Step numbers follow the selected language.
 
 The before-earthquake utility and building-inspection images now match their
 captions (previously represented by a clock and a document).
@@ -26,6 +32,7 @@ captions (previously represented by a clock and a document).
 - Exact prompts: `docs/image-prompts-building.json`,
   `docs/image-prompts-response.json`, `docs/image-prompts-preparation.json`.
 - Targeted image corrections: `docs/image-prompts-response-edits.json`.
+- Drop and Cover pose prompts: `docs/image-prompts-dch.json`.
 - Full-resolution local originals: `output/image-sources/` (not deployed).
 
 All safety illustrations are in the service-worker shell, including cards a
