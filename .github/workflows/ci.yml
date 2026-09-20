@@ -21,6 +21,8 @@ jobs:
       - name: Audit site build dependencies
         run: npm audit --audit-level=moderate
       - run: node scripts/smoke-test.mjs
+      - name: Verify tectonic animation mechanics
+        run: node scripts/test-tectonics.mjs
       - name: Verify production build
         run: npm run build
       - name: Smoke-test production bundle

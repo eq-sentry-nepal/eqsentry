@@ -1,20 +1,20 @@
 /* EQ Sentry service worker — offline app shell.
    Preparedness guidance and emergency numbers stay available even with no
    network (critical right after a quake). Live USGS data is never cached. */
-const VERSION = "eqsentry-v40";
+const VERSION = "eqsentry-v42";
 const SHELL = [
   "./", "index.html", "map.html", "insights.html", "preparedness.html",
   "resources.html", "alerts.html", "plan.html", "felt.html", "about.html", "privacy.html", "offline.html", "assets/js/config.js",
   "building.html", "district.html", "directory.html", "faq.html", "facts.html", "aftermath.html",
   "glossary.html", "history.html", "school-plan.html", "search.html", "404.html", "status.html",
-  "assets/css/style.css",
+  "assets/css/style.css", "assets/css/tectonics.css",
   "assets/js/i18n.js", "assets/js/config.js", "assets/js/engine.js", "assets/js/a11y.js", "assets/js/map.js",
   "assets/js/insights.js", "assets/js/data-layers.js", "assets/js/push.js", "assets/js/plan.js", "assets/js/felt.js",
   "assets/js/carousel.js", "assets/js/seismograph.js", "assets/js/plan-generator.js", "assets/js/monitor.js",
   "assets/js/mydistrict.js",
   "assets/js/district.js", "assets/js/districts-data.js", "assets/js/directory.js", "assets/js/directory-data.js",
   "assets/js/pages/home.js", "assets/js/pages/prep-quiz.js", "assets/js/pages/alerts-form.js",
-  "assets/js/pages/resources-form.js", "assets/js/pages/about-sim.js", "assets/js/pages/faq.js",
+  "assets/js/pages/resources-form.js", "assets/js/tectonics-model.js", "assets/js/tectonics.js", "assets/js/pages/faq.js",
   "assets/js/pages/insights-plus.js", "assets/js/pages/drill.js", "assets/js/pages/hazard-hunt.js",
   "assets/js/pages/wallet-card.js", "assets/js/pages/glossary.js", "assets/js/pages/search.js",
   "assets/js/pages/print-btn.js", "assets/js/pages/related.js", "assets/js/pages/status.js",
