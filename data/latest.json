@@ -1,14 +1,14 @@
 {
- "generated": "2026-09-28T05:40:50.798Z",
+ "generated": "2026-10-05T06:00:44.279Z",
  "source": "USGS Earthquake Hazards Program",
  "events": [
   {
    "id": "us7000tfur",
    "mag": 4.9,
-   "place": "89 km NNE of Chitre, Nepal",
-   "time": 1788883714816,
-   "lat": 29.2001,
-   "lon": 83.9584,
+   "place": "91 km NNE of Chitre, Nepal",
+   "time": 1788883714802,
+   "lat": 29.2121,
+   "lon": 83.9688,
    "depth": 10,
    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tfur"
   },
