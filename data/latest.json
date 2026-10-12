@@ -1,14 +1,24 @@
 {
- "generated": "2026-10-05T06:00:44.279Z",
+ "generated": "2026-10-12T06:16:34.503Z",
  "source": "USGS Earthquake Hazards Program",
  "events": [
   {
+   "id": "us6000u0hz",
+   "mag": 5.1,
+   "place": "31 km NW of Bāgeshwar, India",
+   "time": 1791305592231,
+   "lat": 30.0423,
+   "lon": 79.5468,
+   "depth": 16.528,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000u0hz"
+  },
+  {
    "id": "us7000tfur",
    "mag": 4.9,
-   "place": "91 km NNE of Chitre, Nepal",
-   "time": 1788883714802,
-   "lat": 29.2121,
-   "lon": 83.9688,
+   "place": "90 km NNE of Chitre, Nepal",
+   "time": 1788883714747,
+   "lat": 29.2042,
+   "lon": 83.9776,
    "depth": 10,
    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tfur"
   },
@@ -291,16 +301,6 @@
    "lon": 87.6046,
    "depth": 10,
    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pky9"
-  },
-  {
-   "id": "us6000pkc3",
-   "mag": 4.9,
-   "place": "Southern Tibetan Plateau",
-   "time": 1736997602464,
-   "lat": 28.7777,
-   "lon": 87.4095,
-   "depth": 10,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pkc3"
   }
  ]
 }
