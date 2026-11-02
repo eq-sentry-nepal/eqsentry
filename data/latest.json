@@ -1,15 +1,15 @@
 {
- "generated": "2026-10-26T05:06:22.054Z",
+ "generated": "2026-11-02T06:33:56.213Z",
  "source": "USGS Earthquake Hazards Program",
  "events": [
   {
    "id": "us6000u0hz",
-   "mag": 5.1,
-   "place": "31 km NW of Bāgeshwar, India",
-   "time": 1791305592231,
-   "lat": 30.0423,
-   "lon": 79.5468,
-   "depth": 16.528,
+   "mag": 5,
+   "place": "32 km NW of Bāgeshwar, India",
+   "time": 1791305592828,
+   "lat": 30.0758,
+   "lon": 79.5747,
+   "depth": 19.552,
    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000u0hz"
   },
   {
