@@ -4,7 +4,14 @@
   <link>https://eqsentry.com/map.html</link>
   <description>Recent significant earthquakes in the Nepal region, from the USGS catalogue. Not a prediction or warning service.</description>
   <language>en</language>
-  <lastBuildDate>Mon, 02 Nov 2026 06:33:56 GMT</lastBuildDate>
+  <lastBuildDate>Mon, 09 Nov 2026 06:58:42 GMT</lastBuildDate>
+    <item>
+      <title>M4.5 — 51 km E of Lobuche, Nepal</title>
+      <link>https://earthquake.usgs.gov/earthquakes/eventpage/us6000u45b</link>
+      <guid isPermaLink="false">us6000u45b</guid>
+      <pubDate>Thu, 22 Oct 2026 17:11:27 GMT</pubDate>
+      <description>Magnitude 4.5, depth 10 km, at 28.03N 87.33E.</description>
+    </item>
     <item>
       <title>M5.0 — 32 km NW of Bāgeshwar, India</title>
       <link>https://earthquake.usgs.gov/earthquakes/eventpage/us6000u0hz</link>
@@ -207,12 +214,5 @@
       <guid isPermaLink="false">us6000pkyi</guid>
       <pubDate>Sat, 18 Jan 2025 16:26:31 GMT</pubDate>
       <description>Magnitude 4.6, depth 10 km, at 28.64N 87.47E.</description>
-    </item>
-    <item>
-      <title>M4.8 — Southern Tibetan Plateau</title>
-      <link>https://earthquake.usgs.gov/earthquakes/eventpage/us6000pky9</link>
-      <guid isPermaLink="false">us6000pky9</guid>
-      <pubDate>Sat, 18 Jan 2025 15:36:54 GMT</pubDate>
-      <description>Magnitude 4.8, depth 10 km, at 28.43N 87.60E.</description>
     </item>
 </channel></rss>

@@ -1,7 +1,17 @@
 {
- "generated": "2026-11-02T06:33:56.213Z",
+ "generated": "2026-11-09T06:58:42.238Z",
  "source": "USGS Earthquake Hazards Program",
  "events": [
+  {
+   "id": "us6000u45b",
+   "mag": 4.5,
+   "place": "51 km E of Lobuche, Nepal",
+   "time": 1792689087957,
+   "lat": 28.0314,
+   "lon": 87.3256,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000u45b"
+  },
   {
    "id": "us6000u0hz",
    "mag": 5,
@@ -291,16 +301,6 @@
    "lon": 87.4691,
    "depth": 10,
    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pkyi"
-  },
-  {
-   "id": "us6000pky9",
-   "mag": 4.8,
-   "place": "Southern Tibetan Plateau",
-   "time": 1737214614487,
-   "lat": 28.4323,
-   "lon": 87.6046,
-   "depth": 10,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pky9"
   }
  ]
 }
