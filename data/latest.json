@@ -1,7 +1,17 @@
 {
- "generated": "2026-11-09T06:58:42.238Z",
+ "generated": "2026-11-16T06:59:52.772Z",
  "source": "USGS Earthquake Hazards Program",
  "events": [
+  {
+   "id": "us7000txpk",
+   "mag": 4.6,
+   "place": "73 km NNW of Gyalshing, India",
+   "time": 1794438022433,
+   "lat": 27.8692,
+   "lon": 87.8857,
+   "depth": 10,
+   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000txpk"
+  },
   {
    "id": "us6000u45b",
    "mag": 4.5,
@@ -291,16 +301,6 @@
    "lon": 87.5481,
    "depth": 10,
    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pl3u"
-  },
-  {
-   "id": "us6000pkyi",
-   "mag": 4.6,
-   "place": "Southern Tibetan Plateau",
-   "time": 1737217591499,
-   "lat": 28.6435,
-   "lon": 87.4691,
-   "depth": 10,
-   "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000pkyi"
   }
  ]
 }

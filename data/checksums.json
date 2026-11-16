@@ -1,10 +1,10 @@
 {
-  "generated": "2026-11-09T06:58:41.905Z",
+  "generated": "2026-11-16T06:59:51.912Z",
   "files": {
-    "data/nepal_earthquakes.geojson": "sha256-YvFZ5E9iIXcEPngCOo8sguvoe7GtjhUAMsC9Kzs/0QA=",
-    "data/nepal_earthquakes.csv": "sha256-yYsu4WzlfHE8+KIULnVdPE8Pwcz4bM0x5N1XdeG+8Lw=",
+    "data/nepal_earthquakes.geojson": "sha256-xpXTtwE+dzwcGqm7tYm8OGw1F+6RJWsSkxlhDgemqeY=",
+    "data/nepal_earthquakes.csv": "sha256-RucMTQKzc88Sg6ZuJmjZJmd7VkEDCt20JXlevfUV5Bc=",
     "data/notable_earthquakes.geojson": "sha256-yadvhmppoT6r0ZEYwyiYVjBexY/dyAQQ4C7uHPw3D50=",
-    "data/summary.json": "sha256-L+Nl0xdea+ZW0dXouxbDjTrWiiCcLfgCQLJOIDS0gow=",
-    "assets/js/data-layers.js": "sha256-9yGJZ0Jg5PJrG9JwChbhcGVqkaJCQ6hJTS25zYA94TM="
+    "data/summary.json": "sha256-zyWq6LCQQEwHU3kfUucZN79AC+Zu/gWjzSd2hSRq+Tg=",
+    "assets/js/data-layers.js": "sha256-hno0zYekRu4ttf5ET8057fROy7Yt70yN7OAa9AMHYis="
   }
 }
